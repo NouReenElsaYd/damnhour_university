@@ -112,7 +112,7 @@ class Register extends StatelessWidget {
                                 ),
                                 toptext: 'الاسم',
                               ),
-                              SizedBox(height: ScreenSize.height * .02),
+                              SizedBox(height: ScreenSize.height * .01),
                               CustomTextFeild(
                                 controller: emailcontroller,
                                 hinttext: ' ادخل البريد الالكتروني ',
@@ -122,7 +122,7 @@ class Register extends StatelessWidget {
                                 ),
                                 toptext: 'البريد الالكتروني',
                               ),
-                              SizedBox(height: ScreenSize.height * .02),
+                              SizedBox(height: ScreenSize.height * .01),
                               CustomTextFeild(
                                 controller: idcontroller,
                                 hinttext: ' الرقم القومي',
@@ -132,7 +132,7 @@ class Register extends StatelessWidget {
                                 ),
                                 toptext: 'الرقم القومي',
                               ),
-                              SizedBox(height: ScreenSize.height * .02),
+                              SizedBox(height: ScreenSize.height * .01),
                               CustomTextFeild(
                                 suffixicon: InkWell(
                                   onTap: () {},
@@ -146,7 +146,7 @@ class Register extends StatelessWidget {
                                 ),
                                 toptext: 'كلمة المرور ',
                               ),
-                              SizedBox(height: ScreenSize.height * .02),
+                              SizedBox(height: ScreenSize.height * .01),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,7 +166,7 @@ class Register extends StatelessWidget {
                           ),
                           SizedBox(height: 50),
                           Button(onpressed: () {}, text: ' تسجيل '),
-                          SizedBox(height: ScreenSize.height * .02),
+                          SizedBox(height: ScreenSize.height * .01),
                         ],
                       ),
                     ),
