@@ -1,6 +1,4 @@
-// import 'package:damnhour_university/layout/layout.dart';
-// import 'package:damnhour_university/modules/onboarding/onboarding.dart';
-import 'package:damnhour_university/modules/register/register.dart';
+import 'package:damnhour_university/modules/onboarding/onboarding.dart';
 import 'package:damnhour_university/modules/splash/splash.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +13,7 @@ void main() {
           ScreenSize.initscreensize(context);
           return AnimatedSplashScreen(
             splash: Splash(),
-            nextScreen: Register(),
+            nextScreen: OnBoarding(),
             splashIconSize: 500,
             duration: 3000,
           );

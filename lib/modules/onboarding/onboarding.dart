@@ -1,3 +1,4 @@
+import 'package:damnhour_university/modules/register/register.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
@@ -109,7 +110,39 @@ class OnBoarding extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 40),
-                      Button(onpressed: () {}, text: 'ابدأ الان'),
+                      Button(
+                        onpressed: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      Register(),
+                              transitionsBuilder: (
+                                context,
+                                animation,
+                                secondaryAnimation,
+                                child,
+                              ) {
+                                final tween = Tween(
+                                  begin: Offset(1, 0),
+                                  end: Offset.zero,
+                                );
+                                final curvedAnimation = CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.easeInOut,
+                                );
+
+                                return SlideTransition(
+                                  position: tween.animate(curvedAnimation),
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        text: 'ابدأ الان',
+                      ),
                     ],
                   ),
                 ),

@@ -20,6 +20,7 @@ class Register extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
+              flex: 1,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
@@ -47,128 +48,131 @@ class Register extends StatelessWidget {
                 ),
               ),
             ),
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
-                  width: ScreenSize.width - 48,
-                  height: .8 * ScreenSize.height + 20,
-                  decoration: BoxDecoration(
-                    color: brand,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+            Expanded(
+              flex: 3,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Container(
+                    width: ScreenSize.width - 48,
+                    height: .7 * ScreenSize.height + 20,
+                    decoration: BoxDecoration(
+                      color: brand,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
                     ),
-                  ),
-                  width: ScreenSize.width,
-                  height: .8 * ScreenSize.height,
+                    width: ScreenSize.width,
+                    height: .7 * ScreenSize.height,
 
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 327 / 375 * ScreenSize.width,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 15),
-                              TextCairo(
-                                text: '!انضم إلينا وكن جزءًا من الحل',
-                                color: accent_orange,
-                                fontsize: 22,
-                              ),
-                              SizedBox(height: 3),
-                              TextCairo(
-                                text: 'املأ البيانات بالاسفل',
-                                color: Colors.black,
-                                fontsize: 14,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CustomTextFeild(
-                              controller: namecontroller,
-                              hinttext: ' الأسم الثلاثي',
-                              prefixicon: Icon(
-                                Icons.person_outline,
-                                color: primary_blue,
-                              ),
-                              toptext: 'الاسم',
-                            ),
-                            SizedBox(height: ScreenSize.height * .02),
-                            CustomTextFeild(
-                              controller: emailcontroller,
-                              hinttext: ' ادخل البريد الالكتروني ',
-                              prefixicon: Icon(
-                                CustomIcons.mail_outline,
-                                color: primary_blue,
-                              ),
-                              toptext: 'البريد الالكتروني',
-                            ),
-                            SizedBox(height: ScreenSize.height * .02),
-                            CustomTextFeild(
-                              controller: idcontroller,
-                              hinttext: ' الرقم القومي',
-                              prefixicon: Icon(
-                                CustomIcons.vcard,
-                                color: primary_blue,
-                              ),
-                              toptext: 'الرقم القومي',
-                            ),
-                            SizedBox(height: ScreenSize.height * .02),
-                            CustomTextFeild(
-                              suffixicon: InkWell(
-                                onTap: () {},
-                                child: Icon(CustomIcons.visibility),
-                              ),
-                              controller: passwordcontroller,
-                              hinttext: ' كلمة المرور ',
-                              prefixicon: Icon(
-                                CustomIcons.lock_outline,
-                                color: primary_blue,
-                              ),
-                              toptext: 'كلمة المرور ',
-                            ),
-                            SizedBox(height: ScreenSize.height * .02),
-                            Row(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 327 / 375 * ScreenSize.width,
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  'أوافق على سياسة الاستخدام وأتعهد بتقديم شكوى حقيقية',
-                                  style: TextStyle(fontSize: 14),
-                                  overflow: TextOverflow.ellipsis,
+                                SizedBox(height: 15),
+                                TextCairo(
+                                  text: '!انضم إلينا وكن جزءًا من الحل',
+                                  color: accent_orange,
+                                  fontsize: 22,
                                 ),
-                                Checkbox(
-                                  value: false,
-                                  onChanged: (bool? value) {},
+                                SizedBox(height: 3),
+                                TextCairo(
+                                  text: 'املأ البيانات بالاسفل',
+                                  color: Colors.black,
+                                  fontsize: 14,
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 50),
-                        Button(onpressed: () {}, text: ' تسجيل '),
-                        SizedBox(height: ScreenSize.height * .02),
-                      ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CustomTextFeild(
+                                controller: namecontroller,
+                                hinttext: ' الأسم الثلاثي',
+                                prefixicon: Icon(
+                                  Icons.person_outline,
+                                  color: primary_blue,
+                                ),
+                                toptext: 'الاسم',
+                              ),
+                              SizedBox(height: ScreenSize.height * .02),
+                              CustomTextFeild(
+                                controller: emailcontroller,
+                                hinttext: ' ادخل البريد الالكتروني ',
+                                prefixicon: Icon(
+                                  CustomIcons.mail_outline,
+                                  color: primary_blue,
+                                ),
+                                toptext: 'البريد الالكتروني',
+                              ),
+                              SizedBox(height: ScreenSize.height * .02),
+                              CustomTextFeild(
+                                controller: idcontroller,
+                                hinttext: ' الرقم القومي',
+                                prefixicon: Icon(
+                                  CustomIcons.vcard,
+                                  color: primary_blue,
+                                ),
+                                toptext: 'الرقم القومي',
+                              ),
+                              SizedBox(height: ScreenSize.height * .02),
+                              CustomTextFeild(
+                                suffixicon: InkWell(
+                                  onTap: () {},
+                                  child: Icon(CustomIcons.visibility),
+                                ),
+                                controller: passwordcontroller,
+                                hinttext: ' كلمة المرور ',
+                                prefixicon: Icon(
+                                  CustomIcons.lock_outline,
+                                  color: primary_blue,
+                                ),
+                                toptext: 'كلمة المرور ',
+                              ),
+                              SizedBox(height: ScreenSize.height * .02),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'أوافق على سياسة الاستخدام وأتعهد بتقديم شكوى حقيقية',
+                                    style: TextStyle(fontSize: 14),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Checkbox(
+                                    value: false,
+                                    onChanged: (bool? value) {},
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 50),
+                          Button(onpressed: () {}, text: ' تسجيل '),
+                          SizedBox(height: ScreenSize.height * .02),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
