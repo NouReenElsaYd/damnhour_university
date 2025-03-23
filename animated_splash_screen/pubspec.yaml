@@ -1,0 +1,12 @@
+name: animated_splash_screen
+description: A Flutter package for animated splash screens.
+version: 1.3.0
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  page_transition: ^2.2.1
