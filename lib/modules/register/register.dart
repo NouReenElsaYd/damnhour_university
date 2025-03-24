@@ -1,4 +1,5 @@
 import 'package:damnhour_university/icons/custom_icons.dart';
+import 'package:damnhour_university/modules/login/login.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
@@ -139,7 +140,7 @@ class Register extends StatelessWidget {
                                   child: Icon(CustomIcons.visibility),
                                 ),
                                 controller: passwordcontroller,
-                                hinttext: ' كلمة المرور ',
+                                hinttext: ' ******************** ',
                                 prefixicon: Icon(
                                   CustomIcons.lock_outline,
                                   color: primary_blue,
@@ -151,10 +152,12 @@ class Register extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    'أوافق على سياسة الاستخدام وأتعهد بتقديم شكوى حقيقية',
-                                    style: TextStyle(fontSize: 14),
-                                    overflow: TextOverflow.ellipsis,
+                                  TextCairo(
+                                    text:
+                                        'أوافق على سياسة الاستخدام وأتعهد بتقديم شكاوى حقيقية',
+                                    fontsize: 12,
+                                    fontweight: FontWeight.w400,
+                                    color: Colors.black,
                                   ),
                                   Checkbox(
                                     value: false,
@@ -166,6 +169,34 @@ class Register extends StatelessWidget {
                           ),
                           SizedBox(height: 50),
                           Button(onpressed: () {}, text: ' تسجيل '),
+                          SizedBox(height: ScreenSize.height * .01),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                child: TextCairo(
+                                  text: 'تسجيل دخول',
+                                  color: primary_blue,
+                                  fontsize: 14,
+                                  fontweight: FontWeight.w400,
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Login(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              TextCairo(
+                                text: '  لديك حساب بالفعل؟',
+                                color: brandcolor_100,
+                                fontsize: 14,
+                                fontweight: FontWeight.w400,
+                              ),
+                            ],
+                          ),
                           SizedBox(height: ScreenSize.height * .01),
                         ],
                       ),

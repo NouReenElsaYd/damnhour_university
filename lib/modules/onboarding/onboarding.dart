@@ -114,31 +114,7 @@ class OnBoarding extends StatelessWidget {
                         onpressed: () {
                           Navigator.push(
                             context,
-                            PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) =>
-                                      Register(),
-                              transitionsBuilder: (
-                                context,
-                                animation,
-                                secondaryAnimation,
-                                child,
-                              ) {
-                                final tween = Tween(
-                                  begin: Offset(1, 0),
-                                  end: Offset.zero,
-                                );
-                                final curvedAnimation = CurvedAnimation(
-                                  parent: animation,
-                                  curve: Curves.easeInOut,
-                                );
-
-                                return SlideTransition(
-                                  position: tween.animate(curvedAnimation),
-                                  child: child,
-                                );
-                              },
-                            ),
+                            MaterialPageRoute(builder: (context) => Register()),
                           );
                         },
                         text: 'ابدأ الان',

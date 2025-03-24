@@ -7,8 +7,10 @@ Widget TextCairo({
   Color color = Colors.white,
   double fontsize = 16,
   FontWeight fontweight = FontWeight.w600,
+  TextAlign? textalign,
 }) {
   return Text(
+    textAlign: textalign,
     "${text}",
     style: TextStyle(
       fontFamily: 'Cairo',
