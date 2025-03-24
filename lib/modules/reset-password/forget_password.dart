@@ -1,16 +1,14 @@
 import 'package:damnhour_university/icons/custom_icons.dart';
-import 'package:damnhour_university/modules/register/register.dart';
-import 'package:damnhour_university/modules/reset-password/forget_password.dart';
+import 'package:damnhour_university/modules/login/login.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class Login extends StatelessWidget {
-  Login({super.key});
+class ForgetPassword extends StatelessWidget {
+  ForgetPassword({super.key});
   TextEditingController emailcontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -86,19 +84,28 @@ class Login extends StatelessWidget {
                               children: [
                                 SizedBox(height: 15),
                                 TextCairo(
-                                  text: '!مرحبًا مجددًا',
+                                  text: '!لا تقلق، يمكننا مساعدتك',
                                   color: accent_orange,
                                   fontsize: 22,
                                 ),
                                 SizedBox(height: 3),
                                 TextCairo(
-                                  text: 'حان وقت إحداث الفرق',
+                                  textalign: TextAlign.center,
+                                  text:
+                                      'أدخل بريدك الإلكتروني  وسنرسل لك رابطًا لإعادة تعيين',
+                                  color: Colors.black,
+                                  fontsize: 14,
+                                ),
+                                TextCairo(
+                                  textalign: TextAlign.center,
+                                  text: 'كلمة المرور',
                                   color: Colors.black,
                                   fontsize: 14,
                                 ),
                               ],
                             ),
                           ),
+                          SizedBox(height: ScreenSize.height * .02),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,59 +119,17 @@ class Login extends StatelessWidget {
                                 ),
                                 toptext: 'البريد الالكتروني',
                               ),
-
-                              SizedBox(height: ScreenSize.height * .01),
-                              CustomTextFeild(
-                                suffixicon: InkWell(
-                                  onTap: () {},
-                                  child: Icon(CustomIcons.visibility),
-                                ),
-                                controller: passwordcontroller,
-                                hinttext: ' ******************** ',
-                                prefixicon: Icon(
-                                  CustomIcons.lock_outline,
-                                  color: primary_blue,
-                                ),
-                                toptext: 'كلمة المرور ',
-                              ),
-                              SizedBox(height: 30),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left: 30 / 375 * ScreenSize.width,
-                                ),
-                                alignment: Alignment.centerLeft,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ForgetPassword(),
-                                      ),
-                                    );
-                                  },
-                                  child: Text(
-                                    'نسيت كلمة المرور؟',
-                                    style: TextStyle(
-                                      fontFamily: 'Cairo',
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                           SizedBox(height: 30),
-                          Button(onpressed: () {}, text: ' تسجيل الدخول '),
-                          SizedBox(height: ScreenSize.height * .01),
+                          Button(onpressed: () {}, text: ' ارسال الرمز '),
+                          SizedBox(height: ScreenSize.height * .02),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               InkWell(
                                 child: TextCairo(
-                                  text: '!سجّل الآن وابدأ رحلتك',
+                                  text: '!سجّل الدخول الآن',
                                   color: primary_blue,
                                   fontsize: 14,
                                   fontweight: FontWeight.w400,
@@ -173,13 +138,13 @@ class Login extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Register(),
+                                      builder: (context) => Login(),
                                     ),
                                   );
                                 },
                               ),
                               TextCairo(
-                                text: ' ليس لديك حساب؟  ',
+                                text: 'تذكرت كلمة المرور؟',
                                 color: brandcolor_100,
                                 fontsize: 14,
                                 fontweight: FontWeight.w400,
