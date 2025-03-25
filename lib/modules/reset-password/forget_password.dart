@@ -84,7 +84,7 @@ class ForgetPassword extends StatelessWidget {
                               children: [
                                 SizedBox(height: 15),
                                 TextCairo(
-                                  text: '!لا تقلق، يمكننا مساعدتك',
+                                  text: '!لا تقلق، يمكننا  مساعدتك',
                                   color: accent_orange,
                                   fontsize: 22,
                                   fontweight: FontWeight.w700,
