@@ -93,7 +93,7 @@ class ForgetPassword extends StatelessWidget {
                                 TextCairo(
                                   textalign: TextAlign.center,
                                   text:
-                                      'أدخل بريدك الإلكتروني  وسنرسل لك رابطًا لإعادة تعيين',
+                                      'أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين',
                                   color: Colors.black,
                                   fontsize: 14,
                                 ),
