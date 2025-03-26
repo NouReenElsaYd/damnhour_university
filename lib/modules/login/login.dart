@@ -74,7 +74,6 @@ class Login extends StatelessWidget {
                     ),
                     width: ScreenSize.width,
                     height: .7 * ScreenSize.height,
-
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

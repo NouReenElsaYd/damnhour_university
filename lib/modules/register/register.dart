@@ -1,4 +1,5 @@
 import 'package:damnhour_university/icons/custom_icons.dart';
+import 'package:damnhour_university/modules/home/home.dart';
 import 'package:damnhour_university/modules/login/login.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
@@ -168,7 +169,9 @@ class Register extends StatelessWidget {
                             ],
                           ),
                           SizedBox(height: 50),
-                          Button(onpressed: () {}, text: ' تسجيل '),
+                          Button(onpressed: () {
+                            navigateTo(to: HomeScreen(), context: context);
+                          }, text: ' تسجيل '),
                           SizedBox(height: ScreenSize.height * .01),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
