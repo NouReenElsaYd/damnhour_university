@@ -1,6 +1,5 @@
 import 'package:damnhour_university/icons/custom_icons.dart';
 import 'package:damnhour_university/layout/layout.dart';
-import 'package:damnhour_university/modules/home/home.dart';
 import 'package:damnhour_university/modules/login/login.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
