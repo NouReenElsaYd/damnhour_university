@@ -21,18 +21,28 @@ Widget TextCairo({
   );
 }
 
-Widget Button({required String text, required VoidCallback onpressed}) {
+Widget Button({
+  required String text,
+  required VoidCallback onpressed,
+  Color color = const Color.fromRGBO(0, 9, 69, 1),
+  Color textcolor = Colors.white,
+}) {
   return Container(
     decoration: BoxDecoration(
+      border: Border.all(style: BorderStyle.solid),
       borderRadius: BorderRadius.circular(8),
-      color: primary_blue,
+      color: color,
     ),
     height: 52,
     width: 327 / 375 * ScreenSize.width,
     child: ElevatedButton(
-      style: ElevatedButton.styleFrom(backgroundColor: primary_blue),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
       onPressed: onpressed,
-      child: TextCairo(text: text),
+      child: TextCairo(text: text, color: textcolor),
     ),
   );
 }
@@ -100,12 +110,15 @@ Widget sharedSectors({required int index}) {
     ),
     child: InkWell(
       onTap: () {},
-      child: TextCairo(text: sectors[index], color: index != 0 ? primary_blue : Colors.white),
+      child: TextCairo(
+        text: sectors[index],
+        color: index != 0 ? primary_blue : Colors.white,
+      ),
     ),
   );
 }
 
-Widget sectorsListView() =>  Container(
+Widget sectorsListView() => Container(
   height: 36.0,
   child: ListView.separated(
     physics: BouncingScrollPhysics(),
@@ -118,8 +131,5 @@ Widget sectorsListView() =>  Container(
 );
 
 void navigateTo({required Widget to, required context}) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => to),
-  );
+  Navigator.push(context, MaterialPageRoute(builder: (context) => to));
 }

@@ -42,87 +42,96 @@ class OnBoarding extends StatelessWidget {
                 ),
               ),
             ),
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
-                  width: ScreenSize.width - 48,
-                  height: .7 * ScreenSize.height + 20,
-                  decoration: BoxDecoration(
-                    color: brand,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+            Expanded(
+              flex: 3,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Container(
+                    width: ScreenSize.width - 48,
+                    height: .7 * ScreenSize.height + 20,
+                    decoration: BoxDecoration(
+                      color: brand,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    width: ScreenSize.width,
+                    height: .7 * ScreenSize.height,
+
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 20),
+                          TextCairo(
+                            text: 'هل واجهت مشكلة في جامعتك؟',
+                            color: primary_blue,
+                          ),
+                          SizedBox(height: 40),
+                          Container(
+                            width: 200 / 375 * ScreenSize.width,
+                            height: 209 / 582 * .7 * ScreenSize.height,
+
+                            child: Image(
+                              image: AssetImage("assets/images/onboard.png"),
+                            ),
+                          ),
+                          SizedBox(height: 40),
+                          Container(
+                            width: 327 / 375 * ScreenSize.width,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextCairo(
+                                  text:
+                                      'لا تدعها تمر بصمت! أبلغ عنها بسهولة، وكن',
+                                  color: accent_orange,
+                                  fontsize: 18,
+                                ),
+                                TextCairo(
+                                  text: '.جزءًا من الحل',
+                                  color: accent_orange,
+                                  fontsize: 18,
+                                ),
+                                SizedBox(height: 10),
+                                TextCairo(
+                                  text:
+                                      '!التغيير يبدأ بك، فلا تتردد في اتخاذ الخطوة الأولى',
+                                  color: primary_blue,
+                                  fontsize: 12,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 40),
+                          Button(
+                            onpressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Register(),
+                                ),
+                              );
+                            },
+                            text: 'ابدأ الان',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  width: ScreenSize.width,
-                  height: .7 * ScreenSize.height,
-
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextCairo(
-                        text: 'هل واجهت مشكلة في جامعتك؟',
-                        color: primary_blue,
-                      ),
-                      SizedBox(height: 40),
-                      Container(
-                        width: 200 / 375 * ScreenSize.width,
-                        height: 209 / 582 * .7 * ScreenSize.height,
-
-                        child: Image(
-                          image: AssetImage("assets/images/onboard.png"),
-                        ),
-                      ),
-                      SizedBox(height: 40),
-                      Container(
-                        width: 327 / 375 * ScreenSize.width,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextCairo(
-                              text: 'لا تدعها تمر بصمت! أبلغ عنها بسهولة، وكن',
-                              color: accent_orange,
-                              fontsize: 18,
-                            ),
-                            TextCairo(
-                              text: '.جزءًا من الحل',
-                              color: accent_orange,
-                              fontsize: 18,
-                            ),
-                            SizedBox(height: 10),
-                            TextCairo(
-                              text:
-                                  '!التغيير يبدأ بك، فلا تتردد في اتخاذ الخطوة الأولى',
-                              color: primary_blue,
-                              fontsize: 12,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 40),
-                      Button(
-                        onpressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Register()),
-                          );
-                        },
-                        text: 'ابدأ الان',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

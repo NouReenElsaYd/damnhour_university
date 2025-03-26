@@ -98,62 +98,65 @@ class Login extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CustomTextFeild(
-                                controller: emailcontroller,
-                                hinttext: ' ادخل البريد الالكتروني ',
-                                prefixicon: Icon(
-                                  CustomIcons.mail_outline,
-                                  color: primary_blue,
+                          Form(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CustomTextFeild(
+                                  controller: emailcontroller,
+                                  hinttext: ' ادخل البريد الالكتروني ',
+                                  prefixicon: Icon(
+                                    CustomIcons.mail_outline,
+                                    color: primary_blue,
+                                  ),
+                                  toptext: 'البريد الالكتروني',
                                 ),
-                                toptext: 'البريد الالكتروني',
-                              ),
 
-                              SizedBox(height: ScreenSize.height * .01),
-                              CustomTextFeild(
-                                suffixicon: InkWell(
-                                  onTap: () {},
-                                  child: Icon(CustomIcons.visibility),
+                                SizedBox(height: ScreenSize.height * .01),
+                                CustomTextFeild(
+                                  suffixicon: InkWell(
+                                    onTap: () {},
+                                    child: Icon(CustomIcons.visibility),
+                                  ),
+                                  controller: passwordcontroller,
+                                  hinttext: ' ******************** ',
+                                  prefixicon: Icon(
+                                    CustomIcons.lock_outline,
+                                    color: primary_blue,
+                                  ),
+                                  toptext: 'كلمة المرور ',
                                 ),
-                                controller: passwordcontroller,
-                                hinttext: ' ******************** ',
-                                prefixicon: Icon(
-                                  CustomIcons.lock_outline,
-                                  color: primary_blue,
-                                ),
-                                toptext: 'كلمة المرور ',
-                              ),
-                              SizedBox(height: 30),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left: 30 / 375 * ScreenSize.width,
-                                ),
-                                alignment: Alignment.centerLeft,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ForgetPassword(),
+                                SizedBox(height: 30),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    left: 30 / 375 * ScreenSize.width,
+                                  ),
+                                  alignment: Alignment.centerLeft,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => ForgetPassword(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'نسيت كلمة المرور؟',
+                                      style: TextStyle(
+                                        fontFamily: 'Cairo',
+                                        decoration: TextDecoration.underline,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
                                       ),
-                                    );
-                                  },
-                                  child: Text(
-                                    'نسيت كلمة المرور؟',
-                                    style: TextStyle(
-                                      fontFamily: 'Cairo',
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(height: 30),
                           Button(onpressed: () {}, text: ' تسجيل الدخول '),

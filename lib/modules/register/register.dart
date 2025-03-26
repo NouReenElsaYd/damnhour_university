@@ -101,77 +101,82 @@ class Register extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CustomTextFeild(
-                                controller: namecontroller,
-                                hinttext: ' الأسم الثلاثي',
-                                prefixicon: Icon(
-                                  Icons.person_outline,
-                                  color: primary_blue,
-                                ),
-                                toptext: 'الاسم',
-                              ),
-                              SizedBox(height: ScreenSize.height * .01),
-                              CustomTextFeild(
-                                controller: emailcontroller,
-                                hinttext: ' ادخل البريد الالكتروني ',
-                                prefixicon: Icon(
-                                  CustomIcons.mail_outline,
-                                  color: primary_blue,
-                                ),
-                                toptext: 'البريد الالكتروني',
-                              ),
-                              SizedBox(height: ScreenSize.height * .01),
-                              CustomTextFeild(
-                                controller: idcontroller,
-                                hinttext: ' الرقم القومي',
-                                prefixicon: Icon(
-                                  CustomIcons.vcard,
-                                  color: primary_blue,
-                                ),
-                                toptext: 'الرقم القومي',
-                              ),
-                              SizedBox(height: ScreenSize.height * .01),
-                              CustomTextFeild(
-                                suffixicon: InkWell(
-                                  onTap: () {},
-                                  child: Icon(CustomIcons.visibility),
-                                ),
-                                controller: passwordcontroller,
-                                hinttext: ' ******************** ',
-                                prefixicon: Icon(
-                                  CustomIcons.lock_outline,
-                                  color: primary_blue,
-                                ),
-                                toptext: 'كلمة المرور ',
-                              ),
-                              SizedBox(height: ScreenSize.height * .01),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  TextCairo(
-                                    text:
-                                        'أوافق على سياسة الاستخدام وأتعهد بتقديم شكاوى حقيقية',
-                                    fontsize: 12,
-                                    fontweight: FontWeight.w400,
-                                    color: Colors.black,
+                          Form(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CustomTextFeild(
+                                  controller: namecontroller,
+                                  hinttext: ' الأسم الثلاثي',
+                                  prefixicon: Icon(
+                                    Icons.person_outline,
+                                    color: primary_blue,
                                   ),
-                                  Checkbox(
-                                    value: false,
-                                    onChanged: (bool? value) {},
+                                  toptext: 'الاسم',
+                                ),
+                                SizedBox(height: ScreenSize.height * .01),
+                                CustomTextFeild(
+                                  controller: emailcontroller,
+                                  hinttext: ' ادخل البريد الالكتروني ',
+                                  prefixicon: Icon(
+                                    CustomIcons.mail_outline,
+                                    color: primary_blue,
                                   ),
-                                ],
-                              ),
-                            ],
+                                  toptext: 'البريد الالكتروني',
+                                ),
+                                SizedBox(height: ScreenSize.height * .01),
+                                CustomTextFeild(
+                                  controller: idcontroller,
+                                  hinttext: ' الرقم القومي',
+                                  prefixicon: Icon(
+                                    CustomIcons.vcard,
+                                    color: primary_blue,
+                                  ),
+                                  toptext: 'الرقم القومي',
+                                ),
+                                SizedBox(height: ScreenSize.height * .01),
+                                CustomTextFeild(
+                                  suffixicon: InkWell(
+                                    onTap: () {},
+                                    child: Icon(CustomIcons.visibility),
+                                  ),
+                                  controller: passwordcontroller,
+                                  hinttext: ' ******************** ',
+                                  prefixicon: Icon(
+                                    CustomIcons.lock_outline,
+                                    color: primary_blue,
+                                  ),
+                                  toptext: 'كلمة المرور ',
+                                ),
+                                SizedBox(height: ScreenSize.height * .01),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    TextCairo(
+                                      text:
+                                          'أوافق على سياسة الاستخدام وأتعهد بتقديم شكاوى حقيقية',
+                                      fontsize: 12,
+                                      fontweight: FontWeight.w400,
+                                      color: Colors.black,
+                                    ),
+                                    Checkbox(
+                                      value: false,
+                                      onChanged: (bool? value) {},
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                           SizedBox(height: 50),
-                          Button(onpressed: () {
-                            navigateTo(to: LayoutScreen(), context: context);
-                          }, text: ' تسجيل '),
+                          Button(
+                            onpressed: () {
+                              navigateTo(to: LayoutScreen(), context: context);
+                            },
+                            text: ' تسجيل ',
+                          ),
                           SizedBox(height: ScreenSize.height * .01),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,

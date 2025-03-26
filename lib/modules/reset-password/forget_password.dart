@@ -1,5 +1,6 @@
 import 'package:damnhour_university/icons/custom_icons.dart';
 import 'package:damnhour_university/modules/login/login.dart';
+import 'package:damnhour_university/modules/reset-password/otp.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
@@ -107,23 +108,30 @@ class ForgetPassword extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: ScreenSize.height * .02),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CustomTextFeild(
-                                controller: emailcontroller,
-                                hinttext: ' ادخل البريد الالكتروني ',
-                                prefixicon: Icon(
-                                  CustomIcons.mail_outline,
-                                  color: primary_blue,
+                          Form(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CustomTextFeild(
+                                  controller: emailcontroller,
+                                  hinttext: ' ادخل البريد الالكتروني ',
+                                  prefixicon: Icon(
+                                    CustomIcons.mail_outline,
+                                    color: primary_blue,
+                                  ),
+                                  toptext: 'البريد الالكتروني',
                                 ),
-                                toptext: 'البريد الالكتروني',
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(height: 30),
-                          Button(onpressed: () {}, text: ' ارسال الرمز '),
+                          Button(
+                            onpressed: () {
+                              navigateTo(context: context, to: Otp());
+                            },
+                            text: ' ارسال الرمز ',
+                          ),
                           SizedBox(height: ScreenSize.height * .02),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
