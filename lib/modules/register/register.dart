@@ -1,4 +1,5 @@
 import 'package:damnhour_university/icons/custom_icons.dart';
+import 'package:damnhour_university/layout/layout.dart';
 import 'package:damnhour_university/modules/home/home.dart';
 import 'package:damnhour_university/modules/login/login.dart';
 import 'package:damnhour_university/shared/components/components.dart';
@@ -170,7 +171,7 @@ class Register extends StatelessWidget {
                           ),
                           SizedBox(height: 50),
                           Button(onpressed: () {
-                            navigateTo(to: HomeScreen(), context: context);
+                            navigateTo(to: LayoutScreen(), context: context);
                           }, text: ' تسجيل '),
                           SizedBox(height: ScreenSize.height * .01),
                           Row(
