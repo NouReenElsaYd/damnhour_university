@@ -6,6 +6,7 @@ import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class Register extends StatelessWidget {
   Register({super.key});
   TextEditingController namecontroller = TextEditingController();
