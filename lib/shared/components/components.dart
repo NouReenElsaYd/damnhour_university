@@ -81,3 +81,45 @@ Widget CustomTextFeild({
     ),
   );
 }
+
+Widget sharedSectors({required int index}) {
+  List<String> sectors = [
+    'الكل',
+    'قطاع شئون التعليم',
+    'قطاع إدارة الجامعة',
+    'قطاع الدراسات العليا',
+    'قطاع أمين عام الجامعة',
+    'قطاع خدمة المجتمع',
+  ];
+  return Container(
+    padding: EdgeInsetsDirectional.symmetric(horizontal: 11.0, vertical: 5.0),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8.0),
+      border: Border.all(color: primary_blue),
+      color: index != 0 ? Colors.white : primary_blue,
+    ),
+    child: InkWell(
+      onTap: () {},
+      child: TextCairo(text: sectors[index], color: index != 0 ? primary_blue : Colors.white),
+    ),
+  );
+}
+
+Widget sectorsListView() =>  Container(
+  height: 36.0,
+  child: ListView.separated(
+    physics: BouncingScrollPhysics(),
+    scrollDirection: Axis.horizontal,
+    reverse: true,
+    itemBuilder: (context, index) => sharedSectors(index: index),
+    separatorBuilder: (context, index) => SizedBox(width: 10.0),
+    itemCount: 6,
+  ),
+);
+
+void navigateTo({required Widget to, required context}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => to),
+  );
+}
