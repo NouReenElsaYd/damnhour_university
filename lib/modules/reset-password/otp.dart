@@ -1,4 +1,5 @@
 import 'package:damnhour_university/modules/login/login.dart';
+import 'package:damnhour_university/modules/reset-password/update_password.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
@@ -129,7 +130,15 @@ class Otp extends StatelessWidget {
                             ],
                           ),
                           SizedBox(height: ScreenSize.height * .05),
-                          Button(onpressed: () {}, text: ' التحقق '),
+                          Button(
+                            onpressed: () {
+                              navigateTo(
+                                to: UpdatePassword(),
+                                context: context,
+                              );
+                            },
+                            text: ' التحقق ',
+                          ),
                           SizedBox(height: ScreenSize.height * .03),
 
                           Button(

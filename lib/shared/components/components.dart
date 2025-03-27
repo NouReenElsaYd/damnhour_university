@@ -53,6 +53,7 @@ Widget CustomTextFeild({
   required String toptext,
   required String hinttext,
   required TextEditingController controller,
+  bool obscureText = false,
 }) {
   return Container(
     padding: EdgeInsets.all(8),
@@ -72,6 +73,7 @@ Widget CustomTextFeild({
             textDirection: TextDirection.rtl,
             child: TextFormField(
               controller: controller,
+              obscureText: obscureText,
               textDirection: TextDirection.rtl,
               decoration: InputDecoration(
                 suffixIcon: suffixicon,
