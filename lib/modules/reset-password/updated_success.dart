@@ -3,6 +3,7 @@ import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class UpdatedSuccess extends StatelessWidget {
   const UpdatedSuccess({super.key});
@@ -76,8 +77,8 @@ class UpdatedSuccess extends StatelessWidget {
                           Container(
                             width: 285 / 375 * ScreenSize.width,
                             height: 140 / 582 * .7 * ScreenSize.height,
-                            child: Image(
-                              image: AssetImage("assets/images/success.png"),
+                            child: SvgPicture.asset(
+                              "assets/images/success.svg",
                               fit: BoxFit.contain,
                             ),
                           ),

@@ -2,6 +2,7 @@ import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ComplaintsScreen extends StatelessWidget {
   const ComplaintsScreen({super.key});
@@ -39,7 +40,6 @@ class ComplaintsScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           TextCairo(
@@ -83,6 +83,49 @@ class ComplaintsScreen extends StatelessWidget {
             child: sectorsListView(),
           ),
           Container(height: 1.0, color: brandColor25),
+          SizedBox(height: ScreenSize.height * 0.1),
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 200,
+                    height: 200,
+                    child: SvgPicture.asset(
+                      "assets/images/complain.svg",
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextCairo(
+                    text: 'لا يوجد شكاوي حتى الآن! هل لديك أي ملاحظات أو',
+                    color: Colors.black,
+                    fontsize: 16,
+                    fontweight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 8),
+                  TextCairo(
+                    text: 'اقتراحات؟ اضغط على الزر ادناه وشاركنا رأيك ',
+                    color: Colors.black54,
+                    fontsize: 14,
+                    fontweight: FontWeight.w400,
+                  ),
+                  SizedBox(height: 30),
+                  Button(onpressed: () {}, text: 'تقديم اقتراح'),
+                  SizedBox(height: 16),
+                  Button(
+                    onpressed: () {},
+                    text: 'تقديم شكوى',
+                    color: Colors.white,
+                    textcolor: primary_blue,
+                  ),
+                  SizedBox(height: ScreenSize.height * 0.1),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

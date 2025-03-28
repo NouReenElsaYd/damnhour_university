@@ -3,6 +3,7 @@ import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class OnBoarding extends StatelessWidget {
   const OnBoarding({super.key});
@@ -83,8 +84,9 @@ class OnBoarding extends StatelessWidget {
                             width: 200 / 375 * ScreenSize.width,
                             height: 209 / 582 * .7 * ScreenSize.height,
 
-                            child: Image(
-                              image: AssetImage("assets/images/onboard.png"),
+                            child: SvgPicture.asset(
+                              "assets/images/onboard.svg",
+                              fit: BoxFit.contain,
                             ),
                           ),
                           SizedBox(height: 40),
