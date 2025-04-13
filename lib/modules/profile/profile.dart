@@ -100,7 +100,7 @@ class ProfileScreen extends StatelessWidget {
                       fontsize: 16.0, // Fixed font size
                       color: Colors.black,
                     ),
-                    SizedBox(height: ScreenSize.height * 0.02), // 2% of screen height
+                    SizedBox(height: ScreenSize.height * 0.02),
                     profileItem(
                       text: 'المعلومات الشخصية',
                       icon: Icons.person_2_outlined,
@@ -182,7 +182,7 @@ Widget profileItem({
           height: ScreenSize.width * 0.05,
           width: ScreenSize.width * 0.05,
           colorFilter: ColorFilter.mode(
-            primary_blue, // نفس لون الأيقونات
+            primary_blue,
             BlendMode.srcIn,
           ),
         )
