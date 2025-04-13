@@ -8,3 +8,7 @@ Color accentColor50 = Color(0xFFFFB98E);
 Color accentColor100 = Color(0xFFFFAB77);
 Color  neutralColor25 = Color(0xFFC6CCD5);
 Color brandColor25 = Color(0xFFA0A9B7);
+Color brandColor200 = Color(0xFF596982);
+Color primaryGray300 = Color(0xFFD2D5DA);
+Color disabled200 = Color(0xFFD6D6D6);
+Color disabled100 = Color(0xFFEEEEEE);

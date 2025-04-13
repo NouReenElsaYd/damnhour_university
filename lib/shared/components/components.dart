@@ -49,10 +49,12 @@ Widget Button({
 
 Widget CustomTextFeild({
   Widget? suffixicon,
-  required Widget prefixicon,
+  Widget? prefixicon,
   required String toptext,
-  required String hinttext,
+  String? hinttext,
   required TextEditingController controller,
+  TextInputType? inputType,
+  bool enabled = true,
   bool obscureText = false,
 }) {
   return Container(
@@ -65,14 +67,23 @@ Widget CustomTextFeild({
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: enabled == true ? Colors.white : disabled100,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Color.fromRGBO(160, 169, 183, 1)),
+            border: Border.all(color: enabled == true
+                ? Color.fromRGBO(160, 169, 183, 1)
+                : disabled200,),
           ),
           child: Directionality(
             textDirection: TextDirection.rtl,
             child: TextFormField(
               controller: controller,
+              enabled: enabled,
+              style: TextStyle(
+                fontFamily: 'Cairo',
+                color: enabled == true ? brandColor200 : disabled200,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w600,
+              ),
               obscureText: obscureText,
               textDirection: TextDirection.rtl,
               decoration: InputDecoration(
