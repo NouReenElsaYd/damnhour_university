@@ -170,7 +170,7 @@ Widget profileItem({
         child: TextCairo(
           text: text,
           fontweight: FontWeight.w600,
-          fontsize: 14.0, // Fixed font size
+          fontsize: 14.0,
           color: brand,
           textalign: TextAlign.end,
         ),

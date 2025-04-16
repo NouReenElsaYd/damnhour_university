@@ -235,7 +235,7 @@ class HomeScreen extends StatelessWidget {
               },
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
-                  'https://s3-alpha-sig.figma.com/img/fc8e/8722/3d89c4f6964dd191b6eccf24c31b6620?Expires=1743984000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=rsHPtco6lz8-vCxKX10~Nkg2o5YEf2NfYDkY6jS9bHVHyxEjc0Wh-lEsNQjXXAHwMXER-PXGuAJpCw-SyHmOI7rq5XpD8bzmEtZIfMxn63ZXlOmkEG~K18jMz9fXGx2GGTt~AboId~Ofrt4LdweE1ASRK7rD5czQtaQxSdZDcQi48F1OvFLJ9PueDPyZWeuMq~F~HDNgVegcCaSBlMVFK4GQuTfm-8wv~YUUYtIQnF4oTaYAWpI0MCLWLWWDR7UJXN0LhmhRCS~~Df5~l5LZeccJi1KJJXh~UX-95VnQOCEHb0~oU1I4PnOn-iEe9I9Pj2tombjVDtjlbOWgFaulUQ__',
+                  'https://s3-alpha-sig.figma.com/img/fc8e/8722/3d89c4f6964dd191b6eccf24c31b6620?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ashj48mbbmqvoaNVPGCuGRu~kQWQuszCOTY7xhCo4hb6-keMI-yTX~~uYMkM2HCiVaP~pYY1855rEyS6RXEt3ejJKlopYSCgBknkdNlhodHmio2KSFOqFQQEKUa4RGlw2~x3DyLPQa8FFytHLhIXi-mT-f0vhvmBfTlgDOVp7gLHHqYaL-l5aaCMakOdxpVmmwloPs-NMml9Jn6B7D4NcTszXMQuZ2x9CaqMppjlM9cf92vV518-rZjQ7H1XmDitfHVNKbHxDBG60VllCh0XsO-tksr3jiLND4UOKYq8btuPXbyBB7RYh4wsAn79rCKMWjczid7sffoNKzLkK8mn1g__',
                 ),
                 radius: 25.0,
               ),
@@ -251,7 +251,7 @@ class HomeScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
               image: DecorationImage(
                 image: NetworkImage(
-                  'https://s3-alpha-sig.figma.com/img/fdc1/8583/d1cf5c8e5fbb4b0dd6ef382341266755?Expires=1743984000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=KJTWRjOEEnXNfpx38qB39Fs8YuJe63T-n1JuMeZsrOaUrHl3ubYsrnFQE41WIxk1Si3ivFJLXFy7VXBgIJUFAlIfX81HHlqAfTNerbbuOzvKJOOHpGSEuo~FKIOnhwAmlCDL92YFET-GV3lYutM-gvrOZKbzpQEx1oZrM0tfZrKPIcc8XDYeQAlErYNiJFIazgUkWdK41DhNkPJVfn7PW4pOF208XRDckY~EjXqoF~fkY3btG8pmyzVK9SjQnQDA9KWCYPI6Es9WvTxHFfjlbWr8C~Hg4iI7ZJVLCmChzltXJJnAzLWEhSQCAdvZ49okOnAJQ6aV~Uaa4VgaaxKhXw__',
+                  'https://s3-alpha-sig.figma.com/img/fdc1/8583/d1cf5c8e5fbb4b0dd6ef382341266755?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=YgMc7pFWvu2HrJbnW~KPr36bhrUfjnnISJXfrtVLKMLWb15q1CcKu2LSDy~wPm1z8PWT4hmFAzsiR9-RhrZiP80Q9MghGFULew862bAr4QqRsAgL9LpnTFygNbyI116CJl54O986Ccv7I8UfWcNUGJA3LCskQenxAw2bZ1kJ-l9Lj5atLZ2bhDSfCOxPML0u5QaLqoFitxH-GcZDmBsKapAEHEthQt~jB~ekwLUmAzo4NhQC5TRPRGROxUHZ08bd-IJHhjldReJbO3fe7Zwmm4D2SO6vpFrTLOBSelZHR7sqrm0roSQZ81odt~oXT2~RqCmHaV5aX1364t4qAvPMCg__',
                 ),
                 fit: BoxFit.cover,
               ),
