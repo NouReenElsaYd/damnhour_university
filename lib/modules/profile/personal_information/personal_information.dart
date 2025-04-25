@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
-
 import '../../../shared/components/components.dart';
 import '../../../shared/constants/constants.dart';
 import '../../../shared/cubit/cubit.dart';
 import '../../../shared/cubit/states.dart';
 import '../../../shared/styles/colors.dart';
 
+// ignore: must_be_immutable
 class PersonalInformation extends StatelessWidget {
   PersonalInformation({super.key});
   TextEditingController nameController = TextEditingController(
@@ -118,7 +118,9 @@ class PersonalInformation extends StatelessWidget {
                                 FlutterSwitch(
                                   value: UniversityCubit.get(context).isEnabled,
                                   onToggle: (value) {
-                                    UniversityCubit.get(context).changeSwitch(value);
+                                    UniversityCubit.get(
+                                      context,
+                                    ).changeSwitch(value);
                                   },
                                   activeColor: Colors.blueAccent,
                                   height: ScreenSize.width * 0.06,
