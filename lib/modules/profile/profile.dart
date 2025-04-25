@@ -14,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        return Scaffold(
+    return Scaffold(
       backgroundColor: primary_blue,
       body: Column(
         children: [
@@ -181,17 +181,10 @@ Widget profileItem({
           'assets/images/help.svg',
           height: ScreenSize.width * 0.05,
           width: ScreenSize.width * 0.05,
-          colorFilter: ColorFilter.mode(
-            primary_blue,
-            BlendMode.srcIn,
-          ),
+          colorFilter: ColorFilter.mode(primary_blue, BlendMode.srcIn),
         )
       else
-        Icon(
-          icon,
-          color: primary_blue,
-          size: ScreenSize.width * 0.06,
-        ),
+        Icon(icon, color: primary_blue, size: ScreenSize.width * 0.06),
     ],
   ),
 );

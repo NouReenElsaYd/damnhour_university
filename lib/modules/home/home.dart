@@ -13,6 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -141,11 +142,11 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (context, index) => buildPostItem(context),
               separatorBuilder:
                   (context, index) => Padding(
-                padding: EdgeInsetsDirectional.symmetric(
-                  vertical: ScreenSize.height * 0.02,
-                ),
-                child: Container(height: 1, color: brandColor25),
-              ),
+                    padding: EdgeInsetsDirectional.symmetric(
+                      vertical: ScreenSize.height * 0.02,
+                    ),
+                    child: Container(height: 1, color: brandColor25),
+                  ),
               itemCount: 5,
             ),
           ],
@@ -261,7 +262,7 @@ class HomeScreen extends StatelessWidget {
         TextCairo(
           textalign: TextAlign.right,
           text:
-          'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
+              'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
           fontweight: FontWeight.w400,
           fontsize: 11.0,
           color: Colors.black,

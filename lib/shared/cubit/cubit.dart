@@ -24,12 +24,38 @@ class UniversityCubit extends Cubit<UniversityStates> {
     emit(UniversityChangeBottomNavState());
   }
 
-
   bool isEnabled = false;
-  void changeSwitch(bool value)
-  {
-    isEnabled=value;
+  void changeSwitch(bool value) {
+    isEnabled = value;
     emit(ChangeSwitchEnabledState());
+  }
 
+  // Complaints Form Methods
+  String? selectedSector;
+  void changeSelectedSector(String? value) {
+    selectedSector = value;
+    emit(SectorChangedState());
+  }
+
+  void attachFile() {
+    emit(ComplaintsFileAttachedState());
+  }
+
+  void attachImage() {
+    emit(ComplaintsImageAttachedState());
+  }
+
+  void attachDrawing() {
+    emit(ComplaintsDrawingAttachedState());
+  }
+
+  void submitComplaint({required String title, required String description}) {
+    emit(ComplaintsSubmitLoadingState());
+
+    try {
+      emit(ComplaintsSubmitSuccessState());
+    } catch (error) {
+      emit(ComplaintsSubmitErrorState(error.toString()));
+    }
   }
 }
