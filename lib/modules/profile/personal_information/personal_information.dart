@@ -94,7 +94,6 @@ class PersonalInformation extends StatelessWidget {
                   ],
                 ),
               ),
-              // الجزء الأبيض يتمدد لباقي الشاشة
               Expanded(
                 child: Container(
                   width: double.infinity,
