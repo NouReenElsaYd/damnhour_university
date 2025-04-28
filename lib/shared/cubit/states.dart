@@ -23,3 +23,6 @@ class ComplaintsSubmitErrorState extends UniversityStates {
   var error;
   ComplaintsSubmitErrorState(this.error);
 }
+
+//questions
+class ChangeArrowTileExpandedState extends UniversityStates{}
