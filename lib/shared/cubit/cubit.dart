@@ -1,10 +1,14 @@
 import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../modules/complaints/complaints.dart';
 import '../../modules/home/home.dart';
 import '../../modules/profile/profile.dart';
 import '../../modules/records/records.dart';
+import '../components/components.dart';
+import '../constants/constants.dart';
+import '../styles/colors.dart';
 
 class UniversityCubit extends Cubit<UniversityStates> {
   UniversityCubit() : super(UniversityInitState());
@@ -98,4 +102,99 @@ class UniversityCubit extends Cubit<UniversityStates> {
     expandedTiles[index] = !(expandedTiles[index] ?? false);
     emit(ChangeArrowTileExpandedState());
   }
+
+  //helpCenter
+
+  final List<Map<String, Widget>> helpCenter = [
+    {
+      'question': Row(
+        textDirection: TextDirection.rtl,
+        children: [
+          SvgPicture.asset(
+            'assets/images/Phone.svg',
+            width: ScreenSize.width * 0.06,
+            height: ScreenSize.width * 0.06,
+          ),
+          SizedBox(width: ScreenSize.width * 0.026),
+          TextCairo(
+            text: 'كيف أستخدم التطبيق؟',
+            color: primary_blue,
+            textalign: TextAlign.start,
+          ),
+        ],
+      ),
+      'answer': Align(
+        alignment: Alignment.centerRight,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            richTextCairoSteps(),
+          ],
+        ),
+      ),
+    },
+    {
+      'question': Row(
+        textDirection: TextDirection.rtl,
+        children: [
+          SvgPicture.asset(
+            'assets/images/Tips.svg',
+            width: ScreenSize.width * 0.06,
+            height: ScreenSize.width * 0.06,
+          ),
+          SizedBox(width: ScreenSize.width * 0.026),
+          TextCairo(
+            text: 'نصائح لتقديم شكوى فعالة',
+            color: primary_blue,
+            textalign: TextAlign.start,
+          ),
+        ],
+      ),
+      'answer': Align(
+        alignment: Alignment.centerRight,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            richTextCairoSteps(),
+          ],
+        ),
+      ),
+    },
+    {
+      'question': Row(
+        textDirection: TextDirection.rtl,
+        children: [
+          SvgPicture.asset(
+            'assets/images/Tool.svg',
+            width: ScreenSize.width * 0.06,
+            height: ScreenSize.width * 0.06,
+          ),
+          SizedBox(width: ScreenSize.width * 0.026),
+          TextCairo(
+            text: 'الدعم الفني',
+            color: primary_blue,
+            textalign: TextAlign.start,
+          ),
+        ],
+      ),
+      'answer': Align(
+        alignment: Alignment.centerRight,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            supportRichTextCairo(),
+          ],
+        ),
+      ),
+    },
+  ];
+
+
+  Map<int, bool> expandedTilesHelpCenter = {};
+
+  void toggleTileExpandedHelpCenter(int index) {
+    expandedTilesHelpCenter[index] = !(expandedTilesHelpCenter[index] ?? false);
+    emit(ChangeArrowTileExpandedState());
+  }
+
 }

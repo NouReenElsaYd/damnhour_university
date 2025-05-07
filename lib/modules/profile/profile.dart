@@ -1,7 +1,6 @@
 import 'package:damnhour_university/modules/profile/personal_information/personal_information.dart';
 import 'package:damnhour_university/modules/profile/protection_safety/protection_safety.dart';
 import 'package:damnhour_university/modules/profile/questions/questions.dart';
-import 'package:damnhour_university/modules/profile/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../shared/components/components.dart';
@@ -126,13 +125,6 @@ class ProfileScreen extends StatelessWidget {
                       text: 'مركز المساعدة',
                       context: context,
                       widget: HelpCenter(),
-                    ),
-                    SizedBox(height: ScreenSize.height * 0.02),
-                    profileItem(
-                      text: 'الإعدادات',
-                      icon: Icons.settings,
-                      context: context,
-                      widget: Settings(),
                     ),
                   ],
                 ),

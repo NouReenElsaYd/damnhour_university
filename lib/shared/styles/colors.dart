@@ -12,3 +12,4 @@ Color brandColor200 = Color(0xFF596982);
 Color primaryGray300 = Color(0xFFD2D5DA);
 Color disabled200 = Color(0xFFD6D6D6);
 Color disabled100 = Color(0xFFEEEEEE);
+Color brandColor300 = Color(0xFF415370);
