@@ -146,3 +146,148 @@ Widget sectorsListView() => Container(
 void navigateTo({required Widget to, required context}) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => to));
 }
+Widget richTextCairoSteps() {
+  return RichText(
+    textDirection: TextDirection.rtl,
+    text: TextSpan(
+      style:  TextStyle(
+        fontSize: 16,
+        color: Colors.black,
+        fontFamily: 'Cairo',
+      ),
+      children: [
+        TextSpan(text: '1. '),
+        TextSpan(
+          text: 'تسجيل الدخول\n',
+          style: TextStyle(
+            color: primary_blue,
+            fontFamily: 'Cairo',
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        TextSpan(text: 'باستخدام بياناتك الجامعية\n',style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            fontFamily: 'Cairo',
+            fontSize: 14.0
+        ),),
+
+        TextSpan(text: '2. '),
+        TextSpan(
+          text: 'اختيار نوع الشكوى\n',
+          style: TextStyle(
+            color: primary_blue,
+            fontFamily: 'Cairo',
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        TextSpan(text: 'من القائمة المتاحة\n',style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            fontFamily: 'Cairo',
+            fontSize: 14.0
+        )),
+
+        TextSpan(text: '3. '),
+        TextSpan(
+          text: 'كتابة تفاصيل الشكوى\n',
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: primary_blue,
+              fontFamily: 'Cairo',
+              fontSize: 16.0
+          ),
+        ),
+        TextSpan(text: 'وإضافة مرفقات إن وجدت\n',style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            fontFamily: 'Cairo',
+            fontSize: 14.0
+        )),
+
+        TextSpan(text: '4. '),
+        TextSpan(
+          text: 'إرسال الشكوى\n',
+          style: TextStyle(
+            color: primary_blue,
+            fontFamily: 'Cairo',
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        TextSpan(text: 'للجهة المختصة\n',style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            fontFamily: 'Cairo',
+            fontSize: 14.0
+        )),
+
+        TextSpan(text: '5. '),
+        TextSpan(
+          text: 'متابعة حالة الشكوى\n',
+          style: TextStyle(
+            color: primary_blue,
+            fontFamily: 'Cairo',
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        TextSpan(text: 'من خلال سجل الشكاوى',style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color:Colors.black,
+            fontFamily: 'Cairo',
+            fontSize: 14.0
+        )),
+      ],
+    ),
+  );
+}
+
+Widget supportRichTextCairo() {
+  return RichText(
+    textDirection: TextDirection.rtl,
+    text: TextSpan(
+      style:  TextStyle(
+        fontSize: 16,
+        color: Colors.black,
+        fontFamily: 'Cairo',
+      ),
+      children: [
+        TextSpan(
+          text: 'إذا واجهت أي مشكلة في استخدام التطبيق، يرجى التواصل معنا:\n',
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 14.0
+          ),
+        ),
+        TextSpan(
+          text: 'البريد الإلكتروني: ',
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+              color: brandColor300
+          ),
+        ),
+        TextSpan(
+          text: 'support@universitycomplaints.edu\n',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+        ),
+        TextSpan(
+          text: 'ساعات العمل: من 9 ص إلى 5 م (أيام العمل الرسمية)',
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+              color: brandColor300
+
+          ),
+        ),
+      ],
+    ),
+  );
+}

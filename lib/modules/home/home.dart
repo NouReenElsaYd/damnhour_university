@@ -4,6 +4,7 @@ import '../../icons/custom_icons.dart';
 import '../../shared/components/components.dart';
 import '../../shared/constants/constants.dart';
 import '../../shared/styles/colors.dart';
+import '../notifications/notifications.dart';
 import '../profile/profile.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -36,7 +37,10 @@ class HomeScreen extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            navigateTo(to: Notifications(), context: context);
+
+                          },
                           icon: Icon(
                             Icons.notifications_none,
                             color: primary_blue,
