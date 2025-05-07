@@ -1,5 +1,4 @@
 import 'package:damnhour_university/icons/custom_icons.dart';
-import 'package:damnhour_university/layout/layout.dart';
 import 'package:damnhour_university/modules/login/login.dart';
 import 'package:damnhour_university/modules/register/cubit/register_cubit.dart';
 import 'package:damnhour_university/modules/register/cubit/register_states.dart';
@@ -16,13 +15,21 @@ class Register extends StatelessWidget {
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController idcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  TextEditingController phonecontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => RegisterCubit(),
       child: BlocConsumer<RegisterCubit, RegisterStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is registerSuccessState) {
+            print("register success");
+          } else if (state is registerErrorState) {
+            print("register error");
+            print("$emailcontroller");
+          }
+        },
         builder: (context, state) {
           var cubit = RegisterCubit.get(context);
           return Scaffold(
@@ -149,6 +156,49 @@ class Register extends StatelessWidget {
                                         ),
                                         toptext: 'الرقم القومي',
                                       ),
+                                      CustomTextFeild(
+                                        controller: phonecontroller,
+                                        hinttext: 'ادخل رقم الهاتف',
+                                        prefixicon: Icon(
+                                          Icons.phone,
+                                          color: primary_blue,
+                                        ),
+                                        toptext: 'رقم الهاتف',
+                                      ),
+
+                                      dropdownlist(
+                                        dropIcon: Icons.people_outline,
+                                        hinttext: "اختر الصفه",
+                                        dropdownitems: [
+                                          'student',
+                                          'موظف',
+                                          'خرَّيج',
+                                        ],
+                                        selectedvalue: cubit.selectedadjective,
+                                        onchanged: (newvalue) {
+                                          cubit.changeSelectedadjective(
+                                            newvalue,
+                                          );
+                                        },
+                                        title: 'اختر الصفه',
+                                      ),
+                                      dropdownlist(
+                                        dropIcon: Icons.business_outlined,
+                                        hinttext: "اختر الكليه",
+                                        dropdownitems: [
+                                          'هندسه',
+                                          'حاسبات و معلومات',
+                                          'كلية تجاره',
+                                          'كلية الاقتصاد و العلوم السياسيه',
+                                          'فنون جميله',
+                                        ],
+                                        selectedvalue: cubit.selectedfaculty,
+                                        onchanged: (newvalue) {
+                                          cubit.changeSelectedfaculty(newvalue);
+                                        },
+                                        title: 'اختر الكليه',
+                                      ),
+
                                       SizedBox(height: ScreenSize.height * .01),
                                       CustomTextFeild(
                                         suffixicon: InkWell(
@@ -171,6 +221,7 @@ class Register extends StatelessWidget {
                                         ),
                                         toptext: 'كلمة المرور ',
                                       ),
+
                                       SizedBox(height: ScreenSize.height * .01),
                                       Row(
                                         mainAxisAlignment:
@@ -197,10 +248,20 @@ class Register extends StatelessWidget {
                                 SizedBox(height: 50),
                                 Button(
                                   onpressed: () {
-                                    navigateTo(
-                                      to: LayoutScreen(),
-                                      context: context,
+                                    cubit.Register_user(
+                                      username: namecontroller.text,
+                                      email: emailcontroller.text,
+                                      password: passwordcontroller.text,
+                                      agree_terms: true,
+                                      adjective: cubit.selectedadjective!,
+                                      faculty: cubit.selectedfaculty!,
+                                      national_id: idcontroller.text,
+                                      phone: phonecontroller.text,
                                     );
+                                    // navigateTo(
+                                    //   to: LayoutScreen(),
+                                    //   context: context,
+                                    // );
                                   },
                                   text: ' تسجيل ',
                                 ),

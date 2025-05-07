@@ -38,7 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   animated_splash_screen:
     path:  ./animated_splash_screen
- 
+  dio: ^5.4.0
 
     
     
