@@ -2,6 +2,7 @@ import 'package:damnhour_university/models/register_model.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/network/dio.dart';
 import 'package:damnhour_university/shared/network/end_points.dart';
+import 'package:flutter/material.dart' show Color;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:damnhour_university/modules/register/cubit/register_states.dart';
 
@@ -11,22 +12,107 @@ class RegisterCubit extends Cubit<RegisterStates> {
   static RegisterCubit get(context) => BlocProvider.of(context);
 
   bool isPasswordVisible = false;
-
   void changePasswordVisibility() {
     isPasswordVisible = !isPasswordVisible;
     emit(RegisterChangePasswordVisibilityState());
   }
 
+  Color facultyBorderColor = Color.fromRGBO(160, 169, 183, 1);
   String? selectedfaculty;
+  bool isFacultyValid = false;
   void changeSelectedfaculty(String? value) {
     selectedfaculty = value;
     emit(facultyChangedState());
   }
 
+  bool validateFaculty() {
+    isFacultyValid = selectedfaculty != null;
+    if (isFacultyValid) {
+      facultyBorderColor = green;
+      emit(FacultyValidationState());
+      return true;
+    } else {
+      facultyBorderColor = red;
+      emit(FacultyValidationState());
+      return false;
+    }
+  }
+
+  Color adjectiveborder = Color.fromRGBO(160, 169, 183, 1);
   String? selectedadjective;
+  bool isAdjectiveValid = false;
   void changeSelectedadjective(String? value) {
     selectedadjective = value;
     emit(adjectiveChangedState());
+  }
+
+  bool validateadjective() {
+    isAdjectiveValid = selectedadjective != null;
+    if (isAdjectiveValid) {
+      adjectiveborder = green;
+      emit(adjectiveValidationState());
+      return true;
+    } else {
+      adjectiveborder = red;
+      emit(adjectiveValidationState());
+      return false;
+    }
+  }
+
+  Color namecolor = Color.fromRGBO(160, 169, 183, 1);
+  Color emailcolor = Color.fromRGBO(160, 169, 183, 1);
+  Color idcolor = Color.fromRGBO(160, 169, 183, 1);
+  Color phonecolor = Color.fromRGBO(160, 169, 183, 1);
+  Color passwordcolor = Color.fromRGBO(160, 169, 183, 1);
+  Color red = Color.fromRGBO(255, 1, 43, 1);
+  Color green = Color.fromARGB(255, 1, 187, 63);
+  void validateName(String value) {
+    final parts = value.trim().split(RegExp(r'\s+'));
+    if (value.isEmpty || parts.length < 3) {
+      namecolor = red;
+    } else {
+      namecolor = green;
+    }
+    emit(Validationname());
+  }
+
+  void validateEmail(String value) {
+    if (value.isEmpty ||
+        !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+      emailcolor = red;
+    } else {
+      emailcolor = green;
+    }
+    emit(Validationemail());
+  }
+
+  void validateNationalId(String value) {
+    if (value.isEmpty || !RegExp(r'^\d{14}$').hasMatch(value)) {
+      idcolor = red;
+    } else {
+      idcolor = green;
+    }
+    emit(Validationid());
+  }
+
+  void validatePhoneNumber(String value) {
+    if (value.isEmpty || !RegExp(r'^\d{11}$').hasMatch(value)) {
+      phonecolor = red;
+    } else {
+      phonecolor = green;
+    }
+    emit(ValidationPhone());
+  }
+
+  void validatePassword(String value) {
+    if (value.isEmpty ||
+        value.length < 8 ||
+        !RegExp(r'^(?=.*[A-Za-z])(?=.*\d)').hasMatch(value)) {
+      passwordcolor = red;
+    } else {
+      passwordcolor = green;
+    }
+    emit(ValidationPassword());
   }
 
   RegisterModel? model;

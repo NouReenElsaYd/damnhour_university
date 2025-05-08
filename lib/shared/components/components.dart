@@ -56,6 +56,9 @@ Widget CustomTextFeild({
   TextInputType? inputType,
   bool enabled = true,
   bool obscureText = false,
+  Color? bordercolor,
+  String? Function(String?)? Validator,
+  Function(String)? onchanged,
 }) {
   return Container(
     padding: EdgeInsets.all(8),
@@ -71,14 +74,17 @@ Widget CustomTextFeild({
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
               color:
-                  enabled == true
+                  bordercolor ??
+                  (enabled == true
                       ? Color.fromRGBO(160, 169, 183, 1)
-                      : disabled200,
+                      : disabled200),
             ),
           ),
           child: Directionality(
             textDirection: TextDirection.rtl,
             child: TextFormField(
+              onChanged: onchanged,
+              validator: Validator,
               controller: controller,
               enabled: enabled,
               style: TextStyle(
@@ -306,6 +312,7 @@ Widget dropdownlist({
   required List<String> dropdownitems,
   required Function(String?) onchanged,
   required IconData dropIcon,
+  Color? bordercolor,
 }) => Column(
   crossAxisAlignment: CrossAxisAlignment.end,
   children: [
@@ -315,7 +322,7 @@ Widget dropdownlist({
       width: 327 / 375 * ScreenSize.width - 10,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: brandColor25),
+        border: Border.all(color: bordercolor ?? brandColor25),
       ),
       child: DropdownButtonFormField<String>(
         value: selectedvalue,

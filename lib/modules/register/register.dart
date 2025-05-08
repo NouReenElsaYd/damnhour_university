@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:damnhour_university/icons/custom_icons.dart';
 import 'package:damnhour_university/modules/login/login.dart';
 import 'package:damnhour_university/modules/register/cubit/register_cubit.dart';
@@ -16,6 +18,7 @@ class Register extends StatelessWidget {
   TextEditingController idcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController phonecontroller = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -122,12 +125,28 @@ class Register extends StatelessWidget {
                                   ),
                                 ),
                                 Form(
+                                  key: _formkey,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
                                       CustomTextFeild(
+                                        bordercolor: cubit.namecolor,
+                                        Validator: (value) {
+                                          cubit.validateName(value ?? '');
+                                          if (value == null ||
+                                              value.trim().isEmpty) {
+                                            return 'الاسم مطلوب';
+                                          }
+                                          final parts = value.trim().split(
+                                            RegExp(r'\s+'),
+                                          );
+                                          if (parts.length < 3) {
+                                            return 'يرجى كتابة الاسم الثلاثي على الأقل';
+                                          }
+                                          return null;
+                                        },
                                         controller: namecontroller,
                                         hinttext: ' الأسم الثلاثي',
                                         prefixicon: Icon(
@@ -138,6 +157,20 @@ class Register extends StatelessWidget {
                                       ),
                                       SizedBox(height: ScreenSize.height * .01),
                                       CustomTextFeild(
+                                        bordercolor: cubit.emailcolor,
+                                        Validator: (value) {
+                                          cubit.validateEmail(value ?? '');
+                                          if (value == null ||
+                                              value.trim().isEmpty) {
+                                            return 'البريد الإلكتروني مطلوب';
+                                          }
+                                          if (!RegExp(
+                                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                                          ).hasMatch(value)) {
+                                            return 'صيغة البريد الإلكتروني غير صحيحة';
+                                          }
+                                          return null;
+                                        },
                                         controller: emailcontroller,
                                         hinttext: ' ادخل البريد الالكتروني ',
                                         prefixicon: Icon(
@@ -148,6 +181,21 @@ class Register extends StatelessWidget {
                                       ),
                                       SizedBox(height: ScreenSize.height * .01),
                                       CustomTextFeild(
+                                        inputType: TextInputType.number,
+                                        bordercolor: cubit.idcolor,
+                                        Validator: (value) {
+                                          cubit.validateNationalId(value ?? '');
+                                          if (value == null ||
+                                              value.trim().isEmpty) {
+                                            return 'الرقم القومي مطلوب';
+                                          }
+                                          if (!RegExp(
+                                            r'^\d{14}$',
+                                          ).hasMatch(value)) {
+                                            return 'يجب أن يتكون الرقم القومي من 14 رقمًا';
+                                          }
+                                          return null;
+                                        },
                                         controller: idcontroller,
                                         hinttext: ' الرقم القومي',
                                         prefixicon: Icon(
@@ -157,6 +205,22 @@ class Register extends StatelessWidget {
                                         toptext: 'الرقم القومي',
                                       ),
                                       CustomTextFeild(
+                                        bordercolor: cubit.phonecolor,
+                                        Validator: (value) {
+                                          cubit.validatePhoneNumber(
+                                            value ?? '',
+                                          );
+                                          if (value?.isEmpty ?? true)
+                                            return 'رقم الهاتف مطلوب';
+                                          if (value!.length != 11 ||
+                                              !RegExp(
+                                                r'^\d+$',
+                                              ).hasMatch(value)) {
+                                            return 'يجب أن يتكون رقم الهاتف من 11 رقمًا';
+                                          }
+                                          return null;
+                                        },
+
                                         controller: phonecontroller,
                                         hinttext: 'ادخل رقم الهاتف',
                                         prefixicon: Icon(
@@ -167,6 +231,7 @@ class Register extends StatelessWidget {
                                       ),
 
                                       dropdownlist(
+                                        bordercolor: cubit.adjectiveborder,
                                         dropIcon: Icons.people_outline,
                                         hinttext: "اختر الصفه",
                                         dropdownitems: [
@@ -183,6 +248,7 @@ class Register extends StatelessWidget {
                                         title: 'اختر الصفه',
                                       ),
                                       dropdownlist(
+                                        bordercolor: cubit.facultyBorderColor,
                                         dropIcon: Icons.business_outlined,
                                         hinttext: "اختر الكليه",
                                         dropdownitems: [
@@ -201,6 +267,20 @@ class Register extends StatelessWidget {
 
                                       SizedBox(height: ScreenSize.height * .01),
                                       CustomTextFeild(
+                                        bordercolor: cubit.passwordcolor,
+                                        Validator: (value) {
+                                          cubit.validatePassword(value ?? '');
+                                          if (value?.isEmpty ?? true)
+                                            return 'كلمة المرور مطلوبة';
+                                          if (value!.length < 8)
+                                            return 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
+                                          if (!RegExp(
+                                            r'^(?=.*[A-Za-z])(?=.*\d)',
+                                          ).hasMatch(value)) {
+                                            return 'يجب أن تحتوي على حروف وأرقام';
+                                          }
+                                          return null;
+                                        },
                                         suffixicon: InkWell(
                                           onTap: () {
                                             cubit.changePasswordVisibility();
@@ -248,16 +328,20 @@ class Register extends StatelessWidget {
                                 SizedBox(height: 50),
                                 Button(
                                   onpressed: () {
-                                    cubit.Register_user(
-                                      username: namecontroller.text,
-                                      email: emailcontroller.text,
-                                      password: passwordcontroller.text,
-                                      agree_terms: true,
-                                      adjective: cubit.selectedadjective!,
-                                      faculty: cubit.selectedfaculty!,
-                                      national_id: idcontroller.text,
-                                      phone: phonecontroller.text,
-                                    );
+                                    cubit.validateFaculty();
+                                    cubit.validateadjective();
+                                    if (_formkey.currentState!.validate()) {
+                                      cubit.Register_user(
+                                        username: namecontroller.text,
+                                        email: emailcontroller.text,
+                                        password: passwordcontroller.text,
+                                        agree_terms: true,
+                                        adjective: cubit.selectedadjective!,
+                                        faculty: cubit.selectedfaculty!,
+                                        national_id: idcontroller.text,
+                                        phone: phonecontroller.text,
+                                      );
+                                    }
                                     // navigateTo(
                                     //   to: LayoutScreen(),
                                     //   context: context,

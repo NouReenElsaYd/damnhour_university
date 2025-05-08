@@ -18,3 +18,17 @@ class registerLoadState extends RegisterStates {}
 class facultyChangedState extends RegisterStates {}
 
 class adjectiveChangedState extends RegisterStates {}
+
+class Validationname extends RegisterStates {}
+
+class Validationemail extends RegisterStates {}
+
+class Validationid extends RegisterStates {}
+
+class ValidationPhone extends RegisterStates {}
+
+class ValidationPassword extends RegisterStates {}
+
+class FacultyValidationState extends RegisterStates {}
+
+class adjectiveValidationState extends RegisterStates {}
