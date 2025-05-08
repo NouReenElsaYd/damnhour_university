@@ -9,6 +9,7 @@ import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class Register extends StatelessWidget {
@@ -27,10 +28,27 @@ class Register extends StatelessWidget {
       child: BlocConsumer<RegisterCubit, RegisterStates>(
         listener: (context, state) {
           if (state is registerSuccessState) {
+            Fluttertoast.showToast(
+              msg: 'تم التسجيل بنجاح',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 5,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16,
+            );
+            navigateTo(to: Login(), context: context);
             print("register success");
           } else if (state is registerErrorState) {
-            print("register error");
-            print("$emailcontroller");
+            Fluttertoast.showToast(
+              msg: 'خطأ حاول لاحقا',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 5,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16,
+            );
           }
         },
         builder: (context, state) {
@@ -196,6 +214,7 @@ class Register extends StatelessWidget {
                                           }
                                           return null;
                                         },
+                                        keyboardtype: TextInputType.number,
                                         controller: idcontroller,
                                         hinttext: ' الرقم القومي',
                                         prefixicon: Icon(
@@ -222,6 +241,7 @@ class Register extends StatelessWidget {
                                         },
 
                                         controller: phonecontroller,
+                                        keyboardtype: TextInputType.phone,
                                         hinttext: 'ادخل رقم الهاتف',
                                         prefixicon: Icon(
                                           Icons.phone,
@@ -326,30 +346,31 @@ class Register extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 50),
-                                Button(
-                                  onpressed: () {
-                                    cubit.validateFaculty();
-                                    cubit.validateadjective();
-                                    if (_formkey.currentState!.validate()) {
-                                      cubit.Register_user(
-                                        username: namecontroller.text,
-                                        email: emailcontroller.text,
-                                        password: passwordcontroller.text,
-                                        agree_terms: true,
-                                        adjective: cubit.selectedadjective!,
-                                        faculty: cubit.selectedfaculty!,
-                                        national_id: idcontroller.text,
-                                        phone: phonecontroller.text,
-                                      );
-                                    }
-                                    // navigateTo(
-                                    //   to: LayoutScreen(),
-                                    //   context: context,
-                                    // );
-                                  },
-                                  text: ' تسجيل ',
-                                ),
+                                state is! registerLoadState
+                                    ? Button(
+                                      onpressed: () {
+                                        cubit.validateFaculty();
+                                        cubit.validateadjective();
+                                        if (_formkey.currentState!.validate()) {
+                                          cubit.Register_user(
+                                            username: namecontroller.text,
+                                            email: emailcontroller.text,
+                                            password: passwordcontroller.text,
+                                            agree_terms: true,
+                                            adjective: cubit.selectedadjective!,
+                                            faculty: cubit.selectedfaculty!,
+                                            national_id: idcontroller.text,
+                                            phone: phonecontroller.text,
+                                          );
+                                        }
+                                      },
+                                      text: ' تسجيل ',
+                                    )
+                                    : Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
                                 SizedBox(height: ScreenSize.height * .01),
+
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

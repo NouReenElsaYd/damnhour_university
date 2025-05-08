@@ -116,6 +116,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
   }
 
   RegisterModel? model;
+
   void Register_user({
     required String username,
     required String email,
@@ -125,9 +126,9 @@ class RegisterCubit extends Cubit<RegisterStates> {
     required String faculty,
     required String national_id,
     required String phone,
-  }) {
+  }) async {
     emit(registerLoadState());
-    Dio_Helper.PostinDB(
+    await Dio_Helper.PostinDB(
           url: Register,
           data: {
             "username": username,
@@ -143,12 +144,14 @@ class RegisterCubit extends Cubit<RegisterStates> {
         )
         .then((value) {
           model = RegisterModel.fromJson(value.data);
-          print('register model =${model!.username}');
+          // print('response message = ${model!.message}');
+          // print('token = ${model!.token}');
+          // print('user name = ${model!.usermodel!.username}');
           emit(registerSuccessState(model));
         })
         .catchError((error) {
           print('error occur register =${error.toString()}');
-          emit(registerErrorState());
+          emit(registerErrorState(model));
         });
   }
 }

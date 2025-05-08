@@ -59,6 +59,7 @@ Widget CustomTextFeild({
   Color? bordercolor,
   String? Function(String?)? Validator,
   Function(String)? onchanged,
+  TextInputType? keyboardtype,
 }) {
   return Container(
     padding: EdgeInsets.all(8),
@@ -83,6 +84,7 @@ Widget CustomTextFeild({
           child: Directionality(
             textDirection: TextDirection.rtl,
             child: TextFormField(
+              keyboardType: keyboardtype,
               onChanged: onchanged,
               validator: Validator,
               controller: controller,

@@ -11,7 +11,10 @@ class registerSuccessState extends RegisterStates {
   registerSuccessState(this.model);
 }
 
-class registerErrorState extends RegisterStates {}
+class registerErrorState extends RegisterStates {
+  RegisterModel? model;
+  registerErrorState(this.model);
+}
 
 class registerLoadState extends RegisterStates {}
 
