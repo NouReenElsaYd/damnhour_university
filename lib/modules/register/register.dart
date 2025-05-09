@@ -41,7 +41,7 @@ class Register extends StatelessWidget {
             print("register success");
           } else if (state is registerErrorState) {
             Fluttertoast.showToast(
-              msg: 'خطأ حاول لاحقا',
+              msg: RegisterCubit.get(context).errormsgs(),
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 5,
@@ -255,9 +255,11 @@ class Register extends StatelessWidget {
                                         dropIcon: Icons.people_outline,
                                         hinttext: "اختر الصفه",
                                         dropdownitems: [
-                                          'student',
+                                          'طالب',
+                                          'خريج',
+                                          'باحث',
+                                          'أستاذ',
                                           'موظف',
-                                          'خرَّيج',
                                         ],
                                         selectedvalue: cubit.selectedadjective,
                                         onchanged: (newvalue) {
@@ -272,11 +274,20 @@ class Register extends StatelessWidget {
                                         dropIcon: Icons.business_outlined,
                                         hinttext: "اختر الكليه",
                                         dropdownitems: [
-                                          'هندسه',
-                                          'حاسبات و معلومات',
-                                          'كلية تجاره',
-                                          'كلية الاقتصاد و العلوم السياسيه',
-                                          'فنون جميله',
+                                          'كلية الهندسة',
+                                          'كلية الحاسبات والمعلومات',
+                                          'كلية الفنون التطبيقية',
+                                          'كلية العلوم',
+                                          'كلية الصيدلة',
+                                          'كلية الطب البيطرى',
+                                          'كلية التربية',
+                                          'كلية الزراعة',
+                                          'كلية التجارة',
+                                          'كلية الحقوق',
+                                          'كلية الآداب',
+                                          'كلية التربية الطفولة المبكرة',
+                                          'كلية التربية النوعية',
+                                          'كلية التمريض',
                                         ],
                                         selectedvalue: cubit.selectedfaculty,
                                         onchanged: (newvalue) {

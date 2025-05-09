@@ -4,6 +4,10 @@ class RegisterModel {
   String? message;
   String? token;
   UserModel? usermodel;
+  String? usernameerror;
+  String? iderror;
+  String? emailerror;
+  String? phoneerror;
 
   RegisterModel();
 
@@ -14,5 +18,10 @@ class RegisterModel {
     usermodel = UserModel.fromJson(json['user']);
   }
 
-  // Method to convert a RegisterModel to JSON
+  RegisterModel.handleerrors(Map<String, dynamic> errors) {
+    usernameerror = errors['username'] != null ? errors['username'][0] : null;
+    iderror = errors['national_id'] != null ? errors['national_id'][0] : null;
+    emailerror = errors['email'] != null ? errors['email'][0] : null;
+    phoneerror = errors['phone'] != null ? errors['phone'][0] : null;
+  }
 }

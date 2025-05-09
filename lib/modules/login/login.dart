@@ -1,4 +1,5 @@
 import 'package:damnhour_university/icons/custom_icons.dart';
+import 'package:damnhour_university/layout/layout.dart';
 import 'package:damnhour_university/modules/register/register.dart';
 import 'package:damnhour_university/modules/reset-password/forget_password.dart';
 import 'package:damnhour_university/modules/login/cubit/login_cubit.dart';
@@ -8,19 +9,44 @@ import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class Login extends StatelessWidget {
   Login({super.key});
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is LoginSuccessState) {
+            Fluttertoast.showToast(
+              msg: state.model.message.toString(),
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 5,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16,
+            );
+            navigateTo(to: LayoutScreen(), context: context);
+          } else if (state is LoginErrorState) {
+            Fluttertoast.showToast(
+              msg: state.error,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 5,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16,
+            );
+          }
+        },
         builder: (context, state) {
           var cubit = LoginCubit.get(context);
           return Scaffold(
@@ -112,6 +138,7 @@ class Login extends StatelessWidget {
                                   ),
                                 ),
                                 Form(
+                                  key: _formKey,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
@@ -125,6 +152,14 @@ class Login extends StatelessWidget {
                                           color: primary_blue,
                                         ),
                                         toptext: 'البريد الالكتروني',
+                                        Validator: (value) {
+                                          if (value == null ||
+                                              value.trim().isEmpty) {
+                                            return 'البريد الإلكتروني مطلوب';
+                                          }
+
+                                          return null;
+                                        },
                                       ),
                                       SizedBox(height: ScreenSize.height * .01),
                                       CustomTextFeild(
@@ -147,6 +182,16 @@ class Login extends StatelessWidget {
                                           color: primary_blue,
                                         ),
                                         toptext: 'كلمة المرور ',
+                                        Validator: (value) {
+                                          if (value == null ||
+                                              value.trim().isEmpty) {
+                                            return 'كلمة المرور مطلوبة';
+                                          }
+                                          if (value.length < 8) {
+                                            return 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
+                                          }
+                                          return null;
+                                        },
                                       ),
                                       SizedBox(height: 30),
                                       Container(
@@ -182,10 +227,21 @@ class Login extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 30),
-                                Button(
-                                  onpressed: () {},
-                                  text: ' تسجيل الدخول ',
-                                ),
+                                state is! LoginLoadingState
+                                    ? Button(
+                                      onpressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          cubit.userLogin(
+                                            email: emailcontroller.text.trim(),
+                                            password: passwordcontroller.text,
+                                          );
+                                        }
+                                      },
+                                      text: ' تسجيل الدخول ',
+                                    )
+                                    : Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
                                 SizedBox(height: ScreenSize.height * .01),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

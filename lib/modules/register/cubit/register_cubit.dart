@@ -2,6 +2,7 @@ import 'package:damnhour_university/models/register_model.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/network/dio.dart';
 import 'package:damnhour_university/shared/network/end_points.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart' show Color;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:damnhour_university/modules/register/cubit/register_states.dart';
@@ -115,6 +116,30 @@ class RegisterCubit extends Cubit<RegisterStates> {
     emit(ValidationPassword());
   }
 
+  String errormsgs() {
+    if (model?.emailerror == null &&
+        model?.usernameerror == null &&
+        model?.phoneerror == null) {
+      return '${model?.iderror}';
+    } else if (model?.iderror == null &&
+        model?.usernameerror == null &&
+        model?.phoneerror == null) {
+      return 'هذا الايميل مسجل بالفعل';
+    } else if (model?.iderror == null &&
+        model?.emailerror == null &&
+        model?.phoneerror == null) {
+      return '${model?.usernameerror}';
+    } else if (model?.emailerror != null &&
+        model?.usernameerror != null &&
+        model?.phoneerror != null &&
+        model?.iderror != null) {
+      return 'هذه البيانات مسجله بالفعل';
+    } else if (model?.iderror == null && model?.emailerror == null) {
+      return 'رقم الهاتف مسجل بالفعل \n ${model?.usernameerror.toString()}';
+    }
+    return 'هذه البيانات مسجله بالفعل';
+  }
+
   RegisterModel? model;
 
   void Register_user({
@@ -150,7 +175,16 @@ class RegisterCubit extends Cubit<RegisterStates> {
           emit(registerSuccessState(model));
         })
         .catchError((error) {
+          error as DioException;
+
+          if (error.response?.data != null &&
+              error.response?.data is Map<String, dynamic>) {
+            model = RegisterModel.handleerrors(error.response?.data);
+            print(model?.usernameerror);
+          }
+
           print('error occur register =${error.toString()}');
+
           emit(registerErrorState(model));
         });
   }
