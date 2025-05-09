@@ -6,6 +6,10 @@ class RegisterInitialState extends RegisterStates {}
 
 class RegisterChangePasswordVisibilityState extends RegisterStates {}
 
+class RegisterChangeCheckboxState extends RegisterStates {}
+
+class RegisterCheckboxValidationState extends RegisterStates {}
+
 class registerSuccessState extends RegisterStates {
   RegisterModel? model;
   registerSuccessState(this.model);

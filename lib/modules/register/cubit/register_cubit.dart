@@ -18,6 +18,26 @@ class RegisterCubit extends Cubit<RegisterStates> {
     emit(RegisterChangePasswordVisibilityState());
   }
 
+  bool isChecked = false;
+  void toggleCheckbox() {
+    isChecked = !isChecked;
+    emit(RegisterChangeCheckboxState());
+  }
+
+  Color checkcolor = Color.fromRGBO(160, 169, 183, 1);
+  bool validateCheckbox() {
+    bool isCheckboxValid = isChecked;
+    if (isCheckboxValid) {
+      checkcolor = green;
+      emit(RegisterCheckboxValidationState());
+      return true;
+    } else {
+      checkcolor = red;
+      emit(RegisterCheckboxValidationState());
+      return false;
+    }
+  }
+
   Color facultyBorderColor = Color.fromRGBO(160, 169, 183, 1);
   String? selectedfaculty;
   bool isFacultyValid = false;

@@ -16,28 +16,37 @@ class OnBoarding extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
+              flex: 1,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          child: TextCairo(
-                            text: "نظام إدارة الشكاوي و المقترحات",
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            child: TextCairo(
+                              textalign: TextAlign.center,
+                              text:
+                                  " نظام إدارة الشكاوي و المقترحات \n بجامعه دمنهور",
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 2),
-                        Container(child: TextCairo(text: "بجامعة دمنهور")),
-                      ],
+                        ],
+                      ),
                     ),
                     SizedBox(width: 20),
-                    Container(
-                      height: 100,
-                      child: Image(image: AssetImage("assets/images/logo.png")),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        height: 100,
+                        child: Image(
+                          image: AssetImage("assets/images/logo.png"),
+                        ),
+                      ),
                     ),
                   ],
                 ),

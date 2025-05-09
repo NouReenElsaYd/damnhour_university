@@ -1,6 +1,7 @@
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Widget TextCairo({
   required String text,
@@ -361,3 +362,15 @@ Widget dropdownlist({
     ),
   ],
 );
+
+Future<bool?> showtoast({required String message, required Color color}) {
+  return Fluttertoast.showToast(
+    msg: message,
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 5,
+    backgroundColor: color,
+    textColor: Colors.white,
+    fontSize: 16,
+  );
+}

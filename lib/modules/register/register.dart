@@ -1,5 +1,4 @@
 // ignore_for_file: unnecessary_null_comparison
-
 import 'package:damnhour_university/icons/custom_icons.dart';
 import 'package:damnhour_university/modules/login/login.dart';
 import 'package:damnhour_university/modules/register/cubit/register_cubit.dart';
@@ -9,7 +8,6 @@ import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class Register extends StatelessWidget {
@@ -28,26 +26,13 @@ class Register extends StatelessWidget {
       child: BlocConsumer<RegisterCubit, RegisterStates>(
         listener: (context, state) {
           if (state is registerSuccessState) {
-            Fluttertoast.showToast(
-              msg: 'تم التسجيل بنجاح',
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 5,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              fontSize: 16,
-            );
+            showtoast(message: 'تم التسجيل بنجاح', color: Colors.green);
             navigateTo(to: Login(), context: context);
             print("register success");
           } else if (state is registerErrorState) {
-            Fluttertoast.showToast(
-              msg: RegisterCubit.get(context).errormsgs(),
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 5,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16,
+            showtoast(
+              message: RegisterCubit.get(context).errormsgs(),
+              color: Colors.red,
             );
           }
         },
@@ -65,26 +50,30 @@ class Register extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                child: TextCairo(
-                                  text: "نظام إدارة الشكاوي و المقترحات",
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Container(
+                                  child: TextCairo(
+                                    textalign: TextAlign.center,
+                                    text:
+                                        " نظام إدارة الشكاوي و المقترحات \n بجامعه دمنهور",
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 2),
-                              Container(
-                                child: TextCairo(text: "بجامعة دمنهور"),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(width: 20),
-                          Container(
-                            height: 100,
-                            child: Image(
-                              image: AssetImage("assets/images/logo.png"),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              height: 100,
+                              child: Image(
+                                image: AssetImage("assets/images/logo.png"),
+                              ),
                             ),
                           ),
                         ],
@@ -129,6 +118,7 @@ class Register extends StatelessWidget {
                                     children: [
                                       SizedBox(height: 15),
                                       TextCairo(
+                                        textalign: TextAlign.center,
                                         text: '!انضم إلينا وكن جزءًا من الحل',
                                         color: accent_orange,
                                         fontsize: 22,
@@ -340,16 +330,34 @@ class Register extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          TextCairo(
-                                            text:
-                                                'أوافق على سياسة الاستخدام وأتعهد بتقديم شكاوى حقيقية',
-                                            fontsize: 12,
-                                            fontweight: FontWeight.w400,
-                                            color: Colors.black,
+                                          Expanded(
+                                            flex: 5,
+                                            child: TextCairo(
+                                              textalign: TextAlign.center,
+                                              text:
+                                                  'أوافق على سياسة الاستخدام وأتعهد بتقديم شكاوى حقيقية',
+                                              fontsize: 12,
+                                              fontweight: FontWeight.w400,
+                                              color: Colors.black,
+                                            ),
                                           ),
-                                          Checkbox(
-                                            value: false,
-                                            onChanged: (bool? value) {},
+                                          Expanded(
+                                            flex: 1,
+                                            child: Container(
+                                              width: 20,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: cubit.checkcolor,
+                                                ),
+                                              ),
+                                              child: Checkbox(
+                                                value: cubit.isChecked,
+                                                onChanged: (bool? value) {
+                                                  cubit.toggleCheckbox();
+                                                },
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -362,12 +370,16 @@ class Register extends StatelessWidget {
                                       onpressed: () {
                                         cubit.validateFaculty();
                                         cubit.validateadjective();
-                                        if (_formkey.currentState!.validate()) {
+                                        cubit.validateCheckbox();
+                                        if (_formkey.currentState!.validate() &&
+                                            cubit.isAdjectiveValid &&
+                                            cubit.isFacultyValid &&
+                                            cubit.isChecked) {
                                           cubit.Register_user(
                                             username: namecontroller.text,
                                             email: emailcontroller.text,
                                             password: passwordcontroller.text,
-                                            agree_terms: true,
+                                            agree_terms: cubit.isChecked,
                                             adjective: cubit.selectedadjective!,
                                             faculty: cubit.selectedfaculty!,
                                             national_id: idcontroller.text,

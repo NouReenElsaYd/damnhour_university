@@ -9,7 +9,6 @@ import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class Login extends StatelessWidget {
@@ -25,26 +24,13 @@ class Login extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
-            Fluttertoast.showToast(
-              msg: state.model.message.toString(),
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 5,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              fontSize: 16,
+            showtoast(
+              message: state.model.message.toString(),
+              color: Colors.green,
             );
             navigateTo(to: LayoutScreen(), context: context);
           } else if (state is LoginErrorState) {
-            Fluttertoast.showToast(
-              msg: state.error,
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 5,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16,
-            );
+            showtoast(message: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
@@ -61,26 +47,30 @@ class Login extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                child: TextCairo(
-                                  text: "نظام إدارة الشكاوي و المقترحات",
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Container(
+                                  child: TextCairo(
+                                    textalign: TextAlign.center,
+                                    text:
+                                        " نظام إدارة الشكاوي و المقترحات \n بجامعه دمنهور",
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 2),
-                              Container(
-                                child: TextCairo(text: "بجامعة دمنهور"),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(width: 20),
-                          Container(
-                            height: 100,
-                            child: Image(
-                              image: AssetImage("assets/images/logo.png"),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              height: 100,
+                              child: Image(
+                                image: AssetImage("assets/images/logo.png"),
+                              ),
                             ),
                           ),
                         ],
