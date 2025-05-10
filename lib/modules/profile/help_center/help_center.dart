@@ -1,3 +1,4 @@
+import 'package:damnhour_university/layout/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,6 +33,20 @@ class HelpCenter extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
+                        flex: 1,
+                        child: IconButton(
+                          color: Colors.white,
+                          onPressed: () {
+                            navigatet_close(
+                              to: LayoutScreen(),
+                              context: context,
+                            );
+                          },
+                          icon: Icon(Icons.arrow_back_ios),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 7,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -110,7 +125,7 @@ class HelpCenter extends StatelessWidget {
                         SizedBox(height: 15.0),
                         TextCairo(
                           text:
-                          'هنا ستجد كل ما تحتاج معرفته لاستخدام تطبيق الشكاوى بسهولة وفعالية',
+                              'هنا ستجد كل ما تحتاج معرفته لاستخدام تطبيق الشكاوى بسهولة وفعالية',
                           fontsize: 14.0,
                           color: Colors.black,
                           textalign: TextAlign.end,
@@ -120,7 +135,7 @@ class HelpCenter extends StatelessWidget {
                         Column(
                           children: List.generate(
                             cubit.helpCenter.length,
-                                (index) => customExpansionTile(
+                            (index) => customExpansionTile(
                               question: cubit.helpCenter[index]['question']!,
                               answer: cubit.helpCenter[index]['answer']!,
                               index: index,

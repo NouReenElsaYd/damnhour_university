@@ -374,3 +374,10 @@ Future<bool?> showtoast({required String message, required Color color}) {
     fontSize: 16,
   );
 }
+
+void navigatet_close({required context, required Widget to}) =>
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => to),
+      (route) => false,
+    );

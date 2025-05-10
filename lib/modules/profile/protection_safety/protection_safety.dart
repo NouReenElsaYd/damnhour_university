@@ -1,3 +1,4 @@
+import 'package:damnhour_university/layout/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../shared/components/components.dart';
@@ -23,6 +24,17 @@ class ProtectionSafety extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
+                  flex: 1,
+                  child: IconButton(
+                    color: Colors.white,
+                    onPressed: () {
+                      navigatet_close(to: LayoutScreen(), context: context);
+                    },
+                    icon: Icon(Icons.arrow_back_ios),
+                  ),
+                ),
+                Expanded(
+                  flex: 7,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -103,7 +115,7 @@ class ProtectionSafety extends StatelessWidget {
                       SizedBox(height: ScreenSize.height * 0.05), //40.0
                       TextCairo(
                         text:
-                        'احمِ حسابك من الوصول غير المصرح به عن طريق تحديث كلمة المرور بشكل دوري.',
+                            'احمِ حسابك من الوصول غير المصرح به عن طريق تحديث كلمة المرور بشكل دوري.',
                         color: Colors.black,
                         fontsize: 14.0, //14.0
                         textalign: TextAlign.center,
@@ -111,7 +123,9 @@ class ProtectionSafety extends StatelessWidget {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.only(bottom: ScreenSize.height * 0.04), //30.0
+                    padding: EdgeInsetsDirectional.only(
+                      bottom: ScreenSize.height * 0.04,
+                    ), //30.0
                     child: Button(text: 'تغيير كلمة المرور', onpressed: () {}),
                   ),
                 ],
@@ -123,4 +137,3 @@ class ProtectionSafety extends StatelessWidget {
     );
   }
 }
-

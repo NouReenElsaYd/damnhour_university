@@ -7,6 +7,7 @@ import 'package:damnhour_university/modules/login/cubit/login_cubit.dart';
 import 'package:damnhour_university/modules/login/cubit/login_states.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
+import 'package:damnhour_university/shared/local/cache.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,16 +30,27 @@ class Login extends StatelessWidget {
               message: state.model.message.toString(),
               color: Colors.green,
             );
+            if (state.model.user?.position == 'مستخدم') {
+              Cache_Helper.putdata(
+                key: 'token',
+                value: state.model.token,
+              ).then((value) {
+                token = state.model.token;
+                navigatet_close(
+                  to:
+                      LoginCubit.get(context).model?.user?.position == 'مستخدم'
+                          ? LayoutScreen()
+                          : Admin_Home(),
+                  context: context,
+                );
+              });
+            } else {
+              navigatet_close(to: Admin_Home(), context: context);
+            }
+
             //هنا بيشوف مين اللي عمل تسجيل دخول عشان لو مستخدم يخش صفحات المستخدم
             //لو ادمين يخش صفحات الادمن
             //position exist on response after login and check through it
-            navigateTo(
-              to:
-                  LoginCubit.get(context).model?.user?.position == 'مستخدم'
-                      ? LayoutScreen()
-                      : Admin_Home(),
-              context: context,
-            );
           } else if (state is LoginErrorState) {
             showtoast(message: state.error, color: Colors.red);
           }

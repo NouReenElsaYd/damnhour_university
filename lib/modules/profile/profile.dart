@@ -1,6 +1,8 @@
+import 'package:damnhour_university/modules/login/login.dart';
 import 'package:damnhour_university/modules/profile/personal_information/personal_information.dart';
 import 'package:damnhour_university/modules/profile/protection_safety/protection_safety.dart';
 import 'package:damnhour_university/modules/profile/questions/questions.dart';
+import 'package:damnhour_university/shared/local/cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../shared/components/components.dart';
@@ -104,27 +106,51 @@ class ProfileScreen extends StatelessWidget {
                       text: 'المعلومات الشخصية',
                       icon: Icons.person_2_outlined,
                       context: context,
-                      widget: PersonalInformation(),
+
+                      OnPress: () {
+                        navigateTo(to: PersonalInformation(), context: context);
+                      },
                     ),
                     SizedBox(height: ScreenSize.height * 0.02),
                     profileItem(
                       text: 'الحماية والأمان ',
                       icon: Icons.verified_user_outlined,
                       context: context,
-                      widget: ProtectionSafety(),
+
+                      OnPress: () {
+                        navigateTo(to: ProtectionSafety(), context: context);
+                      },
                     ),
                     SizedBox(height: ScreenSize.height * 0.02),
                     profileItem(
                       text: 'الأسئلة الشائعة',
                       icon: Icons.help_outline,
                       context: context,
-                      widget: Questions(),
+
+                      OnPress: () {
+                        navigateTo(to: Questions(), context: context);
+                      },
                     ),
                     SizedBox(height: ScreenSize.height * 0.02),
                     profileItem(
                       text: 'مركز المساعدة',
                       context: context,
-                      widget: HelpCenter(),
+
+                      OnPress: () {
+                        navigateTo(to: HelpCenter(), context: context);
+                      },
+                    ),
+                    SizedBox(height: ScreenSize.height * 0.02),
+                    profileItem(
+                      iconcolor: Colors.red,
+                      icon: Icons.logout,
+                      text: 'تسجيل خروج',
+                      context: context,
+                      OnPress: () {
+                        Cache_Helper.removedata(key: 'token').then((value) {
+                          navigatet_close(context: context, to: Login());
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -142,15 +168,15 @@ Widget profileItem({
   IconData? icon,
   String? image,
   required context,
-  required Widget widget,
+
+  Color iconcolor = const Color.fromRGBO(0, 9, 69, 1),
+  required void Function()? OnPress,
 }) => Container(
   padding: EdgeInsets.symmetric(horizontal: ScreenSize.width * 0.03),
   child: Row(
     children: [
       IconButton(
-        onPressed: () {
-          navigateTo(to: widget, context: context);
-        },
+        onPressed: OnPress,
         icon: Icon(
           Icons.arrow_back_ios,
           size: ScreenSize.width * 0.04,
@@ -173,10 +199,10 @@ Widget profileItem({
           'assets/images/help.svg',
           height: ScreenSize.width * 0.05,
           width: ScreenSize.width * 0.05,
-          colorFilter: ColorFilter.mode(primary_blue, BlendMode.srcIn),
+          colorFilter: ColorFilter.mode(iconcolor, BlendMode.srcIn),
         )
       else
-        Icon(icon, color: primary_blue, size: ScreenSize.width * 0.06),
+        Icon(icon, color: iconcolor, size: ScreenSize.width * 0.06),
     ],
   ),
 );

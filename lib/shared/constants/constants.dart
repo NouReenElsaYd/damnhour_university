@@ -14,8 +14,4 @@ class ScreenSize {
   }
 }
 
-
-
-
-
-String token = '';
+String? token = '';

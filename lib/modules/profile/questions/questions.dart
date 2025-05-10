@@ -1,3 +1,4 @@
+import 'package:damnhour_university/layout/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shared/components/components.dart';
@@ -31,6 +32,20 @@ class Questions extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
+                        flex: 1,
+                        child: IconButton(
+                          color: Colors.white,
+                          onPressed: () {
+                            navigatet_close(
+                              to: LayoutScreen(),
+                              context: context,
+                            );
+                          },
+                          icon: Icon(Icons.arrow_back_ios),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 7,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [

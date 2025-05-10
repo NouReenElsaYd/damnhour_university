@@ -8,7 +8,7 @@ import '../shared/styles/colors.dart';
 class LayoutScreen extends StatelessWidget {
   LayoutScreen({super.key});
 
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  // final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   // عشان اقدر اتنقل بين الصفحات ال في البروفايل و ال BottomNavigationBar تفضل موجوده
   @override
   Widget build(BuildContext context) {
@@ -18,14 +18,15 @@ class LayoutScreen extends StatelessWidget {
       builder:
           (BuildContext context, state) => Scaffold(
             backgroundColor: Colors.white,
-            body: Navigator(
-              key: _navigatorKey,
-              onGenerateRoute: (settings) {
-                return MaterialPageRoute(
-                  builder: (context) => cubit.screens[cubit.currentIndex],
-                );
-              },
-            ),
+            body: cubit.screens[cubit.currentIndex],
+            // Navigator(
+            //   key: _navigatorKey,
+            //   onGenerateRoute: (settings) {
+            //     return MaterialPageRoute(
+            //       builder: (context) => cubit.screens[cubit.currentIndex],
+            //     );
+            //   },
+            // ),
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -41,11 +42,12 @@ class LayoutScreen extends StatelessWidget {
                 currentIndex: cubit.currentIndex,
                 onTap: (index) {
                   cubit.changeBottomNav(index);
-                  _navigatorKey.currentState?.pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => cubit.screens[cubit.currentIndex],
-                    ),
-                  );
+                  // _navigatorKey.currentState?.pushReplacement(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => cubit.screens[cubit.currentIndex],
+                  //   ),
+                  // );
+                  cubit.changeBottomNav(index);
                 },
                 items: [
                   _buildNavItem(Icons.person_2_outlined, 'الحساب', 0, cubit),
