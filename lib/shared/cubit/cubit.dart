@@ -1,3 +1,6 @@
+import 'package:damnhour_university/admin/modules/AdminControl/Admincontrol.dart';
+import 'package:damnhour_university/admin/modules/AdminHome/AdminHome.dart';
+import 'package:damnhour_university/admin/modules/AdminProfile/AdminProfile.dart';
 import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,32 +71,32 @@ class UniversityCubit extends Cubit<UniversityStates> {
     {
       'question': 'كيف أقدّم شكوى؟',
       'answer':
-      'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
+          'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
     },
     {
       'question': 'هل يمكن تعديل الشكوى بعد إرسالها؟',
       'answer':
-      'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
+          'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
     },
     {
       'question': 'متى يتم الرد على الشكوى؟',
       'answer':
-      'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
+          'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
     },
     {
       'question': 'كيف أعرف حالة الشكوى؟',
       'answer':
-      'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
+          'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
     },
     {
       'question': 'هل يمكنني تقديم شكوى دون الكشف عن هويتي؟',
       'answer':
-      'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
+          'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
     },
     {
       'question': 'ماذا أفعل إذا لم يتم حل الشكوى؟',
       'answer':
-      'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
+          'من الصفحة الرئيسية، اضغط على "تقديم شكوى"، ثم اختر نوع الشكوى واملأ البيانات المطلوبة، واضغط "إرسال".',
     },
   ];
   Map<int, bool> expandedTiles = {};
@@ -127,9 +130,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
         alignment: Alignment.centerRight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            richTextCairoSteps(),
-          ],
+          children: [richTextCairoSteps()],
         ),
       ),
     },
@@ -154,9 +155,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
         alignment: Alignment.centerRight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            richTextCairoSteps(),
-          ],
+          children: [richTextCairoSteps()],
         ),
       ),
     },
@@ -181,14 +180,11 @@ class UniversityCubit extends Cubit<UniversityStates> {
         alignment: Alignment.centerRight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            supportRichTextCairo(),
-          ],
+          children: [supportRichTextCairo()],
         ),
       ),
     },
   ];
-
 
   Map<int, bool> expandedTilesHelpCenter = {};
 
@@ -197,4 +193,20 @@ class UniversityCubit extends Cubit<UniversityStates> {
     emit(ChangeArrowTileExpandedState());
   }
 
+  /////////////////////////////////////////ADMIN SECTION/////////////////////////////////////////////
+
+  int admincurrentIndex = 2;
+  List<Widget> adminscreens = [AdminProfile(), AdminControl(), AdminHome()];
+
+  void adminchangeBottomNav(int index) {
+    admincurrentIndex = index;
+    emit(AdminUniversityChangeBottomNavState());
+  }
+
+  // Color getcolorstatuscomplaint({String? statusonmodel}) {
+  //   if (statusonmodel == 'قيد التنفيذ') {
+  //     return brandColor200;
+  //   }
+  //   return brandColor200;
+  // }
 }

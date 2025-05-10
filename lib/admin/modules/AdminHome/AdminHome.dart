@@ -1,18 +1,18 @@
+// ignore_for_file: must_be_immutable
+import 'package:damnhour_university/admin/modules/AdminNotifications/AdminNotifications.dart';
+import 'package:damnhour_university/shared/components/components.dart';
+import 'package:damnhour_university/shared/constants/constants.dart';
+// import 'package:damnhour_university/shared/cubit/cubit.dart';
+import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../icons/custom_icons.dart';
-import '../../shared/components/components.dart';
-import '../../shared/constants/constants.dart';
-import '../../shared/styles/colors.dart';
-import '../notifications/notifications.dart';
-import '../profile/profile.dart';
-
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
-  final TextEditingController searchController = TextEditingController();
+class AdminHome extends StatelessWidget {
+  AdminHome({super.key});
+  TextEditingController searchcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    // var cubit = UniversityCubit.get(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -38,7 +38,10 @@ class HomeScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                           onPressed: () {
-                            navigateTo(to: Notifications(), context: context);
+                            navigateTo(
+                              to: AdminNotifications(),
+                              context: context,
+                            );
                           },
                           icon: Icon(
                             Icons.notifications_none,
@@ -88,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                         top: 6.0,
                       ),
                       child: TextField(
-                        controller: searchController,
+                        controller: searchcontroller,
                         textAlign: TextAlign.right, // Arabic text
                         decoration: InputDecoration(
                           hintText: "ما الذي تبحث عنه؟",
@@ -108,19 +111,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 15.0),
-                  TextCairo(
-                    text: 'كيف يمكننا مساعدتك اليوم ؟',
-                    fontweight: FontWeight.w500,
-                    fontsize: 18.0,
-                    color: Colors.black,
-                  ),
-                  SizedBox(height: 10.0),
-                  homeTextField('ارسال شكوي'),
-                  SizedBox(height: 10.0),
-                  homeTextField('ارسال اقتراح'),
-                  SizedBox(height: 10.0),
-                  homeTextField('متابعة الطلبات'),
-                  SizedBox(height: 20.0),
+
                   TextCairo(
                     text: 'أبرز الشكاوي والاقتراحات',
                     color: Colors.black,
@@ -158,39 +149,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget homeTextField(String text) => Container(
-    height: ScreenSize.height * 0.06,
-    // width: 327 / 375 * ScreenSize.width,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8.0),
-      border: Border.all(color: primary_blue),
-      //color: Colors.white,
-    ),
-    child: Row(
-      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(CustomIcons.keyboard_arrow_left, color: primary_blue),
-        ),
-        Expanded(
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 20.0),
-              child: TextCairo(
-                text: text,
-                color: Colors.black,
-                fontweight: FontWeight.w500,
-                fontsize: 16.0,
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-
+  ///////////////////////////////////////////////////////////BUILD POST ITEM/////////////////////////////////////////////////////////
   Widget buildPostItem(context) => Padding(
     padding: EdgeInsetsDirectional.symmetric(
       // vertical: ScreenSize.height* 0.02,
@@ -241,15 +200,16 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             SizedBox(width: 15.0),
-            InkWell(
-              onTap: () {
-                navigateTo(to: ProfileScreen(), context: context);
-              },
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://s3-alpha-sig.figma.com/img/fc8e/8722/3d89c4f6964dd191b6eccf24c31b6620?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ashj48mbbmqvoaNVPGCuGRu~kQWQuszCOTY7xhCo4hb6-keMI-yTX~~uYMkM2HCiVaP~pYY1855rEyS6RXEt3ejJKlopYSCgBknkdNlhodHmio2KSFOqFQQEKUa4RGlw2~x3DyLPQa8FFytHLhIXi-mT-f0vhvmBfTlgDOVp7gLHHqYaL-l5aaCMakOdxpVmmwloPs-NMml9Jn6B7D4NcTszXMQuZ2x9CaqMppjlM9cf92vV518-rZjQ7H1XmDitfHVNKbHxDBG60VllCh0XsO-tksr3jiLND4UOKYq8btuPXbyBB7RYh4wsAn79rCKMWjczid7sffoNKzLkK8mn1g__',
+            Expanded(
+              flex: 1,
+              child: InkWell(
+                onTap: () {},
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    'https://s3-alpha-sig.figma.com/img/fc8e/8722/3d89c4f6964dd191b6eccf24c31b6620?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ashj48mbbmqvoaNVPGCuGRu~kQWQuszCOTY7xhCo4hb6-keMI-yTX~~uYMkM2HCiVaP~pYY1855rEyS6RXEt3ejJKlopYSCgBknkdNlhodHmio2KSFOqFQQEKUa4RGlw2~x3DyLPQa8FFytHLhIXi-mT-f0vhvmBfTlgDOVp7gLHHqYaL-l5aaCMakOdxpVmmwloPs-NMml9Jn6B7D4NcTszXMQuZ2x9CaqMppjlM9cf92vV518-rZjQ7H1XmDitfHVNKbHxDBG60VllCh0XsO-tksr3jiLND4UOKYq8btuPXbyBB7RYh4wsAn79rCKMWjczid7sffoNKzLkK8mn1g__',
+                  ),
+                  radius: 25.0,
                 ),
-                radius: 25.0,
               ),
             ),
           ],
@@ -349,7 +309,7 @@ class HomeScreen extends StatelessWidget {
       ],
     ),
   );
-  /////////////////////////////////////////////////STATUS OF COMPLAINTS///////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////STATUS OF COMPLAINTS/////////////////////////////////////////////////////////////////////
   Widget statusof({
     required String text,
     required Color color,

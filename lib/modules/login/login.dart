@@ -1,4 +1,4 @@
-import 'package:damnhour_university/admin/modules/home/home.dart';
+import 'package:damnhour_university/admin/modules/AdminLayout/AdminLayout.dart';
 import 'package:damnhour_university/icons/custom_icons.dart';
 import 'package:damnhour_university/layout/layout.dart';
 import 'package:damnhour_university/modules/register/register.dart';
@@ -40,12 +40,12 @@ class Login extends StatelessWidget {
                   to:
                       LoginCubit.get(context).model?.user?.position == 'مستخدم'
                           ? LayoutScreen()
-                          : Admin_Home(),
+                          : AdminLayout(),
                   context: context,
                 );
               });
             } else {
-              navigatet_close(to: Admin_Home(), context: context);
+              navigatet_close(to: AdminLayout(), context: context);
             }
 
             //هنا بيشوف مين اللي عمل تسجيل دخول عشان لو مستخدم يخش صفحات المستخدم

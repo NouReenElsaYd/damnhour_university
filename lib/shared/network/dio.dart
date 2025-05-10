@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class Dio_Helper {
   static var dio = Dio(
     BaseOptions(
-      baseUrl: 'http://192.168.1.21:8000/api/',
+      baseUrl: 'http://192.168.1.8:8000/api/',
       receiveDataWhenStatusError: true,
     ),
   );

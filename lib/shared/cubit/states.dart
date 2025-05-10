@@ -4,6 +4,8 @@ class UniversityInitState extends UniversityStates {}
 
 class UniversityChangeBottomNavState extends UniversityStates {}
 
+class AdminUniversityChangeBottomNavState extends UniversityStates {}
+
 class ChangeSwitchEnabledState extends UniversityStates {}
 
 // Complaints Form States
@@ -25,4 +27,4 @@ class ComplaintsSubmitErrorState extends UniversityStates {
 }
 
 //questions
-class ChangeArrowTileExpandedState extends UniversityStates{}
+class ChangeArrowTileExpandedState extends UniversityStates {}
