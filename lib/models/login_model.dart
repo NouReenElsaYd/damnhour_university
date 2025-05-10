@@ -1,7 +1,10 @@
+import 'package:damnhour_university/models/user_model.dart';
+
 class LoginModel {
   String? token;
   String? message;
   String? error;
+  UserModel? user;
 
   LoginModel();
 
@@ -9,6 +12,7 @@ class LoginModel {
   LoginModel.fromJson(Map<String, dynamic> json) {
     token = json['token'];
     message = json['message'];
+    user = UserModel.fromJson(json['user']);
   }
 
   // Factory method to handle error responses

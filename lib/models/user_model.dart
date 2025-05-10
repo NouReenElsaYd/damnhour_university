@@ -4,6 +4,7 @@ class UserModel {
   String? email;
   String? phone;
   String? faculty;
+  String? position;
 
   UserModel({
     required this.id,
@@ -11,6 +12,7 @@ class UserModel {
     required this.email,
     required this.phone,
     required this.faculty,
+    required this.position,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -19,5 +21,6 @@ class UserModel {
     email = json['email'];
     phone = json['phone'];
     faculty = json['faculty'];
+    position = json['position'] ?? 'مستخدم';
   }
 }

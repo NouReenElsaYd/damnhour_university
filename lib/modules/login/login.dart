@@ -1,3 +1,4 @@
+import 'package:damnhour_university/admin/modules/home/home.dart';
 import 'package:damnhour_university/icons/custom_icons.dart';
 import 'package:damnhour_university/layout/layout.dart';
 import 'package:damnhour_university/modules/register/register.dart';
@@ -28,7 +29,16 @@ class Login extends StatelessWidget {
               message: state.model.message.toString(),
               color: Colors.green,
             );
-            navigateTo(to: LayoutScreen(), context: context);
+            //هنا بيشوف مين اللي عمل تسجيل دخول عشان لو مستخدم يخش صفحات المستخدم
+            //لو ادمين يخش صفحات الادمن
+            //position exist on response after login and check through it
+            navigateTo(
+              to:
+                  LoginCubit.get(context).model?.user?.position == 'مستخدم'
+                      ? LayoutScreen()
+                      : Admin_Home(),
+              context: context,
+            );
           } else if (state is LoginErrorState) {
             showtoast(message: state.error, color: Colors.red);
           }

@@ -30,6 +30,7 @@ class LoginCubit extends Cubit<LoginStates> {
         )
         .then((value) {
           model = LoginModel.fromJson(value.data);
+          print(model?.user?.position);
           emit(LoginSuccessState(model!));
         })
         .catchError((error) {
@@ -37,9 +38,9 @@ class LoginCubit extends Cubit<LoginStates> {
           if (error.response?.data != null &&
               error.response?.data is Map<String, dynamic>) {
             model = LoginModel.handleError(error.response?.data);
-            emit(LoginErrorState(model?.error ?? "حدث خطأ غير متوقع"));
+            emit(LoginErrorState(model?.error ?? " خطأ في الانترنت "));
           } else {
-            emit(LoginErrorState("حدث خطأ غير متوقع"));
+            emit(LoginErrorState(" خطأ في الانترنت "));
           }
         });
   }
@@ -64,11 +65,11 @@ class LoginCubit extends Cubit<LoginStates> {
             print(forgetpassmodel?.error);
             emit(
               forgetpassErrorState(
-                forgetpassmodel?.error ?? "حدث خطأ غير متوقع",
+                forgetpassmodel?.error ?? " خطأ في الانترنت ",
               ),
             );
           } else {
-            emit(forgetpassErrorState("حدث خطأ غير متوقع"));
+            emit(forgetpassErrorState(" خطأ في الانترنت "));
           }
         });
   }
@@ -97,7 +98,7 @@ class LoginCubit extends Cubit<LoginStates> {
           }
           print(error.toString());
           print(otpmodel?.error);
-          emit(OTPErrorState(otpmodel?.error ?? "خطأ غير متوقع"));
+          emit(OTPErrorState(otpmodel?.error ?? " خطأ في الانترنت "));
         });
   }
 
@@ -144,7 +145,7 @@ class LoginCubit extends Cubit<LoginStates> {
           }
           print(error.toString());
           print(resetpassmodel?.error);
-          emit(ResetPassErrorState(resetpassmodel?.error ?? "خطأ غير متوقع"));
+          emit(ResetPassErrorState(resetpassmodel?.error ?? "خطأ في الانترنت"));
         });
   }
 }
