@@ -19,7 +19,10 @@ class ComplaintsDrawingAttachedState extends UniversityStates {}
 
 class ComplaintsSubmitLoadingState extends UniversityStates {}
 
-class ComplaintsSubmitSuccessState extends UniversityStates {}
+class ComplaintsSubmitSuccessState extends UniversityStates {
+  var message;
+  ComplaintsSubmitSuccessState(this.message);
+}
 
 class ComplaintsSubmitErrorState extends UniversityStates {
   var error;
@@ -28,3 +31,5 @@ class ComplaintsSubmitErrorState extends UniversityStates {
 
 //questions
 class ChangeArrowTileExpandedState extends UniversityStates {}
+
+class validatesectoronformState extends UniversityStates {}

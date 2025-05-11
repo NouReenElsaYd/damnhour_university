@@ -38,6 +38,7 @@ class LoginCubit extends Cubit<LoginStates> {
           if (error.response?.data != null &&
               error.response?.data is Map<String, dynamic>) {
             model = LoginModel.handleError(error.response?.data);
+            print(error.toString());
             emit(LoginErrorState(model?.error ?? " خطأ في الانترنت "));
           } else {
             emit(LoginErrorState(" خطأ في الانترنت "));

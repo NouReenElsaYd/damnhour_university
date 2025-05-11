@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class Dio_Helper {
   static var dio = Dio(
     BaseOptions(
-      baseUrl: 'http://192.168.1.8:8000/api/',
+      baseUrl: 'https://feedback-damanhour-pr.up.railway.app/api/',
       receiveDataWhenStatusError: true,
     ),
   );
@@ -24,15 +24,18 @@ class Dio_Helper {
   static Future<Response> PostinDB({
     required String url,
     Map<String, dynamic>? query,
-    required Map<String, dynamic> data,
+    required dynamic data,
     String lang = 'en',
     String? token,
+    String? contenttype = 'application/json',
   }) async {
     dio.options.headers = {
       'lang': lang,
-      'Content-Type': 'application/json',
+      'Content-Type': contenttype,
       'Authorization': token,
     };
     return dio.post(url, queryParameters: query, data: data);
   }
 }
+
+// api : https://feedback-damanhour-pr.up.railway.app/

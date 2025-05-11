@@ -11,12 +11,24 @@ class SuggestionsForm extends StatelessWidget {
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    var cubit = UniversityCubit.get(context);
     return BlocConsumer<UniversityCubit, UniversityStates>(
       listener: (context, state) {
-        // Handle state changes here
+        if (state is ComplaintsSubmitSuccessState) {
+          showtoast(message: 'تم ارسال الاقتراح', color: Colors.green);
+          descriptionController.clear();
+          cubit.resetpickedfile();
+          cubit.resetSelectedSector();
+          titleController.clear();
+          cubit.resetbordercolor();
+          print("register success");
+        } else if (state is ComplaintsSubmitErrorState) {
+          showtoast(message: state.error, color: Colors.red);
+        }
       },
       builder: (context, state) {
         var cubit = UniversityCubit.get(context);
@@ -41,171 +53,221 @@ class SuggestionsForm extends StatelessWidget {
           body: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Title Field
-                  SizedBox(height: 16),
-                  Container(
-                    width: 327 / 375 * ScreenSize.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: brandColor25),
-                    ),
-                    child: TextFormField(
-                      controller: titleController,
-                      textDirection: TextDirection.rtl,
-                      decoration: InputDecoration(
-                        hintTextDirection: TextDirection.rtl,
-                        hintText: 'عنوان الاقتراح',
-                        hintStyle: TextStyle(
-                          color: accent_orange,
-                          fontFamily: 'Cairo',
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
+              child: Form(
+                key: _formkey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Title Field
+                    SizedBox(height: 16),
+                    Container(
+                      width: 327 / 375 * ScreenSize.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: brandColor25),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 40),
-
-                  // Sector Dropdown
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Center(
-                        child: Container(
-                          height: 450,
-                          width: 327 / 375 * ScreenSize.width,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(width: 1, color: brandColor25),
-                            color: Colors.white,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'عنوان الاقتراح مطلوب';
+                          }
+                          return null;
+                        },
+                        controller: titleController,
+                        textDirection: TextDirection.rtl,
+                        decoration: InputDecoration(
+                          hintTextDirection: TextDirection.rtl,
+                          hintText: 'عنوان الاقتراح',
+                          hintStyle: TextStyle(
+                            color: accent_orange,
+                            fontFamily: 'Cairo',
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
                           ),
                         ),
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 330,
+                    ),
+                    SizedBox(height: 40),
+
+                    // Sector Dropdown
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Center(
+                          child: Container(
+                            height: 450,
+                            width: 327 / 375 * ScreenSize.width,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: brandColor25),
+                              border: Border.all(width: 1, color: brandColor25),
+                              color: Colors.white,
                             ),
-                            child: DropdownButtonFormField<String>(
-                              value: cubit.selectedSector,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 12,
-                                ),
-                                suffixIcon: Icon(Icons.business_outlined),
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 330,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: brandColor25),
                               ),
-                              hint: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'اختر القطاع المعني',
-                                  style: TextStyle(
-                                    fontFamily: 'Cairo',
-                                    color: Colors.grey,
+                              child: DropdownButtonFormField<String>(
+                                value: cubit.selectedSector,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
+                                  suffixIcon: Icon(Icons.business_outlined),
+                                ),
+                                hint: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    'اختر القطاع المعني',
+                                    style: TextStyle(
+                                      fontFamily: 'Cairo',
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              items:
-                                  [
-                                    'قطاع شئون التعليم',
-                                    'قطاع إدارة الجامعة',
-                                    'قطاع الدراسات العليا',
-                                    'قطاع أمين عام الجامعة',
-                                    'قطاع خدمة المجتمع',
-                                  ].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Text(
-                                          value,
-                                          textAlign: TextAlign.right,
-                                          style: TextStyle(fontFamily: 'Cairo'),
+                                items:
+                                    [
+                                      'قطاع شئون التعليم والطلاب',
+                                      'قطاع شئون خدمة المجتمع وتنمية البيئة',
+                                      'قطاع الدراسات العليا',
+                                      'قطاع امين عام الجامعه',
+                                      'قطاع ادارة الجامعه',
+                                    ].map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            value,
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                              fontFamily: 'Cairo',
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  }).toList(),
-                              onChanged: (newValue) {
-                                cubit.changeSelectedSector(newValue);
-                              },
-                              isExpanded: true,
-                              alignment: Alignment.centerRight,
-                            ),
-                          ),
-                          SizedBox(height: 30),
-
-                          // Description Field
-                          Container(
-                            width: 330,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.white),
-                            ),
-                            child: TextFormField(
-                              controller: descriptionController,
-                              textDirection: TextDirection.rtl,
-                              maxLines: null,
-                              decoration: InputDecoration(
-                                hintTextDirection: TextDirection.rtl,
-                                hintText: 'يرجى شرح الاقتراح بالتفصيل.....',
-                                hintStyle: TextStyle(
-                                  color: accent_orange,
-                                  fontFamily: 'Cairo',
-                                ),
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.all(16),
+                                      );
+                                    }).toList(),
+                                onChanged: (newValue) {
+                                  cubit.changeSelectedSector(newValue);
+                                },
+                                isExpanded: true,
+                                alignment: Alignment.centerRight,
                               ),
                             ),
-                          ),
-                          SizedBox(height: 20),
+                            SizedBox(height: 30),
 
-                          // Attachment Buttons
-                          Container(
-                            width: 330,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                _buildAttachmentButton(
-                                  icon: Icons.note_add_outlined,
-                                  onTap: () => cubit.attachFile(),
+                            // Description Field
+                            Container(
+                              width: 330,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.white),
+                              ),
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'تفاصيل الاقتراح مطلوبه';
+                                  }
+                                  return null;
+                                },
+                                controller: descriptionController,
+                                textDirection: TextDirection.rtl,
+                                maxLines: null,
+                                decoration: InputDecoration(
+                                  hintTextDirection: TextDirection.rtl,
+                                  hintText: 'يرجى شرح الاقتراح بالتفصيل.....',
+                                  hintStyle: TextStyle(
+                                    color: accent_orange,
+                                    fontFamily: 'Cairo',
+                                  ),
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.all(16),
                                 ),
-                                SizedBox(width: 16),
-                                _buildAttachmentButton(
-                                  icon: Icons.add_photo_alternate_outlined,
-                                  onTap: () => cubit.attachImage(),
-                                ),
-                                SizedBox(width: 16),
-                                _buildAttachmentButton(
-                                  icon: Icons.attach_file,
-                                  onTap: () => cubit.attachDrawing(),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                            SizedBox(height: 20),
 
-                  SizedBox(height: 40),
+                            // Attachment Buttons
+                            Container(
+                              width: 330,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  _buildAttachmentButton(
+                                    icon: Icons.note_add_outlined,
+                                    onTap: () => cubit.attachFile(),
+                                  ),
+                                  SizedBox(width: 16),
+                                  _buildAttachmentButton(
+                                    icon: Icons.add_photo_alternate_outlined,
+                                    onTap: () => cubit.attachFile(),
+                                  ),
+                                  SizedBox(width: 16),
+                                  _buildAttachmentButton(
+                                    icon: Icons.attach_file,
+                                    onTap: () => cubit.attachFile(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            cubit.pickedfile != null ||
+                                    cubit.pickedimage != null
+                                ? Column(
+                                  children: [
+                                    Text(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      cubit.pickedfile?.path.split('/').last ??
+                                          '',
+                                    ),
+                                    Text(
+                                      "uploaded",
+                                      style: TextStyle(color: Colors.green),
+                                    ),
+                                  ],
+                                )
+                                : SizedBox(),
+                          ],
+                        ),
+                      ],
+                    ),
 
-                  // Submit Button
-                  Button(onpressed: () {}, text: 'إرسال'),
-                ],
+                    SizedBox(height: 40),
+                    state is ComplaintsSubmitLoadingState
+                        ? Center(child: CircularProgressIndicator())
+                        : Button(
+                          onpressed: () {
+                            cubit.validatesectoronform(cubit.selectedSector);
+                            if (_formkey.currentState!.validate() &&
+                                cubit.isSectorValid) {
+                              cubit.submitComplaint(
+                                sector: cubit.selectedSector!,
+                                sc_type: 'اقتراح',
+                                title: titleController.text,
+                                description: descriptionController.text,
+                              );
+                            }
+                          },
+                          text: 'إرسال',
+                        ),
+                  ],
+                ),
               ),
             ),
           ),
