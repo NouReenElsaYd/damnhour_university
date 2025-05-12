@@ -33,3 +33,15 @@ class ComplaintsSubmitErrorState extends UniversityStates {
 class ChangeArrowTileExpandedState extends UniversityStates {}
 
 class validatesectoronformState extends UniversityStates {}
+
+class getprofileinfoLoadingState extends UniversityStates {}
+
+class getprofileinfoSuccessState extends UniversityStates {
+  var message;
+  getprofileinfoSuccessState(this.message);
+}
+
+class getprofileinfoErrorState extends UniversityStates {
+  var error;
+  getprofileinfoErrorState(this.error);
+}

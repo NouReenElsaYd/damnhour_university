@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:damnhour_university/admin/modules/AdminControl/Admincontrol.dart';
 import 'package:damnhour_university/admin/modules/AdminHome/AdminHome.dart';
 import 'package:damnhour_university/admin/modules/AdminProfile/AdminProfile.dart';
+import 'package:damnhour_university/models/getprofile_info.dart';
 import 'package:damnhour_university/models/submit_S_C.dart';
 import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:damnhour_university/shared/network/dio.dart';
@@ -285,6 +286,22 @@ class UniversityCubit extends Cubit<UniversityStates> {
     emit(ChangeArrowTileExpandedState());
   }
 
+  //////////////////////////////////////////GET PROFILE INFO/////////////////////////////////////////
+  GetProfileModel? profilemodel;
+  void getprofileinfo() {
+    emit(getprofileinfoLoadingState());
+    Dio_Helper.getfromDB(url: getprofile, token: 'Bearer ${token}')
+        .then((value) {
+          profilemodel = GetProfileModel.fromjson(value.data);
+          emit(getprofileinfoSuccessState(profilemodel?.message));
+          print(profilemodel?.message);
+        })
+        .catchError((error) {
+          emit(getprofileinfoErrorState(error));
+          print(error.toString());
+        });
+  }
+
   /////////////////////////////////////////ADMIN SECTION/////////////////////////////////////////////
 
   int admincurrentIndex = 2;
@@ -292,6 +309,9 @@ class UniversityCubit extends Cubit<UniversityStates> {
 
   void adminchangeBottomNav(int index) {
     admincurrentIndex = index;
+    if (admincurrentIndex == 0) {
+      getprofileinfo();
+    }
     emit(AdminUniversityChangeBottomNavState());
   }
 

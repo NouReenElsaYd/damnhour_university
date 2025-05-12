@@ -341,22 +341,20 @@ class Register extends StatelessWidget {
                                               color: Colors.black,
                                             ),
                                           ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              width: 20,
-                                              height: 20,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: cubit.checkcolor,
-                                                ),
+                                          Container(
+                                            margin: EdgeInsets.only(right: 25),
+                                            width: 20,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: cubit.checkcolor,
                                               ),
-                                              child: Checkbox(
-                                                value: cubit.isChecked,
-                                                onChanged: (bool? value) {
-                                                  cubit.toggleCheckbox();
-                                                },
-                                              ),
+                                            ),
+                                            child: Checkbox(
+                                              value: cubit.isChecked,
+                                              onChanged: (bool? value) {
+                                                cubit.toggleCheckbox();
+                                              },
                                             ),
                                           ),
                                         ],
