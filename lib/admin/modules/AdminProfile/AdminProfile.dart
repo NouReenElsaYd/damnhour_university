@@ -1,12 +1,248 @@
+import 'package:damnhour_university/shared/components/components.dart';
+import 'package:damnhour_university/shared/constants/constants.dart';
+import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 class AdminProfile extends StatelessWidget {
-  const AdminProfile({super.key});
+  AdminProfile({super.key});
+
+  // Example admin data (replace with real data source if available)
+  final TextEditingController nameController = TextEditingController(
+    text: 'محمد طلعت بسيوني',
+  );
+  final TextEditingController emailController = TextEditingController(
+    text: 'mohamedbasiouny@gmail.com',
+  );
+  final TextEditingController sectorController = TextEditingController(
+    text: 'شئون التعليم',
+  );
+  final TextEditingController phoneController = TextEditingController(
+    text: '01111111111',
+  );
+
+  // Example complaints stats (replace with real data source if available)
+  //will get from cubit
+  final int complaintsUnderReview = 8;
+  final int complaintsResolved = 250;
 
   @override
   Widget build(BuildContext context) {
+    ScreenSize.initscreensize(context);
     return Scaffold(
-      body: Center(child: Text('AdminProfile', style: TextStyle(fontSize: 48))),
+      backgroundColor: primary_blue,
+      body: Column(
+        children: [
+          // Top section: profile image, name, sector
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: ScreenSize.width * 0.05,
+              vertical: ScreenSize.height * 0.05,
+            ),
+            color: primary_blue,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 7,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      TextCairo(
+                        text: 'محمد طلعت بسيوني',
+                        fontweight: FontWeight.w400,
+                        fontsize: 14.0,
+                        color: Colors.white,
+                      ),
+                      TextCairo(
+                        text: 'قطاع شئون التعليم',
+                        fontweight: FontWeight.w600,
+                        fontsize: 14.0,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: ScreenSize.width * 0.03),
+                Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: [
+                    CircleAvatar(
+                      radius: ScreenSize.width * 0.1,
+                      backgroundImage: const NetworkImage(
+                        'https://s3-alpha-sig.figma.com/img/f6e0/670a/b2cb85130e4a021a8db54043dfdd2a59?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ZQMTCmbrD3N7ICohN6u8I~m7mf93LAkyXW4n5F7Bm8ZP5NsZmX4k4xB5Lfhl6EnvumRVmub7rUv-yyfTyHrDDP-KM92Vt4XZUw5WM7vIlRWjGkaG1GglabEVTFY8~yZ-ky5j03iZzRseaztBsJHJIj-AYEgnTXgk-1uXUuGsJYFKqGv~CsBXm-hW6skkrkWd5rD056aefHg3UN96ptJ64hchHsBs5Y~~JDHoG5oMVIDXMdEa3uXgx65DFb~m7b-Pt2WdcRi1MTSkDqFXbViOiI-S3tKkB72maCRW1ceMPbeR5bmHo1yR51KRccQmC1Xce2pUC~WHv8uzzm7W6RVY7g__',
+                      ),
+                    ),
+                    InkWell(
+                      child: Container(
+                        height: ScreenSize.width * 0.06,
+                        width: ScreenSize.width * 0.06,
+                        decoration: BoxDecoration(
+                          color: accent_orange,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: ScreenSize.width * 0.04,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Stats cards
+
+          // White container with admin info fields
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(ScreenSize.width * 0.05),
+              decoration: const BoxDecoration(color: Colors.white),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: ScreenSize.width * 0.05,
+                        vertical: ScreenSize.height * 0.02,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 117 / 812 * ScreenSize.height,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFFA726), // Orange
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: .125 * 117 / 812 * ScreenSize.height,
+                                    left: .125 * 117 / 812 * ScreenSize.height,
+                                    child: Icon(
+                                      Icons.pending_actions,
+                                      color: Colors.white,
+                                      size: 32,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: .08 * 117 / 812 * ScreenSize.height,
+                                    right: .08 * 117 / 812 * ScreenSize.height,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(height: 4),
+                                        TextCairo(
+                                          text:
+                                              complaintsUnderReview.toString(),
+                                          color: Colors.white,
+                                          fontsize: 20,
+                                          fontweight: FontWeight.bold,
+                                        ),
+                                        TextCairo(
+                                          text: 'عدد الشكاوى قيد المتابعة',
+                                          color: Colors.white,
+                                          fontsize: 12,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          Expanded(
+                            child: Container(
+                              height: 117 / 812 * ScreenSize.height,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF4CAF50), // Green
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: .125 * 117 / 812 * ScreenSize.height,
+                                    left: .125 * 117 / 812 * ScreenSize.height,
+                                    child: Icon(
+                                      Icons.file_copy_outlined,
+                                      color: Colors.white,
+                                      size: 32,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: .08 * 117 / 812 * ScreenSize.height,
+                                    right: .08 * 117 / 812 * ScreenSize.height,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(height: 4),
+                                        TextCairo(
+                                          text: complaintsResolved.toString(),
+                                          color: Colors.white,
+                                          fontsize: 20,
+                                          fontweight: FontWeight.bold,
+                                        ),
+                                        TextCairo(
+                                          text: 'عدد الشكاوى المعالجة',
+                                          color: Colors.white,
+                                          fontsize: 12,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: ScreenSize.height * 0.01),
+                    CustomTextFeild(
+                      toptext: 'الاسم الكامل',
+                      controller: nameController,
+                      inputType: TextInputType.name,
+                      enabled: false,
+                    ),
+
+                    CustomTextFeild(
+                      toptext: 'البريد الإلكتروني',
+                      controller: emailController,
+                      inputType: TextInputType.emailAddress,
+                      enabled: false,
+                    ),
+                    CustomTextFeild(
+                      toptext: 'القطاع',
+                      controller: sectorController,
+                      inputType: TextInputType.text,
+                      enabled: false,
+                    ),
+                    CustomTextFeild(
+                      toptext: 'رقم الهاتف',
+                      controller: phoneController,
+                      inputType: TextInputType.phone,
+                      enabled: false,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

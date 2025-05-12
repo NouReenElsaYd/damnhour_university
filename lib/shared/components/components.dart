@@ -310,19 +310,22 @@ Widget supportRichTextCairo() {
 
 Widget dropdownlist({
   required String? selectedvalue,
-  required String title,
+  String? title,
   required String hinttext,
   required List<String> dropdownitems,
   required Function(String?) onchanged,
-  required IconData dropIcon,
+  IconData? dropIcon,
   Color? bordercolor,
+  double? width,
 }) => Column(
   crossAxisAlignment: CrossAxisAlignment.end,
   children: [
-    TextCairo(text: title, color: primary_blue, fontsize: 14),
-    const SizedBox(height: 8),
+    title != null
+        ? TextCairo(text: title, color: primary_blue, fontsize: 14)
+        : SizedBox(height: 0),
+    title != null ? SizedBox(height: 8) : SizedBox(height: 0),
     Container(
-      width: 327 / 375 * ScreenSize.width - 10,
+      width: width ?? 327 / 375 * ScreenSize.width - 10,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: bordercolor ?? brandColor25),
