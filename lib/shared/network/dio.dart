@@ -36,6 +36,17 @@ class Dio_Helper {
     };
     return dio.post(url, queryParameters: query, data: data);
   }
+
+  static Future<Response> updateDB({
+    required dynamic data,
+    Map<String, dynamic>? query,
+    required String url,
+    String? token,
+    String? contenttype = 'application/json',
+  }) async {
+    dio.options.headers = {'Content-Type': contenttype, 'Authorization': token};
+    return dio.put(url, queryParameters: query, data: data);
+  }
 }
 
 // api : https://feedback-damanhour-pr.up.railway.app/

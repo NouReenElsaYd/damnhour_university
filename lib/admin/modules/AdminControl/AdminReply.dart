@@ -3,119 +3,172 @@
 import 'package:damnhour_university/admin/modules/AdminLayout/AdminLayout.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
+import 'package:damnhour_university/shared/cubit/cubit.dart';
+import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AdminReply extends StatelessWidget {
   AdminReply({super.key});
   TextEditingController replyController = TextEditingController();
-  String? selectedStatus;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: ScreenSize.width * 0.04),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Header
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Row(
+    var cubit = UniversityCubit.get(context);
+    var _formkey = GlobalKey<FormState>();
+    return BlocConsumer<UniversityCubit, UniversityStates>(
+      listener: (context, state) {
+        if (state is updateS_CSuccessState) {
+          showtoast(message: 'تم التحديث بنجاح', color: Colors.green);
+        } else if (state is updateS_CErrorState) {
+          showtoast(
+            message: cubit.updates_c_model?.message ?? 'حدث خطأ ما',
+            color: Colors.red,
+          );
+        }
+      },
+      builder:
+          (context, state) => Scaffold(
+            backgroundColor: Colors.white,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ScreenSize.width * 0.04,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back_ios, color: primary_blue),
-                        onPressed:
+                      // Header
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                color: primary_blue,
+                              ),
+                              onPressed:
+                                  () => navigatet_close(
+                                    context: context,
+                                    to: AdminLayout(),
+                                  ),
+                            ),
+                            Expanded(
+                              child: Center(
+                                child: TextCairo(
+                                  text: 'الرد علي الشكوي',
+                                  color: primary_blue,
+                                  fontsize: 18,
+                                  fontweight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // Complaint Card
+                      complaintcard(),
+                      SizedBox(height: 16),
+                      // Dropdown for status
+                      dropdownlist(
+                        title: 'حالة الشكوى',
+                        selectedvalue: cubit.selectedstatus,
+                        hinttext: '',
+                        dropdownitems: [
+                          'مرفوض',
+                          'معلق',
+                          'قيد التنفيذ',
+                          'تم الحل',
+                        ],
+                        onchanged: (value) {
+                          cubit.changeselectedstatus(value);
+                        },
+                        dropIcon: Icons.info_outlined,
+                        bordercolor: cubit.statusBorderColor,
+                      ),
+                      SizedBox(height: 16),
+                      TextCairo(
+                        text: 'نص الرد',
+                        color: Colors.black,
+                        textalign: TextAlign.end,
+                      ),
+                      SizedBox(height: 16),
+                      // Reply text field
+                      Form(
+                        key: _formkey,
+                        child: Container(
+                          width: 327 / 375 * ScreenSize.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: brandColor25),
+                          ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'نص الرد مطلوب';
+                              }
+                              return null;
+                            },
+                            textAlign: TextAlign.end,
+                            controller: replyController,
+                            maxLines: 4,
+                            textDirection: TextDirection.ltr,
+                            decoration: InputDecoration(
+                              hintText:
+                                  'يجب كتابة رد واضح ووسمي، يوضح الاجراءات المتخذة أو حالة المعالجة.',
+                              hintStyle: TextStyle(
+                                color: brandColor200,
+                                fontFamily: 'Cairo',
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(16),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 24),
+                      // Send and Cancel buttons
+                      state is! updateS_CLoadingState
+                          ? Button(
+                            text: 'إرسال',
+                            onpressed: () {
+                              cubit.validateStatus();
+                              if (_formkey.currentState!.validate() &&
+                                  cubit.isStatusValid) {
+                                cubit.updatecomplaint(
+                                  id: '4',
+                                  type_S_C: 'شكوى',
+                                  response: replyController.text,
+                                  status: cubit.selectedstatus,
+                                );
+                              }
+                            },
+                            color: primary_blue,
+                            textcolor: Colors.white,
+                          )
+                          : Center(child: CircularProgressIndicator()),
+                      SizedBox(height: 12),
+                      Button(
+                        text: 'الغاء',
+                        onpressed:
                             () => navigatet_close(
                               context: context,
                               to: AdminLayout(),
                             ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: TextCairo(
-                            text: 'الرد علي الشكوي',
-                            color: primary_blue,
-                            fontsize: 18,
-                            fontweight: FontWeight.w700,
-                          ),
-                        ),
+                        color: Colors.white,
+                        textcolor: primary_blue,
                       ),
                     ],
                   ),
                 ),
-
-                // Complaint Card
-                complaintcard(),
-                SizedBox(height: 16),
-                // Dropdown for status
-                dropdownlist(
-                  title: 'حالة الشكوى',
-                  selectedvalue: selectedStatus,
-                  hinttext: '',
-                  dropdownitems: ['مرفوض', 'معلق', 'قيد التنفيذ', 'تم الحل'],
-                  onchanged: (value) {},
-                  dropIcon: Icons.info_outlined,
-                  bordercolor: brandColor25,
-                ),
-                SizedBox(height: 16),
-                TextCairo(
-                  text: 'نص الرد',
-                  color: Colors.black,
-                  textalign: TextAlign.end,
-                ),
-                SizedBox(height: 16),
-                // Reply text field
-                Container(
-                  width: 327 / 375 * ScreenSize.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: brandColor25),
-                  ),
-                  child: TextFormField(
-                    textAlign: TextAlign.end,
-                    controller: replyController,
-                    maxLines: 4,
-                    textDirection: TextDirection.ltr,
-                    decoration: InputDecoration(
-                      hintText:
-                          'يجب كتابة رد واضح ووسمي، يوضح الاجراءات المتخذة أو حالة المعالجة.',
-                      hintStyle: TextStyle(
-                        color: brandColor200,
-                        fontFamily: 'Cairo',
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(16),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 24),
-                // Send and Cancel buttons
-                Button(
-                  text: 'إرسال',
-                  onpressed: () {},
-                  color: primary_blue,
-                  textcolor: Colors.white,
-                ),
-                SizedBox(height: 12),
-                Button(
-                  text: 'الغاء',
-                  onpressed:
-                      () =>
-                          navigatet_close(context: context, to: AdminLayout()),
-                  color: Colors.white,
-                  textcolor: primary_blue,
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
     );
   }
 

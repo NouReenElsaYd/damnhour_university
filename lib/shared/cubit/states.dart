@@ -45,3 +45,19 @@ class getprofileinfoErrorState extends UniversityStates {
   var error;
   getprofileinfoErrorState(this.error);
 }
+
+class updateS_CLoadingState extends UniversityStates {}
+
+class updateS_CSuccessState extends UniversityStates {
+  var message;
+  updateS_CSuccessState(this.message);
+}
+
+class updateS_CErrorState extends UniversityStates {
+  var error;
+  updateS_CErrorState(this.error);
+}
+
+class statusChangedState extends UniversityStates {}
+
+class validateStatusState extends UniversityStates {}
