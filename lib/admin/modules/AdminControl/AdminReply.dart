@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:damnhour_university/admin/modules/AdminControl/Admincontrol.dart';
 import 'package:damnhour_university/admin/modules/AdminLayout/AdminLayout.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
@@ -25,6 +26,11 @@ class AdminReply extends StatelessWidget {
             message: cubit.updates_c_model?.message ?? 'حدث خطأ ما',
             color: Colors.red,
           );
+        } else if (state is deleteS_CSuccessState) {
+          showtoast(message: 'تم الحذف بنجاح', color: Colors.green);
+          navigatet_close(context: context, to: AdminControl());
+        } else if (state is deleteS_CErrorState) {
+          showtoast(message: '${state.error}', color: Colors.red);
         }
       },
       builder:
@@ -63,6 +69,15 @@ class AdminReply extends StatelessWidget {
                                   fontsize: 18,
                                   fontweight: FontWeight.w700,
                                 ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                cubit.deleteS_C(id: '5', type_S_C: 'شكوى');
+                              },
+                              icon: Icon(
+                                Icons.delete_outline_outlined,
+                                color: Colors.red,
                               ),
                             ),
                           ],
@@ -140,7 +155,7 @@ class AdminReply extends StatelessWidget {
                               cubit.validateStatus();
                               if (_formkey.currentState!.validate() &&
                                   cubit.isStatusValid) {
-                                cubit.updatecomplaint(
+                                cubit.updateS_C(
                                   id: '4',
                                   type_S_C: 'شكوى',
                                   response: replyController.text,

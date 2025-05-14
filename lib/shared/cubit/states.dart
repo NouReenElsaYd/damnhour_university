@@ -61,3 +61,12 @@ class updateS_CErrorState extends UniversityStates {
 class statusChangedState extends UniversityStates {}
 
 class validateStatusState extends UniversityStates {}
+
+class deleteS_CLoadingState extends UniversityStates {}
+
+class deleteS_CSuccessState extends UniversityStates {}
+
+class deleteS_CErrorState extends UniversityStates {
+  var error;
+  deleteS_CErrorState(this.error);
+}

@@ -316,7 +316,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
   }
 
   updateComplaintModel? updates_c_model;
-  void updatecomplaint({
+  void updateS_C({
     required String id,
     String? response,
     String? status,
@@ -367,6 +367,26 @@ class UniversityCubit extends Cubit<UniversityStates> {
       emit(validateStatusState());
       return false;
     }
+  }
+
+  deleteS_CModel? deleteModel;
+  void deleteS_C({required String id, required String? type_S_C}) {
+    emit(deleteS_CLoadingState());
+    Dio_Helper.delete(
+          url: type_S_C == 'شكوى' ? 'complaint/${id}/' : 'suggestion/${id}/',
+          token: 'Bearer ${token}',
+        )
+        .then((value) {
+          emit(deleteS_CSuccessState());
+        })
+        .catchError((error) {
+          if (error is DioException)
+            deleteModel = deleteS_CModel.fromJson(error.response?.data);
+          print(error.toString());
+          emit(
+            deleteS_CErrorState(deleteModel?.codeerror ?? deleteModel?.message),
+          );
+        });
   }
 
   // Color getcolorstatuscomplaint({String? statusonmodel}) {

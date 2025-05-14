@@ -47,6 +47,11 @@ class Dio_Helper {
     dio.options.headers = {'Content-Type': contenttype, 'Authorization': token};
     return dio.put(url, queryParameters: query, data: data);
   }
+
+  static Future<Response> delete({required String url, String? token}) async {
+    dio.options.headers = {'Authorization': token};
+    return dio.delete(url);
+  }
 }
 
 // api : https://feedback-damanhour-pr.up.railway.app/

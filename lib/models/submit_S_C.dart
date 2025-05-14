@@ -25,3 +25,12 @@ class updateComplaintModel {
     codeerror = json['code'];
   }
 }
+
+class deleteS_CModel {
+  String? message;
+  String? codeerror;
+  deleteS_CModel.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    codeerror = json['detail'];
+  }
+}
