@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:damnhour_university/admin/modules/AdminControl/Admincontrol.dart';
 import 'package:damnhour_university/admin/modules/AdminHome/AdminHome.dart';
 import 'package:damnhour_university/admin/modules/AdminProfile/AdminProfile.dart';
+import 'package:damnhour_university/models/home_model.dart';
 import 'package:damnhour_university/models/submit_S_C.dart';
 import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:damnhour_university/shared/network/dio.dart';
@@ -301,4 +301,28 @@ class UniversityCubit extends Cubit<UniversityStates> {
   //   }
   //   return brandColor200;
   // }
+
+
+  FeedBackModel? feedBackModel;
+  void getComplaintsAndSuggestions() {
+    emit(GetAllComplaintsAndSuggestionsLoadingState());
+    Dio_Helper.getfromDB(url: FEEDBACK,token : 'Bearer $token')
+        .then((value) {
+          feedBackModel = FeedBackModel.fromJson(value.data);
+         // print(feedBackModel);
+          emit(GetAllComplaintsAndSuggestionsSuccessState());
+        })
+        .catchError((error) {
+          emit(GetAllComplaintsAndSuggestionsErrorState(error.toString()));
+          print('error is : ');
+          print(error.toString());
+        });
+  }
+
+  int sectorIndex=0;
+  void changeSectorIndex(int index) {
+    sectorIndex = index;
+    emit(ChangeSectorIndexState());
+  }
+
 }

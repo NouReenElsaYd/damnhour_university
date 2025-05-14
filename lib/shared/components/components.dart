@@ -1,4 +1,5 @@
 import 'package:damnhour_university/shared/constants/constants.dart';
+import 'package:damnhour_university/shared/cubit/cubit.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -117,7 +118,7 @@ Widget CustomTextFeild({
   );
 }
 
-Widget sharedSectors({required int index}) {
+Widget sharedSectors({required int index,context}) {
   List<String> sectors = [
     'الكل',
     'قطاع شئون التعليم',
@@ -131,13 +132,15 @@ Widget sharedSectors({required int index}) {
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(8.0),
       border: Border.all(color: primary_blue),
-      color: index != 0 ? Colors.white : primary_blue,
+      color: UniversityCubit.get(context).sectorIndex==index ?  primary_blue: Colors.white,
     ),
     child: InkWell(
-      onTap: () {},
+      onTap: () {
+        UniversityCubit.get(context).changeSectorIndex(index);
+      },
       child: TextCairo(
         text: sectors[index],
-        color: index != 0 ? primary_blue : Colors.white,
+        color: UniversityCubit.get(context).sectorIndex==index ? Colors.white : primary_blue,
       ),
     ),
   );
@@ -149,7 +152,7 @@ Widget sectorsListView() => Container(
     physics: BouncingScrollPhysics(),
     scrollDirection: Axis.horizontal,
     reverse: true,
-    itemBuilder: (context, index) => sharedSectors(index: index),
+    itemBuilder: (context, index) => sharedSectors(index: index,context: context),
     separatorBuilder: (context, index) => SizedBox(width: 10.0),
     itemCount: 6,
   ),
@@ -319,7 +322,8 @@ Widget dropdownlist({
 }) => Column(
   crossAxisAlignment: CrossAxisAlignment.end,
   children: [
-    TextCairo(text: title, color: primary_blue, fontsize: 14),
+    if(title != 'null')
+      TextCairo(text: title, color: primary_blue, fontsize: 14),
     const SizedBox(height: 8),
     Container(
       width: 327 / 375 * ScreenSize.width - 10,
