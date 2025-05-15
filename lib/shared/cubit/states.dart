@@ -42,6 +42,8 @@ class GetAllComplaintsAndSuggestionsErrorState extends UniversityStates {
   GetAllComplaintsAndSuggestionsErrorState(this.error);
 }
 
+class FilterBySectorChangedState extends UniversityStates {}
+
 class ChangeSectorIndexState extends UniversityStates {}
 
 

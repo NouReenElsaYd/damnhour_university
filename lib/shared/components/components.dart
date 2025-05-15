@@ -121,11 +121,11 @@ Widget CustomTextFeild({
 Widget sharedSectors({required int index,context}) {
   List<String> sectors = [
     'الكل',
-    'قطاع شئون التعليم',
-    'قطاع إدارة الجامعة',
+    'قطاع شئون التعليم والطلاب',
+    'قطاع شئون خدمة المجتمع وتنمية البيئة',
     'قطاع الدراسات العليا',
-    'قطاع أمين عام الجامعة',
-    'قطاع خدمة المجتمع',
+    'قطاع امين عام الجامعه',
+    'قطاع ادارة الجامعه',
   ];
   return Container(
     padding: EdgeInsetsDirectional.symmetric(horizontal: 11.0, vertical: 5.0),
@@ -137,6 +137,7 @@ Widget sharedSectors({required int index,context}) {
     child: InkWell(
       onTap: () {
         UniversityCubit.get(context).changeSectorIndex(index);
+        UniversityCubit.get(context).filterPostsBySector(sectors[index]);
       },
       child: TextCairo(
         text: sectors[index],

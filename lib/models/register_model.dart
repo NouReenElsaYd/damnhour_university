@@ -9,6 +9,7 @@ class RegisterModel {
   String? emailerror;
   String? phoneerror;
 
+
   RegisterModel();
 
   // Factory method to create a RegisterModel from JSON
