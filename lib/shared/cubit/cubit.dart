@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:damnhour_university/admin/modules/AdminControl/Admincontrol.dart';
 import 'package:damnhour_university/admin/modules/AdminHome/AdminHome.dart';
 import 'package:damnhour_university/admin/modules/AdminProfile/AdminProfile.dart';
+import 'package:damnhour_university/models/home_model.dart';
 import 'package:damnhour_university/models/getprofile_info.dart';
 import 'package:damnhour_university/models/submit_S_C.dart';
 import 'package:damnhour_university/shared/cubit/states.dart';
@@ -395,4 +395,42 @@ class UniversityCubit extends Cubit<UniversityStates> {
   //   }
   //   return brandColor200;
   // }
+
+
+  List<ItemModel> allPosts = [];
+  List<ItemModel> filteredPosts = [];
+
+  FeedBackModel? feedBackModel;
+  void getComplaintsAndSuggestions() {
+    emit(GetAllComplaintsAndSuggestionsLoadingState());
+
+    Dio_Helper.getfromDB(url: FEEDBACK, token: 'Bearer $token')
+        .then((value) {
+      feedBackModel = FeedBackModel.fromJson(value.data);
+      allPosts = feedBackModel?.data ?? [];
+      filteredPosts = allPosts;   // في البداية الكل
+      emit(GetAllComplaintsAndSuggestionsSuccessState());
+    }).catchError((error) {
+      emit(GetAllComplaintsAndSuggestionsErrorState(error.toString()));
+      print('error is : ');
+      print(error.toString());
+    });
+  }
+
+  void filterPostsBySector(String sectorName) {
+    if (sectorName == 'الكل') {
+      filteredPosts = allPosts;
+    } else {
+      filteredPosts = allPosts.where((post) => post.sector == sectorName).toList();
+    }
+    emit(FilterBySectorChangedState());
+  }
+
+
+  int sectorIndex=0;
+  void changeSectorIndex(int index) {
+    sectorIndex = index;
+    emit(ChangeSectorIndexState());
+  }
+
 }

@@ -31,6 +31,8 @@ class Notifications extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.pop(context);
+                print(token);
+
               },
             ),
           ],

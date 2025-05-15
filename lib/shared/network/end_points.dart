@@ -4,4 +4,5 @@ const forget_pass = 'auth/forget-password/';
 const Otp = 'auth/email-verify/';
 const ResetPass = 'auth/reset-password/';
 const submit_s_c = 'complaint/';
+const FEEDBACK='feedback/';
 const getprofile = 'user/profile/';

@@ -1,5 +1,11 @@
+import 'package:damnhour_university/models/home_model.dart';
+import 'package:damnhour_university/modules/complaints/complaintsform.dart';
+import 'package:damnhour_university/modules/complaints/suggestionsform.dart';
+import 'package:damnhour_university/shared/cubit/cubit.dart';
+import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../icons/custom_icons.dart';
 import '../../shared/components/components.dart';
 import '../../shared/constants/constants.dart';
@@ -38,7 +44,10 @@ class HomeScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                           onPressed: () {
-                            navigateTo(to: Notifications(), context: context);
+                            navigateTo(
+                              to: Notifications(),
+                              context: context,
+                            );
                           },
                           icon: Icon(
                             Icons.notifications_none,
@@ -100,8 +109,13 @@ class HomeScreen extends StatelessWidget {
                           ),
                           border: InputBorder.none,
                           prefixIcon: Padding(
-                            padding: EdgeInsetsDirectional.only(start: 10.0),
-                            child: Icon(Icons.search, color: accentColor100),
+                            padding: EdgeInsetsDirectional.only(
+                              start: 10.0,
+                            ),
+                            child: Icon(
+                              Icons.search,
+                              color: accentColor100,
+                            ),
                           ),
                         ),
                       ),
@@ -115,11 +129,19 @@ class HomeScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                   SizedBox(height: 10.0),
-                  homeTextField('ارسال شكوي'),
+                  homeTextField('ارسال شكوي', context, () {
+                    navigateTo(to: ComplaintsForm(), context: context);
+                  }),
                   SizedBox(height: 10.0),
-                  homeTextField('ارسال اقتراح'),
+                  homeTextField('ارسال اقتراح', context, () {
+                    navigateTo(to: SuggestionsForm(), context: context);
+                  }),
                   SizedBox(height: 10.0),
-                  homeTextField('متابعة الطلبات'),
+                  homeTextField(
+                    'متابعة الطلبات',
+                    context,
+                        () => UniversityCubit.get(context).changeBottomNav(1),
+                  ),
                   SizedBox(height: 20.0),
                   TextCairo(
                     text: 'أبرز الشكاوي والاقتراحات',
@@ -131,69 +153,90 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20.0),
-            Padding(
-              padding: EdgeInsetsDirectional.only(
-                end: ScreenSize.width * 0.04,
-                bottom: ScreenSize.height * 0.02,
-              ),
-              child: sectorsListView(),
-            ),
-            Container(height: 1.0, color: brandColor25),
-            ListView.separated(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) => buildPostItem(context),
-              separatorBuilder:
-                  (context, index) => Padding(
-                    padding: EdgeInsetsDirectional.symmetric(
-                      vertical: ScreenSize.height * 0.02,
+            BlocConsumer<UniversityCubit, UniversityStates>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is GetAllComplaintsAndSuggestionsLoadingState)
+                  return ListView.separated(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => buildShimmerPostItem(),
+                    separatorBuilder: (context, index) => SizedBox(height: 20),
+                    itemCount: 5,
+                  );
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        end: ScreenSize.width * 0.04,
+                        bottom: ScreenSize.height * 0.02,
+                      ),
+                      child: sectorsListView(),
                     ),
-                    child: Container(height: 1, color: brandColor25),
-                  ),
-              itemCount: 5,
+                    Container(height: 1.0, color: brandColor25),
+                    ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder:
+                          (context, index) => buildPostItem(
+                        context,
+                        UniversityCubit.get(context).filteredPosts[index],
+                      ),
+                      separatorBuilder:
+                          (context, index) => Padding(
+                        padding: EdgeInsetsDirectional.symmetric(
+                          vertical: ScreenSize.height * 0.02,
+                        ),
+                        child: Container(height: 1, color: brandColor25),
+                      ),
+                      itemCount:
+                      UniversityCubit.get(context).filteredPosts.length,
+                    ),
+                  ],
+                );
+
+              },
             ),
+
           ],
         ),
       ),
     );
   }
 
-  Widget homeTextField(String text) => Container(
-    height: ScreenSize.height * 0.06,
-    // width: 327 / 375 * ScreenSize.width,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8.0),
-      border: Border.all(color: primary_blue),
-      //color: Colors.white,
-    ),
-    child: Row(
-      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(CustomIcons.keyboard_arrow_left, color: primary_blue),
+  Widget homeTextField(String text, BuildContext context, VoidCallback onTap) =>
+      Container(
+        height: ScreenSize.height * 0.06,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: primary_blue),
         ),
-        Expanded(
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 20.0),
-              child: TextCairo(
-                text: text,
-                color: Colors.black,
-                fontweight: FontWeight.w500,
-                fontsize: 16.0,
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: onTap,
+              icon: Icon(CustomIcons.keyboard_arrow_left, color: primary_blue),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 20.0),
+                  child: TextCairo(
+                    text: text,
+                    color: Colors.black,
+                    fontweight: FontWeight.w500,
+                    fontsize: 16.0,
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
-  Widget buildPostItem(context) => Padding(
+  Widget buildPostItem(context, ItemModel model) => Padding(
     padding: EdgeInsetsDirectional.symmetric(
-      // vertical: ScreenSize.height* 0.02,
       horizontal: ScreenSize.width * 0.04,
     ),
     child: Column(
@@ -202,12 +245,16 @@ class HomeScreen extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              flex: 5,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  statusof(text: 'قيد التنفيذ', color: brandColor200),
-                  Spacer(),
+                  Flexible(
+                    child: statusof(
+                      text: model.status ?? '',
+                      color: brandColor200,
+                    ),
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -215,14 +262,14 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextCairo(
-                            text: 'منذ 2 س',
                             color: brand,
+                            text: model.created_at ?? '',
                             fontsize: 14.0,
                             fontweight: FontWeight.w400,
                           ),
                           SizedBox(width: 8.0),
                           TextCairo(
-                            text: 'محمد طلعت',
+                            text: getTwoPartName(model.user?.username),
                             color: primary_blue,
                             fontsize: 14.0,
                             fontweight: FontWeight.w400,
@@ -230,7 +277,7 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                       TextCairo(
-                        text: 'كلية الحاسبات والمعلومات',
+                        text: model.user?.faculty ?? '',
                         color: accent_orange,
                         fontsize: 10.0,
                         fontweight: FontWeight.w400,
@@ -247,33 +294,31 @@ class HomeScreen extends StatelessWidget {
               },
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
-                  'https://s3-alpha-sig.figma.com/img/fc8e/8722/3d89c4f6964dd191b6eccf24c31b6620?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ashj48mbbmqvoaNVPGCuGRu~kQWQuszCOTY7xhCo4hb6-keMI-yTX~~uYMkM2HCiVaP~pYY1855rEyS6RXEt3ejJKlopYSCgBknkdNlhodHmio2KSFOqFQQEKUa4RGlw2~x3DyLPQa8FFytHLhIXi-mT-f0vhvmBfTlgDOVp7gLHHqYaL-l5aaCMakOdxpVmmwloPs-NMml9Jn6B7D4NcTszXMQuZ2x9CaqMppjlM9cf92vV518-rZjQ7H1XmDitfHVNKbHxDBG60VllCh0XsO-tksr3jiLND4UOKYq8btuPXbyBB7RYh4wsAn79rCKMWjczid7sffoNKzLkK8mn1g__',
+                  'https://th.bing.com/th/id/OIP.peFzV1_5MyCO7JjmohnBUQHaHa?w=500&h=500&rs=1&pid=ImgDetMain',
                 ),
                 radius: 25.0,
               ),
             ),
           ],
         ),
-        Padding(
-          padding: const EdgeInsetsDirectional.symmetric(vertical: 10.0),
-          child: Container(
-            height: 150,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              image: DecorationImage(
-                image: NetworkImage(
-                  'https://s3-alpha-sig.figma.com/img/fdc1/8583/d1cf5c8e5fbb4b0dd6ef382341266755?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=YgMc7pFWvu2HrJbnW~KPr36bhrUfjnnISJXfrtVLKMLWb15q1CcKu2LSDy~wPm1z8PWT4hmFAzsiR9-RhrZiP80Q9MghGFULew862bAr4QqRsAgL9LpnTFygNbyI116CJl54O986Ccv7I8UfWcNUGJA3LCskQenxAw2bZ1kJ-l9Lj5atLZ2bhDSfCOxPML0u5QaLqoFitxH-GcZDmBsKapAEHEthQt~jB~ekwLUmAzo4NhQC5TRPRGROxUHZ08bd-IJHhjldReJbO3fe7Zwmm4D2SO6vpFrTLOBSelZHR7sqrm0roSQZ81odt~oXT2~RqCmHaV5aX1364t4qAvPMCg__',
+        if (model.attachments != null)
+          Padding(
+            padding: const EdgeInsetsDirectional.symmetric(vertical: 10.0),
+            child: Container(
+              height: 150,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: DecorationImage(
+                  image: NetworkImage(model.attachments ?? 'null'),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
               ),
             ),
           ),
-        ),
         TextCairo(
           textalign: TextAlign.right,
-          text:
-              'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
+          text: model.description ?? '',
           fontweight: FontWeight.w400,
           fontsize: 11.0,
           color: Colors.black,
@@ -288,7 +333,6 @@ class HomeScreen extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(color: neutralColor25),
-            //color: Colors.white,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -300,10 +344,8 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       width: ScreenSize.width * 0.15,
                       height: ScreenSize.height * 0.045,
-                      //color: brandColor25,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        // color:  brandColor25,
                       ),
                       child: IconButton(
                         onPressed: () {},
@@ -311,14 +353,11 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: ScreenSize.width * 0.02),
-
                     Container(
                       width: ScreenSize.width * 0.15,
                       height: ScreenSize.height * 0.045,
-                      //color: brandColor25,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        //border: Border.all(color:brandColor25),
                         color: brandColor25,
                       ),
                       child: IconButton(
@@ -349,6 +388,7 @@ class HomeScreen extends StatelessWidget {
       ],
     ),
   );
+
   /////////////////////////////////////////////////STATUS OF COMPLAINTS///////////////////////////////////////////////////
   Widget statusof({
     required String text,
@@ -378,4 +418,113 @@ class HomeScreen extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
     ),
   );
+}
+
+Widget buildShimmerPostItem() {
+  return Padding(
+    padding: EdgeInsets.symmetric(
+      horizontal: ScreenSize.width * 0.04,
+      vertical: ScreenSize.height * 0.01,
+    ),
+    child: Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: ScreenSize.width * 0.25,
+                      height: ScreenSize.height * 0.04,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              width: ScreenSize.width * 0.22,
+                              height: ScreenSize.height * 0.018,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: ScreenSize.width * 0.02),
+                            Container(
+                              width: ScreenSize.width * 0.22,
+                              height: ScreenSize.height * 0.018,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: ScreenSize.height * 0.008),
+                        Container(
+                          width: ScreenSize.width * 0.15,
+                          height: ScreenSize.height * 0.013,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: ScreenSize.width * 0.04),
+              Container(
+                width: ScreenSize.width * 0.13,
+                height: ScreenSize.width * 0.13,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: ScreenSize.height * 0.012),
+          Container(
+            height: ScreenSize.height * 0.18,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          SizedBox(height: ScreenSize.height * 0.012),
+          Container(
+            width: double.infinity,
+            height: ScreenSize.height * 0.018,
+            color: Colors.white,
+          ),
+          SizedBox(height: ScreenSize.height * 0.008),
+          Container(
+            width: ScreenSize.width * 0.7,
+            height: ScreenSize.height * 0.018,
+            color: Colors.white,
+          ),
+          SizedBox(height: ScreenSize.height * 0.012),
+          Container(
+            height: ScreenSize.height * 0.07,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+
+String getTwoPartName(String? fullName) {
+  final parts = fullName!.trim().split(' ');
+  return '${parts[0]} ${parts[1]}';
 }

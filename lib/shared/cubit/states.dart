@@ -34,6 +34,20 @@ class ChangeArrowTileExpandedState extends UniversityStates {}
 
 class validatesectoronformState extends UniversityStates {}
 
+//get all complaints and suggestions (feedBack)
+class GetAllComplaintsAndSuggestionsLoadingState extends UniversityStates {}
+class GetAllComplaintsAndSuggestionsSuccessState extends UniversityStates {}
+class GetAllComplaintsAndSuggestionsErrorState extends UniversityStates {
+  var error;
+  GetAllComplaintsAndSuggestionsErrorState(this.error);
+}
+
+class FilterBySectorChangedState extends UniversityStates {}
+
+class ChangeSectorIndexState extends UniversityStates {}
+
+
+
 class getprofileinfoLoadingState extends UniversityStates {}
 
 class getprofileinfoSuccessState extends UniversityStates {
