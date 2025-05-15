@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:damnhour_university/admin/modules/AdminControl/Admincontrol.dart';
+import 'package:damnhour_university/admin/modules/AdminHome/AdminHome.dart';
 import 'package:damnhour_university/admin/modules/AdminLayout/AdminLayout.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
@@ -11,7 +12,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AdminReply extends StatelessWidget {
-  AdminReply({super.key});
+  String? attachments;
+  String? name;
+  String? faculty;
+  String? date;
+  String? status;
+  Color? statuscolor;
+  String? description;
+  String? type_S_C;
+  int? id;
+  AdminReply({
+    super.key,
+    this.attachments,
+    this.date,
+    this.description,
+    this.faculty,
+    this.id,
+    this.name,
+    this.status,
+    this.statuscolor,
+    this.type_S_C,
+  });
   TextEditingController replyController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -21,6 +42,8 @@ class AdminReply extends StatelessWidget {
       listener: (context, state) {
         if (state is updateS_CSuccessState) {
           showtoast(message: 'تم التحديث بنجاح', color: Colors.green);
+          navigatet_close(context: context, to: AdminLayout());
+          cubit.resetselectedstatus();
         } else if (state is updateS_CErrorState) {
           showtoast(
             message: cubit.updates_c_model?.message ?? 'حدث خطأ ما',
@@ -73,7 +96,10 @@ class AdminReply extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: () {
-                                cubit.deleteS_C(id: '5', type_S_C: 'شكوى');
+                                cubit.deleteS_C(
+                                  id: id.toString(),
+                                  type_S_C: type_S_C,
+                                );
                               },
                               icon: Icon(
                                 Icons.delete_outline_outlined,
@@ -156,8 +182,8 @@ class AdminReply extends StatelessWidget {
                               if (_formkey.currentState!.validate() &&
                                   cubit.isStatusValid) {
                                 cubit.updateS_C(
-                                  id: '4',
-                                  type_S_C: 'شكوى',
+                                  id: id.toString(),
+                                  type_S_C: type_S_C,
                                   response: replyController.text,
                                   status: cubit.selectedstatus,
                                 );
@@ -215,7 +241,7 @@ class AdminReply extends StatelessWidget {
                     Icon(Icons.school, color: Colors.white, size: 18),
                     SizedBox(width: 4),
                     TextCairo(
-                      text: 'قيد الدراسة',
+                      text: status ?? '',
                       color: Colors.white,
                       fontsize: 12,
                       fontweight: FontWeight.w700,
@@ -226,7 +252,7 @@ class AdminReply extends StatelessWidget {
               SizedBox(width: 8),
               // Time
               TextCairo(
-                text: 'منذ 2 س',
+                text: date ?? '',
                 color: brandColor200,
                 fontsize: 12,
                 fontweight: FontWeight.w400,
@@ -238,13 +264,13 @@ class AdminReply extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     TextCairo(
-                      text: 'محمد طلعت',
+                      text: getTwoPartName(name),
                       color: primary_blue,
                       fontsize: 13,
                       fontweight: FontWeight.w700,
                     ),
                     TextCairo(
-                      text: 'كلية الحاسبات والمعلومات',
+                      text: faculty ?? '',
                       color: accent_orange,
                       fontsize: 11,
                       fontweight: FontWeight.w400,
@@ -264,34 +290,34 @@ class AdminReply extends StatelessWidget {
           ),
         ),
         // Image
-        Padding(
-          padding: const EdgeInsetsDirectional.symmetric(vertical: 10.0),
-          child: Container(
-            height: 150,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              image: DecorationImage(
-                image: NetworkImage(
-                  'https://s3-alpha-sig.figma.com/img/fdc1/8583/d1cf5c8e5fbb4b0dd6ef382341266755?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=YgMc7pFWvu2HrJbnW~KPr36bhrUfjnnISJXfrtVLKMLWb15q1CcKu2LSDy~wPm1z8PWT4hmFAzsiR9-RhrZiP80Q9MghGFULew862bAr4QqRsAgL9LpnTFygNbyI116CJl54O986Ccv7I8UfWcNUGJA3LCskQenxAw2bZ1kJ-l9Lj5atLZ2bhDSfCOxPML0u5QaLqoFitxH-GcZDmBsKapAEHEthQt~jB~ekwLUmAzo4NhQC5TRPRGROxUHZ08bd-IJHhjldReJbO3fe7Zwmm4D2SO6vpFrTLOBSelZHR7sqrm0roSQZ81odt~oXT2~RqCmHaV5aX1364t4qAvPMCg__',
+        if (attachments != null)
+          Padding(
+            padding: const EdgeInsetsDirectional.symmetric(vertical: 10.0),
+            child: Container(
+              height: 150,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: DecorationImage(
+                  image: NetworkImage(attachments ?? ''),
+                  fit: BoxFit.fill,
                 ),
-                fit: BoxFit.cover,
               ),
             ),
           ),
-        ),
         // Description
+        if (attachments == null) SizedBox(height: 30),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: TextCairo(
-            text:
-                'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
+            text: description ?? '',
             color: Colors.black,
             fontsize: 12,
             fontweight: FontWeight.w400,
             textalign: TextAlign.right,
           ),
         ),
+        if (attachments == null) SizedBox(height: 30),
       ],
     ),
   );

@@ -1,18 +1,22 @@
 // ignore_for_file: must_be_immutable
 import 'package:damnhour_university/admin/modules/AdminNotifications/AdminNotifications.dart';
+import 'package:damnhour_university/icons/custom_icons.dart';
+import 'package:damnhour_university/models/home_model.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
-// import 'package:damnhour_university/shared/cubit/cubit.dart';
+import 'package:damnhour_university/shared/cubit/cubit.dart';
+import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
-  TextEditingController searchcontroller = TextEditingController();
 
+  TextEditingController searchcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    // var cubit = UniversityCubit.get(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -110,8 +114,8 @@ class AdminHome extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15.0),
 
+                  SizedBox(height: 20.0),
                   TextCairo(
                     text: 'أبرز الشكاوي والاقتراحات',
                     color: Colors.black,
@@ -122,26 +126,48 @@ class AdminHome extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20.0),
-            Padding(
-              padding: EdgeInsetsDirectional.only(
-                end: ScreenSize.width * 0.04,
-                bottom: ScreenSize.height * 0.02,
-              ),
-              child: sectorsListView(),
-            ),
-            Container(height: 1.0, color: brandColor25),
-            ListView.separated(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) => buildPostItem(context),
-              separatorBuilder:
-                  (context, index) => Padding(
-                    padding: EdgeInsetsDirectional.symmetric(
-                      vertical: ScreenSize.height * 0.02,
+            BlocConsumer<UniversityCubit, UniversityStates>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is GetAllComplaintsAndSuggestionsLoadingState)
+                  return ListView.separated(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => buildShimmerPostItem(),
+                    separatorBuilder: (context, index) => SizedBox(height: 20),
+                    itemCount: 5,
+                  );
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        end: ScreenSize.width * 0.04,
+                        bottom: ScreenSize.height * 0.02,
+                      ),
+                      child: sectorsListView(),
                     ),
-                    child: Container(height: 1, color: brandColor25),
-                  ),
-              itemCount: 5,
+                    Container(height: 1.0, color: brandColor25),
+                    ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder:
+                          (context, index) => buildPostItem(
+                            context,
+                            UniversityCubit.get(context).filteredPosts[index],
+                          ),
+                      separatorBuilder:
+                          (context, index) => Padding(
+                            padding: EdgeInsetsDirectional.symmetric(
+                              vertical: ScreenSize.height * 0.02,
+                            ),
+                            child: Container(height: 1, color: brandColor25),
+                          ),
+                      itemCount:
+                          UniversityCubit.get(context).filteredPosts.length,
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),
@@ -150,9 +176,40 @@ class AdminHome extends StatelessWidget {
   }
 
   ///////////////////////////////////////////////////////////BUILD POST ITEM/////////////////////////////////////////////////////////
-  Widget buildPostItem(context) => Padding(
+
+  Widget homeTextField(String text, BuildContext context, VoidCallback onTap) =>
+      Container(
+        height: ScreenSize.height * 0.06,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: primary_blue),
+        ),
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: onTap,
+              icon: Icon(CustomIcons.keyboard_arrow_left, color: primary_blue),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 20.0),
+                  child: TextCairo(
+                    text: text,
+                    color: Colors.black,
+                    fontweight: FontWeight.w500,
+                    fontsize: 16.0,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget buildPostItem(context, ItemModel model) => Padding(
     padding: EdgeInsetsDirectional.symmetric(
-      // vertical: ScreenSize.height* 0.02,
       horizontal: ScreenSize.width * 0.04,
     ),
     child: Column(
@@ -161,12 +218,23 @@ class AdminHome extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              flex: 5,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  statusof(text: 'قيد التنفيذ', color: brandColor200),
-                  Spacer(),
+                  Flexible(
+                    child: statusof(
+                      text: model.status ?? '',
+                      color:
+                          model.status == "معلق"
+                              ? Colors.amberAccent
+                              : model.status == "قيد التنفيذ"
+                              ? brandColor200
+                              : model.status == "مرفوض"
+                              ? Colors.red
+                              : Colors.green,
+                    ),
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -174,14 +242,14 @@ class AdminHome extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextCairo(
-                            text: 'منذ 2 س',
                             color: brand,
+                            text: model.created_at ?? '',
                             fontsize: 14.0,
                             fontweight: FontWeight.w400,
                           ),
                           SizedBox(width: 8.0),
                           TextCairo(
-                            text: 'محمد طلعت',
+                            text: getTwoPartName(model.user?.username),
                             color: primary_blue,
                             fontsize: 14.0,
                             fontweight: FontWeight.w400,
@@ -189,7 +257,7 @@ class AdminHome extends StatelessWidget {
                         ],
                       ),
                       TextCairo(
-                        text: 'كلية الحاسبات والمعلومات',
+                        text: model.user?.faculty ?? '',
                         color: accent_orange,
                         fontsize: 10.0,
                         fontweight: FontWeight.w400,
@@ -200,44 +268,43 @@ class AdminHome extends StatelessWidget {
               ),
             ),
             SizedBox(width: 15.0),
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {},
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    'https://s3-alpha-sig.figma.com/img/fc8e/8722/3d89c4f6964dd191b6eccf24c31b6620?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ashj48mbbmqvoaNVPGCuGRu~kQWQuszCOTY7xhCo4hb6-keMI-yTX~~uYMkM2HCiVaP~pYY1855rEyS6RXEt3ejJKlopYSCgBknkdNlhodHmio2KSFOqFQQEKUa4RGlw2~x3DyLPQa8FFytHLhIXi-mT-f0vhvmBfTlgDOVp7gLHHqYaL-l5aaCMakOdxpVmmwloPs-NMml9Jn6B7D4NcTszXMQuZ2x9CaqMppjlM9cf92vV518-rZjQ7H1XmDitfHVNKbHxDBG60VllCh0XsO-tksr3jiLND4UOKYq8btuPXbyBB7RYh4wsAn79rCKMWjczid7sffoNKzLkK8mn1g__',
-                  ),
-                  radius: 25.0,
+            InkWell(
+              onTap: () {
+                // navigateTo(to: AdminProfile(), context: context);
+              },
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  'https://th.bing.com/th/id/OIP.peFzV1_5MyCO7JjmohnBUQHaHa?w=500&h=500&rs=1&pid=ImgDetMain',
                 ),
+                radius: 25.0,
               ),
             ),
           ],
         ),
-        Padding(
-          padding: const EdgeInsetsDirectional.symmetric(vertical: 10.0),
-          child: Container(
-            height: 150,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              image: DecorationImage(
-                image: NetworkImage(
-                  'https://s3-alpha-sig.figma.com/img/fdc1/8583/d1cf5c8e5fbb4b0dd6ef382341266755?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=YgMc7pFWvu2HrJbnW~KPr36bhrUfjnnISJXfrtVLKMLWb15q1CcKu2LSDy~wPm1z8PWT4hmFAzsiR9-RhrZiP80Q9MghGFULew862bAr4QqRsAgL9LpnTFygNbyI116CJl54O986Ccv7I8UfWcNUGJA3LCskQenxAw2bZ1kJ-l9Lj5atLZ2bhDSfCOxPML0u5QaLqoFitxH-GcZDmBsKapAEHEthQt~jB~ekwLUmAzo4NhQC5TRPRGROxUHZ08bd-IJHhjldReJbO3fe7Zwmm4D2SO6vpFrTLOBSelZHR7sqrm0roSQZ81odt~oXT2~RqCmHaV5aX1364t4qAvPMCg__',
+        if (model.attachments != null)
+          Padding(
+            padding: const EdgeInsetsDirectional.symmetric(vertical: 10.0),
+            child: Container(
+              height: 150,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: DecorationImage(
+                  image: NetworkImage(model.attachments ?? 'null'),
+                  fit: BoxFit.fill,
                 ),
-                fit: BoxFit.cover,
               ),
             ),
           ),
-        ),
+        if (model.attachments == null) SizedBox(height: 20),
         TextCairo(
           textalign: TextAlign.right,
-          text:
-              'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
+          text: model.description ?? '',
           fontweight: FontWeight.w400,
-          fontsize: 11.0,
+          fontsize: 14.0,
           color: Colors.black,
         ),
+        if (model.attachments == null) SizedBox(height: 20),
         SizedBox(height: 10.0),
         Container(
           padding: EdgeInsetsDirectional.symmetric(
@@ -248,7 +315,6 @@ class AdminHome extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(color: neutralColor25),
-            //color: Colors.white,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -260,10 +326,8 @@ class AdminHome extends StatelessWidget {
                     Container(
                       width: ScreenSize.width * 0.15,
                       height: ScreenSize.height * 0.045,
-                      //color: brandColor25,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        // color:  brandColor25,
                       ),
                       child: IconButton(
                         onPressed: () {},
@@ -271,14 +335,11 @@ class AdminHome extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: ScreenSize.width * 0.02),
-
                     Container(
                       width: ScreenSize.width * 0.15,
                       height: ScreenSize.height * 0.045,
-                      //color: brandColor25,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        //border: Border.all(color:brandColor25),
                         color: brandColor25,
                       ),
                       child: IconButton(
@@ -309,7 +370,8 @@ class AdminHome extends StatelessWidget {
       ],
     ),
   );
-  /////////////////////////////////////////////////////////STATUS OF COMPLAINTS/////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////STATUS OF COMPLAINTS///////////////////////////////////////////////////
   Widget statusof({
     required String text,
     required Color color,
@@ -338,4 +400,112 @@ class AdminHome extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
     ),
   );
+}
+
+Widget buildShimmerPostItem() {
+  return Padding(
+    padding: EdgeInsets.symmetric(
+      horizontal: ScreenSize.width * 0.04,
+      vertical: ScreenSize.height * 0.01,
+    ),
+    child: Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: ScreenSize.width * 0.25,
+                      height: ScreenSize.height * 0.04,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              width: ScreenSize.width * 0.22,
+                              height: ScreenSize.height * 0.018,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: ScreenSize.width * 0.02),
+                            Container(
+                              width: ScreenSize.width * 0.22,
+                              height: ScreenSize.height * 0.018,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: ScreenSize.height * 0.008),
+                        Container(
+                          width: ScreenSize.width * 0.15,
+                          height: ScreenSize.height * 0.013,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: ScreenSize.width * 0.04),
+              Container(
+                width: ScreenSize.width * 0.13,
+                height: ScreenSize.width * 0.13,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: ScreenSize.height * 0.012),
+          Container(
+            height: ScreenSize.height * 0.18,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          SizedBox(height: ScreenSize.height * 0.012),
+          Container(
+            width: double.infinity,
+            height: ScreenSize.height * 0.018,
+            color: Colors.white,
+          ),
+          SizedBox(height: ScreenSize.height * 0.008),
+          Container(
+            width: ScreenSize.width * 0.7,
+            height: ScreenSize.height * 0.018,
+            color: Colors.white,
+          ),
+          SizedBox(height: ScreenSize.height * 0.012),
+          Container(
+            height: ScreenSize.height * 0.07,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+String getTwoPartName(String? fullName) {
+  final parts = fullName!.trim().split(' ');
+  return '${parts[0]} ${parts[1]}';
 }

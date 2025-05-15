@@ -172,15 +172,14 @@ class AdminProfile extends StatelessWidget {
                                               SizedBox(height: 4),
                                               TextCairo(
                                                 text:
-                                                    complaintsUnderReview
+                                                    cubit.pendingS_C.length
                                                         .toString(),
                                                 color: Colors.white,
                                                 fontsize: 20,
                                                 fontweight: FontWeight.bold,
                                               ),
                                               TextCairo(
-                                                text:
-                                                    'عدد الشكاوى قيد المتابعة',
+                                                text: 'عدد الشكاوى المعلَّقه ',
                                                 color: Colors.white,
                                                 fontsize: 12,
                                               ),
@@ -239,7 +238,7 @@ class AdminProfile extends StatelessWidget {
                                               SizedBox(height: 4),
                                               TextCairo(
                                                 text:
-                                                    complaintsResolved
+                                                    cubit.repliedS_C.length
                                                         .toString(),
                                                 color: Colors.white,
                                                 fontsize: 20,

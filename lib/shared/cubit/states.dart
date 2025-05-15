@@ -36,7 +36,9 @@ class validatesectoronformState extends UniversityStates {}
 
 //get all complaints and suggestions (feedBack)
 class GetAllComplaintsAndSuggestionsLoadingState extends UniversityStates {}
+
 class GetAllComplaintsAndSuggestionsSuccessState extends UniversityStates {}
+
 class GetAllComplaintsAndSuggestionsErrorState extends UniversityStates {
   var error;
   GetAllComplaintsAndSuggestionsErrorState(this.error);
@@ -45,8 +47,6 @@ class GetAllComplaintsAndSuggestionsErrorState extends UniversityStates {
 class FilterBySectorChangedState extends UniversityStates {}
 
 class ChangeSectorIndexState extends UniversityStates {}
-
-
 
 class getprofileinfoLoadingState extends UniversityStates {}
 
@@ -84,3 +84,5 @@ class deleteS_CErrorState extends UniversityStates {
   var error;
   deleteS_CErrorState(this.error);
 }
+
+class ForprofileadminChangedState extends UniversityStates {}

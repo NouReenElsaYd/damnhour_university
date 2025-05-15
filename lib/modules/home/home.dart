@@ -44,10 +44,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                           onPressed: () {
-                            navigateTo(
-                              to: Notifications(),
-                              context: context,
-                            );
+                            navigateTo(to: Notifications(), context: context);
                           },
                           icon: Icon(
                             Icons.notifications_none,
@@ -109,13 +106,8 @@ class HomeScreen extends StatelessWidget {
                           ),
                           border: InputBorder.none,
                           prefixIcon: Padding(
-                            padding: EdgeInsetsDirectional.only(
-                              start: 10.0,
-                            ),
-                            child: Icon(
-                              Icons.search,
-                              color: accentColor100,
-                            ),
+                            padding: EdgeInsetsDirectional.only(start: 10.0),
+                            child: Icon(Icons.search, color: accentColor100),
                           ),
                         ),
                       ),
@@ -140,7 +132,7 @@ class HomeScreen extends StatelessWidget {
                   homeTextField(
                     'متابعة الطلبات',
                     context,
-                        () => UniversityCubit.get(context).changeBottomNav(1),
+                    () => UniversityCubit.get(context).changeBottomNav(1),
                   ),
                   SizedBox(height: 20.0),
                   TextCairo(
@@ -179,25 +171,23 @@ class HomeScreen extends StatelessWidget {
                       shrinkWrap: true,
                       itemBuilder:
                           (context, index) => buildPostItem(
-                        context,
-                        UniversityCubit.get(context).filteredPosts[index],
-                      ),
+                            context,
+                            UniversityCubit.get(context).filteredPosts[index],
+                          ),
                       separatorBuilder:
                           (context, index) => Padding(
-                        padding: EdgeInsetsDirectional.symmetric(
-                          vertical: ScreenSize.height * 0.02,
-                        ),
-                        child: Container(height: 1, color: brandColor25),
-                      ),
+                            padding: EdgeInsetsDirectional.symmetric(
+                              vertical: ScreenSize.height * 0.02,
+                            ),
+                            child: Container(height: 1, color: brandColor25),
+                          ),
                       itemCount:
-                      UniversityCubit.get(context).filteredPosts.length,
+                          UniversityCubit.get(context).filteredPosts.length,
                     ),
                   ],
                 );
-
               },
             ),
-
           ],
         ),
       ),
@@ -252,7 +242,14 @@ class HomeScreen extends StatelessWidget {
                   Flexible(
                     child: statusof(
                       text: model.status ?? '',
-                      color: brandColor200,
+                      color:
+                          model.status == "معلق"
+                              ? Colors.amberAccent
+                              : model.status == "قيد التنفيذ"
+                              ? brandColor200
+                              : model.status == "مرفوض"
+                              ? Colors.red
+                              : Colors.green,
                     ),
                   ),
                   Column(
@@ -311,16 +308,17 @@ class HomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
                 image: DecorationImage(
                   image: NetworkImage(model.attachments ?? 'null'),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
               ),
             ),
           ),
+
         TextCairo(
           textalign: TextAlign.right,
           text: model.description ?? '',
           fontweight: FontWeight.w400,
-          fontsize: 11.0,
+          fontsize: 14.0,
           color: Colors.black,
         ),
         SizedBox(height: 10.0),
@@ -522,7 +520,6 @@ Widget buildShimmerPostItem() {
     ),
   );
 }
-
 
 String getTwoPartName(String? fullName) {
   final parts = fullName!.trim().split(' ');

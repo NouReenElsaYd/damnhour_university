@@ -8,14 +8,14 @@ class FeedBackModel {
     sector = json['sector'];
     sc_type = json['sc_type'];
     message = json['message'];
-    json['data'].forEach((e){
-      ItemModel item =ItemModel.fromJson(e);
+
+    json['data'].forEach((e) {
+      ItemModel item = ItemModel.fromJson(e);
       data.add(item);
-
     });
-
   }
 }
+
 class ItemModel {
   int? id;
   ItemUserModel? user;
@@ -40,7 +40,6 @@ class ItemModel {
     response = json['response'];
     created_at = json['created_at'];
   }
-
 }
 
 class ItemUserModel {
@@ -51,5 +50,4 @@ class ItemUserModel {
     username = json['username'];
     faculty = json['faculty'];
   }
-
-  }
+}

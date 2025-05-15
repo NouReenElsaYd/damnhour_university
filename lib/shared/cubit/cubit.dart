@@ -295,6 +295,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
           profilemodel = GetProfileModel.fromjson(value.data);
           emit(getprofileinfoSuccessState(profilemodel?.message));
           print(profilemodel?.message);
+          forprofileadmin();
         })
         .catchError((error) {
           emit(getprofileinfoErrorState(error));
@@ -311,6 +312,8 @@ class UniversityCubit extends Cubit<UniversityStates> {
     admincurrentIndex = index;
     if (admincurrentIndex == 0) {
       getprofileinfo();
+    } else if (admincurrentIndex == 2) {
+      getComplaintsAndSuggestions();
     }
     emit(AdminUniversityChangeBottomNavState());
   }
@@ -349,6 +352,12 @@ class UniversityCubit extends Cubit<UniversityStates> {
   String? selectedstatus;
   void changeselectedstatus(String? value) {
     selectedstatus = value;
+    emit(statusChangedState());
+  }
+
+  void resetselectedstatus() {
+    selectedstatus = null;
+    statusBorderColor = Color.fromRGBO(160, 169, 183, 1);
     emit(statusChangedState());
   }
 
@@ -396,41 +405,74 @@ class UniversityCubit extends Cubit<UniversityStates> {
   //   return brandColor200;
   // }
 
-
   List<ItemModel> allPosts = [];
   List<ItemModel> filteredPosts = [];
-
   FeedBackModel? feedBackModel;
   void getComplaintsAndSuggestions() {
     emit(GetAllComplaintsAndSuggestionsLoadingState());
 
     Dio_Helper.getfromDB(url: FEEDBACK, token: 'Bearer $token')
         .then((value) {
-      feedBackModel = FeedBackModel.fromJson(value.data);
-      allPosts = feedBackModel?.data ?? [];
-      filteredPosts = allPosts;   // في البداية الكل
-      emit(GetAllComplaintsAndSuggestionsSuccessState());
-    }).catchError((error) {
-      emit(GetAllComplaintsAndSuggestionsErrorState(error.toString()));
-      print('error is : ');
-      print(error.toString());
-    });
+          feedBackModel = FeedBackModel.fromJson(value.data);
+          allPosts = feedBackModel?.data ?? [];
+          filteredPosts = allPosts;
+          filteredPostsbystatus = filteredPosts; // في البداية الكل
+          emit(GetAllComplaintsAndSuggestionsSuccessState());
+        })
+        .catchError((error) {
+          emit(GetAllComplaintsAndSuggestionsErrorState(error.toString()));
+          print('error is : ');
+          print(error.toString());
+        });
   }
 
   void filterPostsBySector(String sectorName) {
     if (sectorName == 'الكل') {
       filteredPosts = allPosts;
+      filteredPostsbystatus = filteredPosts;
     } else {
-      filteredPosts = allPosts.where((post) => post.sector == sectorName).toList();
+      filteredPosts =
+          allPosts.where((post) => post.sector == sectorName).toList();
+      filteredPostsbystatus =
+          allPosts.where((post) => post.sector == sectorName).toList();
     }
     emit(FilterBySectorChangedState());
   }
 
+  //ليست متفلتره قطاعات و الحاله
+  List<ItemModel> filteredPostsbystatus = [];
+  String? searchId;
+  void updateSearchId(String? value) {
+    searchId = value;
+    filterPostsBySectorandstatus();
+  }
 
-  int sectorIndex=0;
+  void filterPostsBySectorandstatus({String? status = ''}) {
+    if (status != null && status.isNotEmpty) {
+      filteredPostsbystatus =
+          filteredPosts.where((post) => post.status == status).toList();
+    } else if (status == null || searchId != null) {
+      filteredPostsbystatus =
+          allPosts
+              .where((post) => post.id.toString().contains(searchId!))
+              .toList();
+    }
+    emit(FilterBySectorChangedState());
+  }
+
+  ///////////////////for profile admin///////////////
+  List<ItemModel> repliedS_C = [];
+  List<ItemModel> pendingS_C = [];
+  void forprofileadmin() {
+    pendingS_C = allPosts.where((post) => post.status == 'معلق').toList();
+    repliedS_C = allPosts.where((post) => post.status == 'تم الحل').toList();
+    emit(ForprofileadminChangedState());
+  }
+
+  ///////////////////////////////////////////////////////
+  int sectorIndex = 0;
   void changeSectorIndex(int index) {
     sectorIndex = index;
     emit(ChangeSectorIndexState());
   }
-
 }

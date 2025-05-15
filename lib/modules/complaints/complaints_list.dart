@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import '../../icons/custom_icons.dart';
 import '../../shared/components/components.dart';
@@ -84,7 +86,8 @@ class ComplaintsListScreen extends StatelessWidget {
               ),
               child: sectorsListView(),
             ),
-            Padding(  //جزئيه ال الشكاوي + Buttom
+            Padding(
+              //جزئيه ال الشكاوي + Buttom
               padding: EdgeInsetsDirectional.only(
                 start: ScreenSize.width * 0.04,
                 end: ScreenSize.width * 0.04,
@@ -120,7 +123,7 @@ class ComplaintsListScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    onTap: (){
+                    onTap: () {
                       // navigateTo(to: ComplaintsForm(), context: context);
                     },
                   ),
@@ -138,7 +141,8 @@ class ComplaintsListScreen extends StatelessWidget {
               ),
               child: Container(height: 1, color: brandColor25),
             ),
-            Padding( //جزئيه ال textField + dropDownList
+            Padding(
+              //جزئيه ال textField + dropDownList
               padding: EdgeInsetsDirectional.only(
                 start: ScreenSize.width * 0.04,
                 end: ScreenSize.width * 0.04,
@@ -203,11 +207,11 @@ class ComplaintsListScreen extends StatelessWidget {
               itemBuilder: (context, index) => buildPostItem(context),
               separatorBuilder:
                   (context, index) => Padding(
-                padding: EdgeInsetsDirectional.symmetric(
-                  vertical: ScreenSize.height * 0.02,
-                ),
-                child: Container(height: 1, color: brandColor25),
-              ),
+                    padding: EdgeInsetsDirectional.symmetric(
+                      vertical: ScreenSize.height * 0.02,
+                    ),
+                    child: Container(height: 1, color: brandColor25),
+                  ),
               itemCount: 5,
             ),
           ],
@@ -329,7 +333,7 @@ class ComplaintsListScreen extends StatelessWidget {
         TextCairo(
           textalign: TextAlign.right,
           text:
-          'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
+              'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
           fontweight: FontWeight.w400,
           fontsize: 11.0,
           color: Colors.black,
