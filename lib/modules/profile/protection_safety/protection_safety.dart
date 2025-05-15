@@ -1,4 +1,5 @@
 import 'package:damnhour_university/layout/layout.dart';
+import 'package:damnhour_university/modules/reset-password/forget_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../shared/components/components.dart';
@@ -126,7 +127,12 @@ class ProtectionSafety extends StatelessWidget {
                     padding: EdgeInsetsDirectional.only(
                       bottom: ScreenSize.height * 0.04,
                     ), //30.0
-                    child: Button(text: 'تغيير كلمة المرور', onpressed: () {}),
+                    child: Button(
+                      text: 'تغيير كلمة المرور',
+                      onpressed: () {
+                        navigatet_close(context: context, to: ForgetPassword());
+                      },
+                    ),
                   ),
                 ],
               ),

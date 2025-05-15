@@ -45,6 +45,7 @@ class Login extends StatelessWidget {
                 );
               });
             } else {
+              token = state.model.token;
               navigatet_close(to: AdminLayout(), context: context);
             }
 

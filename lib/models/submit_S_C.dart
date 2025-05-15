@@ -14,3 +14,23 @@ class Submit_S_C_Model {
     codeerror = json['code'];
   }
 }
+
+class updateComplaintModel {
+  String? message;
+  String? detailerror;
+  String? codeerror;
+  updateComplaintModel.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    detailerror = json['detail'];
+    codeerror = json['code'];
+  }
+}
+
+class deleteS_CModel {
+  String? message;
+  String? codeerror;
+  deleteS_CModel.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    codeerror = json['detail'];
+  }
+}

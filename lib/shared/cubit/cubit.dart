@@ -3,6 +3,7 @@ import 'package:damnhour_university/admin/modules/AdminControl/Admincontrol.dart
 import 'package:damnhour_university/admin/modules/AdminHome/AdminHome.dart';
 import 'package:damnhour_university/admin/modules/AdminProfile/AdminProfile.dart';
 import 'package:damnhour_university/models/home_model.dart';
+import 'package:damnhour_university/models/getprofile_info.dart';
 import 'package:damnhour_university/models/submit_S_C.dart';
 import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:damnhour_university/shared/network/dio.dart';
@@ -123,7 +124,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
       "status": 'معلق',
       'sc_type': sc_type,
       if (filetoupload != null)
-        "attachements": await MultipartFile.fromFile(
+        "attachments": await MultipartFile.fromFile(
           filetoupload.path,
           filename: filetoupload.path.split('/').last,
         ),
@@ -285,6 +286,22 @@ class UniversityCubit extends Cubit<UniversityStates> {
     emit(ChangeArrowTileExpandedState());
   }
 
+  //////////////////////////////////////////GET PROFILE INFO/////////////////////////////////////////
+  GetProfileModel? profilemodel;
+  void getprofileinfo() {
+    emit(getprofileinfoLoadingState());
+    Dio_Helper.getfromDB(url: getprofile, token: 'Bearer ${token}')
+        .then((value) {
+          profilemodel = GetProfileModel.fromjson(value.data);
+          emit(getprofileinfoSuccessState(profilemodel?.message));
+          print(profilemodel?.message);
+        })
+        .catchError((error) {
+          emit(getprofileinfoErrorState(error));
+          print(error.toString());
+        });
+  }
+
   /////////////////////////////////////////ADMIN SECTION/////////////////////////////////////////////
 
   int admincurrentIndex = 2;
@@ -292,7 +309,84 @@ class UniversityCubit extends Cubit<UniversityStates> {
 
   void adminchangeBottomNav(int index) {
     admincurrentIndex = index;
+    if (admincurrentIndex == 0) {
+      getprofileinfo();
+    }
     emit(AdminUniversityChangeBottomNavState());
+  }
+
+  updateComplaintModel? updates_c_model;
+  void updateS_C({
+    required String id,
+    String? response,
+    String? status,
+    required String? type_S_C,
+  }) async {
+    emit(updateS_CLoadingState());
+    await Dio_Helper.updateDB(
+          data: {'status': status, 'response': response},
+          url: type_S_C == 'شكوى' ? 'complaint/${id}/' : 'suggestion/${id}/',
+          token: 'Bearer ${token}',
+        )
+        .then((value) {
+          if (value.data != null && value.data is Map<String, dynamic>) {
+            updates_c_model = updateComplaintModel.fromJson(value.data);
+          } else {
+            print("Invalid or null response data: ${value.data}");
+            return;
+          }
+          emit(updateS_CSuccessState(updates_c_model?.message));
+        })
+        .catchError((error) {
+          updates_c_model = updateComplaintModel.fromJson(error.response?.data);
+          // print(updates_c_model?.codeerror.toString());
+          print('${status}   ${response}    ${id}');
+          print(error.toString());
+          emit(updateS_CErrorState(updates_c_model?.codeerror.toString()));
+        });
+  }
+
+  String? selectedstatus;
+  void changeselectedstatus(String? value) {
+    selectedstatus = value;
+    emit(statusChangedState());
+  }
+
+  bool isStatusValid = false;
+  Color statusBorderColor = Color.fromRGBO(160, 169, 183, 1);
+  bool validateStatus() {
+    isStatusValid = selectedstatus != null;
+    if (isStatusValid) {
+      statusBorderColor = Color.fromARGB(255, 1, 187, 63);
+      ;
+      emit(validateStatusState());
+      return true;
+    } else {
+      statusBorderColor = Color.fromRGBO(255, 1, 43, 1);
+      ;
+      emit(validateStatusState());
+      return false;
+    }
+  }
+
+  deleteS_CModel? deleteModel;
+  void deleteS_C({required String id, required String? type_S_C}) {
+    emit(deleteS_CLoadingState());
+    Dio_Helper.delete(
+          url: type_S_C == 'شكوى' ? 'complaint/${id}/' : 'suggestion/${id}/',
+          token: 'Bearer ${token}',
+        )
+        .then((value) {
+          emit(deleteS_CSuccessState());
+        })
+        .catchError((error) {
+          if (error is DioException)
+            deleteModel = deleteS_CModel.fromJson(error.response?.data);
+          print(error.toString());
+          emit(
+            deleteS_CErrorState(deleteModel?.codeerror ?? deleteModel?.message),
+          );
+        });
   }
 
   // Color getcolorstatuscomplaint({String? statusonmodel}) {

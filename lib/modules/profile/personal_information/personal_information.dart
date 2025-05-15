@@ -28,6 +28,14 @@ class PersonalInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = UniversityCubit.get(context);
+
+    nameController.text = cubit.profilemodel?.username ?? 'محمد طلعت بسيوني';
+    emailController.text =
+        cubit.profilemodel?.email ?? 'mohamedbasiouny@gmail.com';
+    universityController.text = cubit.profilemodel?.faculty ?? 'شئون التعليم';
+    phoneController.text = cubit.profilemodel?.phone ?? '01111111111';
+    statusController.text = cubit.profilemodel?.adjective ?? '01111111111';
     return BlocConsumer<UniversityCubit, UniversityStates>(
       listener: (BuildContext context, Object? state) {},
       builder: (BuildContext context, state) {

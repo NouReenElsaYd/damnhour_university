@@ -33,7 +33,8 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (BuildContext context) => UniversityCubit()..getComplaintsAndSuggestions()),
+        BlocProvider(create: (BuildContext context) => UniversityCubit()..getComplaintsAndSuggestions()..getprofileinfo()),
+       
         BlocProvider<LoginCubit>(
           create: (BuildContext context) => LoginCubit(),
         ),
