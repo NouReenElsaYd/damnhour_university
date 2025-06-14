@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:damnhour_university/admin/modules/CreateAccount/CreateAccount.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/cubit/cubit.dart';
@@ -36,7 +37,7 @@ class AdminProfile extends StatelessWidget {
     nameController.text = cubit.profilemodel?.username ?? 'محمد طلعت بسيوني';
     emailController.text =
         cubit.profilemodel?.email ?? 'mohamedbasiouny@gmail.com';
-    sectorController.text = cubit.profilemodel?.faculty ?? 'شئون التعليم';
+    sectorController.text = cubit.profilemodel?.sector_admin ?? 'شئون التعليم';
     phoneController.text = cubit.profilemodel?.phone ?? '01111111111';
     ScreenSize.initscreensize(context);
     return BlocConsumer<UniversityCubit, UniversityStates>(
@@ -62,13 +63,22 @@ class AdminProfile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             TextCairo(
-                              text: 'محمد طلعت بسيوني',
+                              text:
+                                  UniversityCubit.get(
+                                    context,
+                                  ).profilemodel?.username ??
+                                  '',
                               fontweight: FontWeight.w400,
                               fontsize: 14.0,
                               color: Colors.white,
                             ),
+                            SizedBox(height: 5),
                             TextCairo(
-                              text: 'قطاع شئون التعليم',
+                              text:
+                                  UniversityCubit.get(
+                                    context,
+                                  ).profilemodel?.sector_admin ??
+                                  '',
                               fontweight: FontWeight.w600,
                               fontsize: 14.0,
                               color: Colors.white,
@@ -284,6 +294,13 @@ class AdminProfile extends StatelessWidget {
                             controller: phoneController,
                             inputType: TextInputType.phone,
                             enabled: false,
+                          ),
+                          SizedBox(height: 15),
+                          Button(
+                            text: 'تسجيل حساب جديد',
+                            onpressed: () {
+                              navigateTo(to: CreateAccount(), context: context);
+                            },
                           ),
                         ],
                       ),

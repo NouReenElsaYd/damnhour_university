@@ -80,6 +80,27 @@ class RegisterCubit extends Cubit<RegisterStates> {
     }
   }
 
+  Color sectorborder = Color.fromRGBO(160, 169, 183, 1);
+  String? selectedsector;
+  bool issectorvalid = false;
+  void changeSelectedsector(String? value) {
+    selectedsector = value;
+    emit(adjectiveChangedState());
+  }
+
+  bool validatesector() {
+    issectorvalid = selectedsector != null;
+    if (issectorvalid) {
+      sectorborder = green;
+      emit(sectorValidationState());
+      return true;
+    } else {
+      sectorborder = red;
+      emit(sectorValidationState());
+      return false;
+    }
+  }
+
   Color namecolor = Color.fromRGBO(160, 169, 183, 1);
   Color emailcolor = Color.fromRGBO(160, 169, 183, 1);
   Color idcolor = Color.fromRGBO(160, 169, 183, 1);
@@ -184,6 +205,54 @@ class RegisterCubit extends Cubit<RegisterStates> {
             "faculty": faculty,
             "national_id": national_id,
             "phone": phone,
+          },
+          token: token,
+        )
+        .then((value) {
+          model = RegisterModel.fromJson(value.data);
+          // print('response message = ${model!.message}');
+          // print('token = ${model!.token}');
+          // print('user name = ${model!.usermodel!.username}');
+          emit(registerSuccessState(model));
+        })
+        .catchError((error) {
+          error as DioException;
+
+          if (error.response?.data != null &&
+              error.response?.data is Map<String, dynamic>) {
+            model = RegisterModel.handleerrors(error.response?.data);
+            print(model?.usernameerror);
+          }
+
+          print('error occur register =${error.toString()}');
+
+          emit(registerErrorState(model));
+        });
+  }
+
+  void Register_admin({
+    required String username,
+    required String email,
+    required String password,
+    required String adjective,
+    required String faculty,
+    required String national_id,
+    required String phone,
+    required String sector_admin,
+  }) async {
+    emit(registerLoadState());
+    await Dio_Helper.PostinDB(
+          url: Register,
+          data: {
+            "username": username,
+            "email": email,
+            "password": password,
+            "adjective": adjective,
+            "agree_terms": true,
+            "faculty": faculty,
+            "national_id": national_id,
+            "phone": phone,
+            "sector_admin": sector_admin,
           },
           token: token,
         )

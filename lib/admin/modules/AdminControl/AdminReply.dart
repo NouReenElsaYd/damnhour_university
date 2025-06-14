@@ -1,6 +1,4 @@
 // ignore_for_file: must_be_immutable
-
-import 'package:damnhour_university/admin/modules/AdminControl/Admincontrol.dart';
 import 'package:damnhour_university/admin/modules/AdminHome/AdminHome.dart';
 import 'package:damnhour_university/admin/modules/AdminLayout/AdminLayout.dart';
 import 'package:damnhour_university/shared/components/components.dart';
@@ -51,7 +49,7 @@ class AdminReply extends StatelessWidget {
           );
         } else if (state is deleteS_CSuccessState) {
           showtoast(message: 'تم الحذف بنجاح', color: Colors.green);
-          navigatet_close(context: context, to: AdminControl());
+          navigatet_close(context: context, to: AdminLayout());
         } else if (state is deleteS_CErrorState) {
           showtoast(message: '${state.error}', color: Colors.red);
         }

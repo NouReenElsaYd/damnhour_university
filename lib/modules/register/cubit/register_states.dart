@@ -39,3 +39,5 @@ class ValidationPassword extends RegisterStates {}
 class FacultyValidationState extends RegisterStates {}
 
 class adjectiveValidationState extends RegisterStates {}
+
+class sectorValidationState extends RegisterStates {}

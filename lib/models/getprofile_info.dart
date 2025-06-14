@@ -5,6 +5,7 @@ class GetProfileModel {
   String? phone;
   String? faculty;
   String? adjective;
+  String? sector_admin;
   GetProfileModel.fromjson(Map<String, dynamic> json) {
     message = json['message'];
     username = json['username'];
@@ -12,5 +13,6 @@ class GetProfileModel {
     phone = json['phone'];
     faculty = json['faculty'];
     adjective = json['adjective'];
+    sector_admin = json['sector_admin'];
   }
 }

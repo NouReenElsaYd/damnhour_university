@@ -1,5 +1,5 @@
 // ignore_for_file: must_be_immutable
-import 'package:damnhour_university/admin/modules/AdminNotifications/AdminNotifications.dart';
+import 'package:damnhour_university/admin/modules/AdminNotification/AdminNotification.dart';
 import 'package:damnhour_university/icons/custom_icons.dart';
 import 'package:damnhour_university/models/home_model.dart';
 import 'package:damnhour_university/shared/components/components.dart';
@@ -43,7 +43,7 @@ class AdminHome extends StatelessWidget {
                         child: IconButton(
                           onPressed: () {
                             navigateTo(
-                              to: AdminNotifications(),
+                              to: AdminNotification(),
                               context: context,
                             );
                           },
