@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:damnhour_university/modules/login/login.dart';
 import 'package:damnhour_university/modules/profile/personal_information/personal_information.dart';
 import 'package:damnhour_university/modules/profile/protection_safety/protection_safety.dart';
@@ -49,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                           TextCairo(
-                            text: cubit.profilemodel!.faculty??'',
+                            text: cubit.profilemodel!.faculty ?? '',
                             fontweight: FontWeight.w600,
                             fontsize: 14.0,
                             color: Colors.white,
@@ -67,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image:  cubit.profileImageProvider,
+                              image: cubit.profileImageProvider,
                               fit: BoxFit.fill,
                             ),
                           ),
@@ -87,7 +85,7 @@ class ProfileScreen extends StatelessWidget {
                               size: ScreenSize.width * 0.04,
                             ),
                           ),
-                          onTap: (){
+                          onTap: () {
                             cubit.updateProfileImage();
                           },
                         ),

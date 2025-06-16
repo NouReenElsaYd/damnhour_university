@@ -1,4 +1,5 @@
 // ignore_for_file: must_be_immutable
+import 'package:damnhour_university/admin/modules/AdminControl/pdfviewer.dart';
 import 'package:damnhour_university/admin/modules/AdminHome/AdminHome.dart';
 import 'package:damnhour_university/admin/modules/AdminLayout/AdminLayout.dart';
 import 'package:damnhour_university/shared/components/components.dart';
@@ -8,6 +9,7 @@ import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AdminReply extends StatelessWidget {
   String? attachments;
@@ -109,7 +111,18 @@ class AdminReply extends StatelessWidget {
                       ),
 
                       // Complaint Card
-                      complaintcard(),
+                      cubit.getFileType(attachments) == 'pdf'
+                          ? InkWell(
+                            child: complaintcard(cubit),
+                            onTap: () {
+                              print(attachments);
+                              navigateTo(
+                                to: PDFViewerPage(url: attachments ?? ''),
+                                context: context,
+                              );
+                            },
+                          )
+                          : complaintcard(cubit),
                       SizedBox(height: 16),
                       // Dropdown for status
                       dropdownlist(
@@ -145,12 +158,12 @@ class AdminReply extends StatelessWidget {
                             border: Border.all(color: brandColor25),
                           ),
                           child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'نص الرد مطلوب';
-                              }
-                              return null;
-                            },
+                            // validator: (value) {
+                            //   if (value!.isEmpty) {
+                            //     return 'نص الرد مطلوب';
+                            //   }
+                            //   return null;
+                            // },
                             textAlign: TextAlign.end,
                             controller: replyController,
                             maxLines: 4,
@@ -211,7 +224,7 @@ class AdminReply extends StatelessWidget {
     );
   }
 
-  Widget complaintcard() => Container(
+  Widget complaintcard(UniversityCubit cubit) => Container(
     width: 327 / 375 * ScreenSize.width,
     margin: EdgeInsets.only(bottom: 16),
     decoration: BoxDecoration(
@@ -291,17 +304,24 @@ class AdminReply extends StatelessWidget {
         if (attachments != null)
           Padding(
             padding: const EdgeInsetsDirectional.symmetric(vertical: 10.0),
-            child: Container(
-              height: 150,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: DecorationImage(
-                  image: NetworkImage(attachments ?? ''),
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
+            child:
+                cubit.getFileType(attachments) == 'Image'
+                    ? Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        image: DecorationImage(
+                          image: NetworkImage(attachments ?? ''),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    )
+                    : Container(
+                      height: 150,
+                      width: double.infinity,
+                      child: SvgPicture.asset('assets/images/pdf.svg'),
+                    ),
           ),
         // Description
         if (attachments == null) SizedBox(height: 30),

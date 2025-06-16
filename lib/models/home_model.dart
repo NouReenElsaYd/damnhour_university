@@ -27,7 +27,10 @@ class ItemModel {
   String? sc_type;
   String? response;
   String? created_at;
-
+  int? like_count;
+  int? dislike_count;
+  bool islike = false;
+  bool isdislike = false;
   ItemModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     user = json['user'] != null ? ItemUserModel.fromJson(json['user']) : null;
@@ -39,6 +42,8 @@ class ItemModel {
     sc_type = json['sc_type'];
     response = json['response'];
     created_at = json['created_at'];
+    like_count = json['like_count'];
+    dislike_count = json['dislike_count'];
   }
 }
 

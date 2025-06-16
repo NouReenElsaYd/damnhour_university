@@ -1,13 +1,11 @@
-import 'package:damnhour_university/models/getprofile_info.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/cubit/cubit.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../../admin/modules/AdminHome/AdminHome.dart';
 import '../../models/home_model.dart';
-import '../../modules/profile/profile.dart';
 
 Widget TextCairo({
   required String text,
@@ -15,11 +13,15 @@ Widget TextCairo({
   double fontsize = 16,
   FontWeight fontweight = FontWeight.w600,
   TextAlign? textalign,
+  TextOverflow? Overflow,
+  double? heightoftext,
 }) {
   return Text(
+    overflow: Overflow,
     textAlign: textalign,
     "${text}",
     style: TextStyle(
+      height: heightoftext,
       fontFamily: 'Cairo',
       color: color,
       fontSize: fontsize,
@@ -59,7 +61,7 @@ Widget CustomTextFeild({
   Widget? prefixicon,
   required String toptext,
   String? hinttext,
-   TextEditingController? controller,
+  TextEditingController? controller,
   TextInputType? inputType,
   bool enabled = true,
   bool obscureText = false,
@@ -67,8 +69,7 @@ Widget CustomTextFeild({
   String? Function(String?)? Validator,
   Function(String)? onchanged,
   TextInputType? keyboardtype,
-})
-{
+}) {
   return Container(
     padding: EdgeInsets.all(8),
     width: 327 / 375 * ScreenSize.width,
@@ -125,9 +126,11 @@ Widget CustomTextFeild({
   );
 }
 
-Widget sharedSectors({required int index,context,  required Function(String sectorName) onTap,
-})
-{
+Widget sharedSectors({
+  required int index,
+  context,
+  required Function(String sectorName) onTap,
+}) {
   List<String> sectors = [
     'الكل',
     'قطاع شئون التعليم والطلاب',
@@ -141,30 +144,38 @@ Widget sharedSectors({required int index,context,  required Function(String sect
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(8.0),
       border: Border.all(color: primary_blue),
-      color: UniversityCubit.get(context).sectorIndex==index ?  primary_blue: Colors.white,
+      color:
+          UniversityCubit.get(context).sectorIndex == index
+              ? primary_blue
+              : Colors.white,
     ),
     child: InkWell(
       onTap: () {
         UniversityCubit.get(context).changeSectorIndex(index);
         onTap(sectors[index]);
 
-       // UniversityCubit.get(context).filterPostsBySector(sectors[index]);
+        // UniversityCubit.get(context).filterPostsBySector(sectors[index]);
       },
       child: TextCairo(
         text: sectors[index],
-        color: UniversityCubit.get(context).sectorIndex==index ? Colors.white : primary_blue,
+        color:
+            UniversityCubit.get(context).sectorIndex == index
+                ? Colors.white
+                : primary_blue,
       ),
     ),
   );
 }
 
-Widget sectorsListView(  {required Function(String) onTap} ) => Container(
+Widget sectorsListView({required Function(String) onTap}) => Container(
   height: 36.0,
   child: ListView.separated(
     physics: BouncingScrollPhysics(),
     scrollDirection: Axis.horizontal,
     reverse: true,
-    itemBuilder: (context, index) => sharedSectors(index: index,context: context,onTap: onTap),
+    itemBuilder:
+        (context, index) =>
+            sharedSectors(index: index, context: context, onTap: onTap),
     separatorBuilder: (context, index) => SizedBox(width: 10.0),
     itemCount: 6,
   ),
@@ -333,42 +344,42 @@ Widget dropdownlist({
   Color? bordercolor,
   double? width,
   bool enabled = true,
-}) =>
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        if (title != null)
-          TextCairo(text: title, color: primary_blue, fontsize: 14),
-        if (title != null) SizedBox(height: 8),
-        Container(
-          width: width ?? 327 / 375 * ScreenSize.width - 10,
-          decoration: BoxDecoration(
-            color: enabled ? Colors.white : disabled100,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: bordercolor ?? (enabled ? brandColor25 : disabled200),
+}) => Column(
+  crossAxisAlignment: CrossAxisAlignment.end,
+  children: [
+    if (title != null)
+      TextCairo(text: title, color: primary_blue, fontsize: 14),
+    if (title != null) SizedBox(height: 8),
+    Container(
+      width: width ?? 327 / 375 * ScreenSize.width - 10,
+      decoration: BoxDecoration(
+        color: enabled ? Colors.white : disabled100,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: bordercolor ?? (enabled ? brandColor25 : disabled200),
+        ),
+      ),
+      child: AbsorbPointer(
+        absorbing: !enabled,
+        child: DropdownButtonFormField<String>(
+          value: selectedvalue,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            suffixIcon: Icon(dropIcon),
+          ),
+          hint: Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              hinttext,
+              style: TextStyle(
+                fontFamily: 'Cairo',
+                color: const Color.fromRGBO(89, 105, 130, 1),
+              ),
             ),
           ),
-          child: AbsorbPointer(
-            absorbing: !enabled,
-            child: DropdownButtonFormField<String>(
-              value: selectedvalue,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                suffixIcon: Icon(dropIcon),
-              ),
-              hint: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  hinttext,
-                  style: TextStyle(
-                    fontFamily: 'Cairo',
-                    color: const Color.fromRGBO(89, 105, 130, 1),
-                  ),
-                ),
-              ),
-              items: dropdownitems.map((String value) {
+          items:
+              dropdownitems.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Align(
@@ -386,14 +397,14 @@ Widget dropdownlist({
                   ),
                 );
               }).toList(),
-              onChanged: onchanged,
-              isExpanded: true,
-              alignment: Alignment.centerRight,
-            ),
-          ),
+          onChanged: onchanged,
+          isExpanded: true,
+          alignment: Alignment.centerRight,
         ),
-      ],
-    );
+      ),
+    ),
+  ],
+);
 
 Future<bool?> showtoast({required String message, required Color color}) {
   return Fluttertoast.showToast(
@@ -413,7 +424,6 @@ void navigatet_close({required context, required Widget to}) =>
       MaterialPageRoute(builder: (context) => to),
       (route) => false,
     );
-
 
 Widget buildPostItem(context, ItemModel model) {
   var cubit = UniversityCubit.get(context);
@@ -435,13 +445,13 @@ Widget buildPostItem(context, ItemModel model) {
                     child: statusof(
                       text: model.status ?? '',
                       color:
-                      model.status == "معلق"
-                          ? Colors.amberAccent
-                          : model.status == "قيد التنفيذ"
-                          ? brandColor200
-                          : model.status == "مرفوض"
-                          ? Colors.red
-                          : Colors.green,
+                          model.status == "معلق"
+                              ? Colors.amberAccent
+                              : model.status == "قيد التنفيذ"
+                              ? brandColor200
+                              : model.status == "مرفوض"
+                              ? Colors.red
+                              : Colors.green,
                     ),
                   ),
                   Column(
@@ -479,14 +489,16 @@ Widget buildPostItem(context, ItemModel model) {
             SizedBox(width: 15.0),
             InkWell(
               onTap: () {
-                UniversityCubit.get(context).changeBottomNav(0);              },
+                UniversityCubit.get(context).changeBottomNav(0);
+              },
               child: Container(
                 width: ScreenSize.width * 0.14,
                 height: ScreenSize.width * 0.14,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: cubit.profileImageProvider,  //model.user.profile_image
+                    image:
+                        cubit.profileImageProvider, //model.user.profile_image
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -497,20 +509,34 @@ Widget buildPostItem(context, ItemModel model) {
         if (model.attachments != null)
           Padding(
             padding: const EdgeInsetsDirectional.symmetric(vertical: 10.0),
-            child: Container(
-              height: 150,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: DecorationImage(
-                  image: NetworkImage(model.attachments ?? 'null'),
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
+            child:
+                cubit.getFileType(model.attachments) == 'Image'
+                    ? Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        image: DecorationImage(
+                          image: NetworkImage(model.attachments ?? ''),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    )
+                    : Container(
+                      height: 150,
+                      width: double.infinity,
+                      child: SvgPicture.asset('assets/images/pdf.svg'),
+                    ),
           ),
-
+        SizedBox(height: .01 * ScreenSize.height),
         TextCairo(
+          text: ' ${model.title}',
+          color: Colors.black,
+          fontweight: FontWeight.w600,
+        ),
+        SizedBox(height: .01 * ScreenSize.height),
+        TextCairo(
+          heightoftext: 1.5,
           textalign: TextAlign.right,
           text: model.description ?? '',
           fontweight: FontWeight.w400,
@@ -535,6 +561,11 @@ Widget buildPostItem(context, ItemModel model) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(width: ScreenSize.width * 0.02),
+                    TextCairo(
+                      text: '${model.dislike_count}',
+                      color: Colors.black,
+                    ),
                     Container(
                       width: ScreenSize.width * 0.15,
                       height: ScreenSize.height * 0.045,
@@ -542,23 +573,49 @@ Widget buildPostItem(context, ItemModel model) {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.thumb_down_alt_outlined),
+                        onPressed: () {
+                          cubit.changedislike(model);
+                          cubit.updateLikeDislike(
+                            id: model.id,
+                            isLike: false,
+                            type_S_C: model.sc_type,
+                            newCount: model.dislike_count ?? 0 + 1,
+                          );
+                        },
+                        icon: Icon(
+                          Icons.thumb_down_alt_outlined,
+                          color:
+                              model.isdislike == true
+                                  ? Colors.red
+                                  : Colors.black,
+                        ),
                       ),
                     ),
                     SizedBox(width: ScreenSize.width * 0.02),
+                    TextCairo(text: '${model.like_count}', color: Colors.black),
                     Container(
                       width: ScreenSize.width * 0.15,
                       height: ScreenSize.height * 0.045,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        color: brandColor25,
+                        color: Colors.white,
                       ),
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          cubit.changelike(model);
+                          cubit.updateLikeDislike(
+                            id: model.id,
+                            isLike: true,
+                            type_S_C: model.sc_type,
+                            newCount: model.like_count ?? 0 + 1,
+                          );
+                        },
                         icon: Icon(
                           Icons.thumb_up_alt_outlined,
-                          color: Colors.white,
+                          color:
+                              model.islike == true
+                                  ? Colors.green
+                                  : Colors.black,
                         ),
                       ),
                     ),
@@ -583,7 +640,6 @@ Widget buildPostItem(context, ItemModel model) {
     ),
   );
 }
-
 
 /////////////////////////////////////////////////STATUS OF COMPLAINTS///////////////////////////////////////////////////
 Widget statusof({

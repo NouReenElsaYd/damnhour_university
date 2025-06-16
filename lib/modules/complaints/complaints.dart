@@ -157,7 +157,7 @@ class ComplaintsScreen extends StatelessWidget {
                     ),
                     child: Center(
                       child: Column(
-                       // mainAxisAlignment: MainAxisAlignment.center,
+                        // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
                             width: 200,
@@ -169,21 +169,23 @@ class ComplaintsScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 20),
                           TextCairo(
-                            text:
-                                '!لا توجد شكاوى حتى الآن',
+                            text: '!لا توجد شكاوى حتى الآن',
                             color: Colors.black,
                             fontsize: 16,
                             fontweight: FontWeight.w500,
                           ),
                           SizedBox(height: 8),
                           Padding(
-                            padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
+                            padding: const EdgeInsetsDirectional.symmetric(
+                              horizontal: 20,
+                            ),
                             child: TextCairo(
-                              text: 'هل لديك أي ملاحظات أو اقتراحات؟ اضغط على الزر أدناه وشاركنا رأيك',
+                              text:
+                                  'هل لديك أي ملاحظات أو اقتراحات؟ اضغط على الزر أدناه وشاركنا رأيك',
                               color: accent_orange,
                               fontsize: 14,
                               fontweight: FontWeight.w400,
-                              textalign: TextAlign.center
+                              textalign: TextAlign.center,
                             ),
                           ),
                           SizedBox(height: 30),

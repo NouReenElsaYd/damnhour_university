@@ -5,7 +5,6 @@ import 'package:damnhour_university/admin/modules/AdminProfile/AdminProfile.dart
 import 'package:damnhour_university/models/home_model.dart';
 import 'package:damnhour_university/models/getprofile_info.dart';
 import 'package:damnhour_university/models/submit_S_C.dart';
-import 'package:damnhour_university/models/user_model.dart';
 import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:damnhour_university/shared/network/dio.dart';
 import 'package:damnhour_university/shared/network/end_points.dart';
@@ -16,11 +15,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../modules/complaints/complaints.dart';
-import '../../modules/complaints/complaints_list.dart';
 import '../../modules/home/home.dart';
 import '../../modules/profile/profile.dart';
 import '../../modules/records/records.dart';
-import '../../modules/register/cubit/register_states.dart';
 import '../components/components.dart';
 import '../constants/constants.dart';
 import '../styles/colors.dart';
@@ -40,6 +37,11 @@ class UniversityCubit extends Cubit<UniversityStates> {
 
   void changeBottomNav(int index) {
     currentIndex = index;
+    if (currentIndex == 0) {
+      getprofileinfo();
+    } else if (currentIndex == 3) {
+      getComplaintsAndSuggestions();
+    }
     emit(UniversityChangeBottomNavState());
   }
 
@@ -394,8 +396,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
     String? faculty,
     String? adjective,
     File? profileImage,
-  }) async
-  {
+  }) async {
     emit(UpdateProfileInfoLoadingState());
 
     final Map<String, dynamic> formMap = {
@@ -481,8 +482,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
     String? response,
     String? status,
     required String? type_S_C,
-  }) async
-  {
+  }) async {
     emit(updateS_CLoadingState());
     await Dio_Helper.updateDB(
           data: {'status': status, 'response': response},
@@ -562,7 +562,34 @@ class UniversityCubit extends Cubit<UniversityStates> {
   //   }
   //   return brandColor200;
   // }
+  //////////////////////////////////////////////Detect attachments type//////////////////////////////////////
+  String getFileExtension(String? file) {
+    if (file == null || file.isEmpty) return '';
+    return file.split('.').last.toLowerCase(); // e.g. "pdf", "docx"
+  }
 
+  String getFileType(String? file) {
+    String ext = getFileExtension(file);
+
+    switch (ext) {
+      case 'pdf':
+        return 'pdf';
+      case 'doc':
+      case 'docx':
+        return 'Word';
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+        return 'Image';
+      case 'mp4':
+      case 'avi':
+        return 'Video';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////get all Complaints ////////////////////////
   List<ItemModel> allComplaints = [];
   List<ItemModel> filteredComplaints = [];
@@ -641,7 +668,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
   List<ItemModel> allPosts = []; //كل ال posts
   List<ItemModel> filteredPosts = []; // حسب كل sector
   FeedBackModel? feedBackModel;
-  Future<void> getComplaintsAndSuggestions() async{
+  Future<void> getComplaintsAndSuggestions() async {
     emit(GetAllComplaintsAndSuggestionsLoadingState());
 
     Dio_Helper.getfromDB(url: FEEDBACK, token: 'Bearer $token')
@@ -660,16 +687,14 @@ class UniversityCubit extends Cubit<UniversityStates> {
         });
   }
 
-  List<ItemModel> repliedPosts=[];
+  List<ItemModel> repliedPosts = [];
   void filteredPostsByStatus() {
     repliedPosts = [];
     for (var complaint in filteredPosts) {
-      if (complaint.status == 'تم الحل')
-        repliedPosts.add(complaint);
+      if (complaint.status == 'تم الحل') repliedPosts.add(complaint);
     }
     emit(FilterPostsByStatusSuccessState());
   }
-
 
   void filterPostsBySector(String sectorName) {
     if (sectorName == 'الكل') {
@@ -688,8 +713,6 @@ class UniversityCubit extends Cubit<UniversityStates> {
     emit(FilterBySectorChangedState());
   }
 
-
-
   //ليست متفلتره قطاعات و الحاله
   List<ItemModel> filteredPostsbystatus = [];
   String? searchId;
@@ -704,9 +727,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
           filteredPosts.where((post) => post.status == status).toList();
     } else if (status == null || searchId != null) {
       filteredPostsbystatus =
-          allPosts
-              .where((post) => post.id.toString().contains(searchId!))
-              .toList();
+          allPosts.where((post) => post.id.toString() == searchId).toList();
     }
     emit(FilterBySectorChangedState());
   }
@@ -720,10 +741,54 @@ class UniversityCubit extends Cubit<UniversityStates> {
     emit(ForprofileadminChangedState());
   }
 
-  ///////////////////////////////////////////////////////
+  /////////////////////////change sector index//////////////////////////////
   int sectorIndex = 0;
   void changeSectorIndex(int index) {
     sectorIndex = index;
     emit(ChangeSectorIndexState());
+  }
+
+  /////////////////////like and dislike////////////////////////////
+
+  void changelike(ItemModel model) {
+    model.islike = !model.islike;
+    model.isdislike = false;
+    emit(changelikedislikeState());
+  }
+
+  void changedislike(ItemModel model) {
+    model.isdislike = !model.isdislike;
+    model.islike = false;
+    emit(changelikedislikeState());
+  }
+
+  void updateLikeDislike({
+    required int? id,
+    required bool isLike,
+    required String? type_S_C, // "شكوى" or "اقتراح"
+    required int newCount,
+  }) async {
+    emit(updateS_CLoadingState());
+
+    final field = isLike ? 'like_count' : 'dislike_count';
+
+    await Dio_Helper.updateDB(
+          data: {field: newCount},
+          url: type_S_C == 'شكوى' ? 'complaint/$id/' : 'suggestion/$id/',
+          token: 'Bearer ${token}',
+        )
+        .then((value) {
+          if (value.data != null && value.data is Map<String, dynamic>) {
+            updates_c_model = updateComplaintModel.fromJson(value.data);
+          } else {
+            print("Invalid or null response data: ${value.data}");
+            return;
+          }
+          emit(updateS_CSuccessState(updates_c_model?.message));
+        })
+        .catchError((error) {
+          print(error.toString());
+          emit(updateS_CErrorState("Failed to update $field"));
+        });
   }
 }

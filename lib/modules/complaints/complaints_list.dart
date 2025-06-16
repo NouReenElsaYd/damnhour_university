@@ -15,7 +15,7 @@ class ComplaintsListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cubit = UniversityCubit.get(context);
+    // var cubit = UniversityCubit.get(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(

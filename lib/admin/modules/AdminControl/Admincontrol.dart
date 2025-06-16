@@ -10,6 +10,7 @@ import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class AdminControl extends StatelessWidget {
   AdminControl({super.key});
@@ -17,6 +18,7 @@ class AdminControl extends StatelessWidget {
   String? selectedvalue;
   @override
   Widget build(BuildContext context) {
+    var cubit = UniversityCubit.get(context);
     return BlocConsumer<UniversityCubit, UniversityStates>(
       listener: (context, state) {},
       builder:
@@ -181,7 +183,13 @@ class AdminControl extends StatelessWidget {
                       end: ScreenSize.width * 0.04,
                       bottom: ScreenSize.height * 0.02,
                     ),
-                    child: sectorsListView(onTap: (String ) {  }),  //=>
+                    child: sectorsListView(
+                      onTap: (String sectorName) {
+                        UniversityCubit.get(
+                          context,
+                        ).filterPostsBySector(sectorName);
+                      },
+                    ), //=>
                   ),
                   Container(height: 1.0, color: brandColor25),
                   ListView.separated(
@@ -193,6 +201,7 @@ class AdminControl extends StatelessWidget {
                           UniversityCubit.get(
                             context,
                           ).filteredPostsbystatus[index],
+                          cubit,
                         ),
                     separatorBuilder:
                         (context, index) => Padding(
@@ -213,11 +222,17 @@ class AdminControl extends StatelessWidget {
     );
   }
 
-  Widget buildPostItem(context, ItemModel model) => Padding(
+  Widget buildPostItem(
+    context,
+    ItemModel model,
+    UniversityCubit cubit,
+  ) => Padding(
     padding: EdgeInsets.symmetric(horizontal: ScreenSize.width * 0.02),
     child: Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
+        border: Border.all(
+          color: model.sc_type == 'شكوى' ? Colors.red : Colors.green,
+        ),
         borderRadius: BorderRadius.circular(16),
       ),
       padding: EdgeInsetsDirectional.symmetric(
@@ -246,7 +261,7 @@ class AdminControl extends StatelessWidget {
                               ? Colors.red
                               : Colors.green,
                     ),
-                    Spacer(),
+                    SizedBox(width: .035 * ScreenSize.width),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -259,12 +274,16 @@ class AdminControl extends StatelessWidget {
                               fontsize: 14.0,
                               fontweight: FontWeight.w400,
                             ),
-                            SizedBox(width: 8.0),
-                            TextCairo(
-                              text: getTwoPartName(model.user?.username),
-                              color: primary_blue,
-                              fontsize: 14.0,
-                              fontweight: FontWeight.w400,
+                            SizedBox(width: .018 * ScreenSize.width),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              width: .25 * ScreenSize.width,
+                              child: TextCairo(
+                                text: getTwoPartName(model.user?.username),
+                                color: primary_blue,
+                                fontsize: 14.0,
+                                fontweight: FontWeight.w400,
+                              ),
                             ),
                           ],
                         ),
@@ -279,7 +298,7 @@ class AdminControl extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: 15.0),
+              SizedBox(width: .01 * ScreenSize.width),
               Expanded(
                 flex: 1,
                 child: InkWell(
@@ -297,19 +316,34 @@ class AdminControl extends StatelessWidget {
           if (model.attachments != null)
             Padding(
               padding: const EdgeInsetsDirectional.symmetric(vertical: 10.0),
-              child: Container(
-                height: 150,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                    image: NetworkImage(model.attachments ?? 'null'),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
+              child:
+                  cubit.getFileType(model.attachments) == 'Image'
+                      ? Container(
+                        height: 150,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: DecorationImage(
+                            image: NetworkImage(model.attachments ?? ''),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      )
+                      : Container(
+                        height: 150,
+                        width: double.infinity,
+                        child: SvgPicture.asset('assets/images/pdf.svg'),
+                      ),
             ),
           if (model.attachments == null) SizedBox(height: 30),
+          SizedBox(height: .01 * ScreenSize.height),
+          TextCairo(
+            text: ' ${model.title}',
+            color: Colors.black,
+            fontweight: FontWeight.w600,
+          ),
+          SizedBox(height: .01 * ScreenSize.height),
+
           TextCairo(
             textalign: TextAlign.right,
             text: model.description ?? '',

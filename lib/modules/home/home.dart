@@ -1,4 +1,3 @@
-import 'package:damnhour_university/models/home_model.dart';
 import 'package:damnhour_university/modules/complaints/complaintsform.dart';
 import 'package:damnhour_university/modules/complaints/suggestionsform.dart';
 import 'package:damnhour_university/shared/cubit/cubit.dart';
@@ -11,7 +10,6 @@ import '../../shared/components/components.dart';
 import '../../shared/constants/constants.dart';
 import '../../shared/styles/colors.dart';
 import '../notifications/notifications.dart';
-import '../profile/profile.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -26,7 +24,7 @@ class HomeScreen extends StatelessWidget {
         displacement: 10.0,
         color: Colors.white,
         backgroundColor: accent_orange,
-        onRefresh: () async{
+        onRefresh: () async {
           UniversityCubit.get(context).getComplaintsAndSuggestions();
         },
         child: SingleChildScrollView(
@@ -162,7 +160,8 @@ class HomeScreen extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) => buildShimmerPostItem(),
-                      separatorBuilder: (context, index) => SizedBox(height: 20),
+                      separatorBuilder:
+                          (context, index) => SizedBox(height: 20),
                       itemCount: 5,
                     );
                   } else
@@ -183,31 +182,46 @@ class HomeScreen extends StatelessWidget {
                         ),
                         Container(height: 1.0, color: brandColor25),
 
-                        if(UniversityCubit.get(context).repliedPosts.isEmpty)
-                  Padding(
-                    padding: EdgeInsetsDirectional.only(top: ScreenSize.height * 0.02),
-                    child: Center(
-                       child: TextCairo(text: ' لا يوجد شكاوي او اقتراحات حتي الان',color: accent_orange),
-                     ),
-                  ),
-                        if(UniversityCubit.get(context).repliedPosts.isNotEmpty)
-                          ListView.separated(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder:
-                              (context, index) => buildPostItem(
-                                context,
-                                UniversityCubit.get(context).repliedPosts[index]),
-                          separatorBuilder:
-                              (context, index) => Padding(
-                                padding: EdgeInsetsDirectional.symmetric(
-                                  vertical: ScreenSize.height * 0.02,
-                                ),
-                                child: Container(height: 1, color: brandColor25),
+                        if (UniversityCubit.get(context).repliedPosts.isEmpty)
+                          Padding(
+                            padding: EdgeInsetsDirectional.only(
+                              top: ScreenSize.height * 0.02,
+                            ),
+                            child: Center(
+                              child: TextCairo(
+                                text: ' لا يوجد شكاوي او اقتراحات حتي الان',
+                                color: accent_orange,
                               ),
-                          itemCount:
-                              UniversityCubit.get(context).repliedPosts.length,
-                        ),
+                            ),
+                          ),
+                        if (UniversityCubit.get(
+                          context,
+                        ).repliedPosts.isNotEmpty)
+                          ListView.separated(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder:
+                                (context, index) => buildPostItem(
+                                  context,
+                                  UniversityCubit.get(
+                                    context,
+                                  ).repliedPosts[index],
+                                ),
+                            separatorBuilder:
+                                (context, index) => Padding(
+                                  padding: EdgeInsetsDirectional.symmetric(
+                                    vertical: ScreenSize.height * 0.02,
+                                  ),
+                                  child: Container(
+                                    height: 1,
+                                    color: brandColor25,
+                                  ),
+                                ),
+                            itemCount:
+                                UniversityCubit.get(
+                                  context,
+                                ).repliedPosts.length,
+                          ),
                       ],
                     );
                 },
