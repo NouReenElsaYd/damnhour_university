@@ -1,5 +1,6 @@
 import 'package:damnhour_university/layout/layout.dart';
 import 'package:damnhour_university/modules/reset-password/forget_password.dart';
+import 'package:damnhour_university/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../shared/components/components.dart';
@@ -11,6 +12,7 @@ class ProtectionSafety extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = UniversityCubit.get(context);
     return Scaffold(
       backgroundColor: primary_blue,
       body: Column(
@@ -40,13 +42,13 @@ class ProtectionSafety extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       TextCairo(
-                        text: 'محمد طلعت بسيوني',
+                        text: cubit.nameController.text,
                         fontweight: FontWeight.w400,
                         fontsize: 14.0,
                         color: Colors.white,
                       ),
                       TextCairo(
-                        text: 'كلية الحاسبات والمعلومات',
+                        text: cubit.profilemodel!.faculty??'',
                         fontweight: FontWeight.w600,
                         fontsize: 14.0,
                         color: Colors.white,
@@ -58,12 +60,18 @@ class ProtectionSafety extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomEnd,
                   children: [
-                    CircleAvatar(
-                      radius: ScreenSize.width * 0.1,
-                      backgroundImage: const NetworkImage(
-                        'https://s3-alpha-sig.figma.com/img/f6e0/670a/b2cb85130e4a021a8db54043dfdd2a59?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ZQMTCmbrD3N7ICohN6u8I~m7mf93LAkyXW4n5F7Bm8ZP5NsZmX4k4xB5Lfhl6EnvumRVmub7rUv-yyfTyHrDDP-KM92Vt4XZUw5WM7vIlRWjGkaG1GglabEVTFY8~yZ-ky5j03iZzRseaztBsJHJIj-AYEgnTXgk-1uXUuGsJYFKqGv~CsBXm-hW6skkrkWd5rD056aefHg3UN96ptJ64hchHsBs5Y~~JDHoG5oMVIDXMdEa3uXgx65DFb~m7b-Pt2WdcRi1MTSkDqFXbViOiI-S3tKkB72maCRW1ceMPbeR5bmHo1yR51KRccQmC1Xce2pUC~WHv8uzzm7W6RVY7g__',
+                    Container(
+                      width: ScreenSize.width * 0.2,
+                      height: ScreenSize.width * 0.2,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image:  cubit.profileImageProvider,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
+
                     InkWell(
                       child: Container(
                         height: ScreenSize.width * 0.06,
@@ -78,6 +86,9 @@ class ProtectionSafety extends StatelessWidget {
                           size: ScreenSize.width * 0.04,
                         ),
                       ),
+                      onTap: (){
+                        cubit.updateProfileImage();
+                      },
                     ),
                   ],
                 ),

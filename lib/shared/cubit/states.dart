@@ -19,6 +19,8 @@ class ComplaintsDrawingAttachedState extends UniversityStates {}
 
 class ComplaintsSubmitLoadingState extends UniversityStates {}
 
+class UpdateProfileImageSuccessState extends UniversityStates {}
+
 class ComplaintsSubmitSuccessState extends UniversityStates {
   var message;
   ComplaintsSubmitSuccessState(this.message);
@@ -44,21 +46,45 @@ class GetAllComplaintsAndSuggestionsErrorState extends UniversityStates {
   GetAllComplaintsAndSuggestionsErrorState(this.error);
 }
 
+
+class GetComplaintsAndSuggestionsLoadingState extends UniversityStates {}
+
+class GetComplaintsAndSuggestionsSuccessState extends UniversityStates {}
+
+class GetComplaintsAndSuggestionsErrorState extends UniversityStates {
+  var error;
+  GetComplaintsAndSuggestionsErrorState(this.error);
+}
+
+class FilterComplaintsBySectorChangedState extends UniversityStates {}
+
+
 class FilterBySectorChangedState extends UniversityStates {}
 
 class ChangeSectorIndexState extends UniversityStates {}
 
 class getprofileinfoLoadingState extends UniversityStates {}
-
 class getprofileinfoSuccessState extends UniversityStates {
   var message;
   getprofileinfoSuccessState(this.message);
 }
-
 class getprofileinfoErrorState extends UniversityStates {
   var error;
   getprofileinfoErrorState(this.error);
 }
+
+class UpdateProfileInfoLoadingState extends UniversityStates {}
+
+class UpdateProfileInfoSuccessState extends UniversityStates {
+  var message;
+  UpdateProfileInfoSuccessState(this.message);
+}
+
+class UpdateProfileInfoErrorState extends UniversityStates {
+  var error;
+  UpdateProfileInfoErrorState(this.error);
+}
+
 
 class updateS_CLoadingState extends UniversityStates {}
 
@@ -86,3 +112,9 @@ class deleteS_CErrorState extends UniversityStates {
 }
 
 class ForprofileadminChangedState extends UniversityStates {}
+
+class UniversityChangeFacultyState extends UniversityStates {}
+
+class FilterComplaintsByStatusSuccessState extends UniversityStates {}
+class FilterPostsByStatusSuccessState extends UniversityStates {}
+

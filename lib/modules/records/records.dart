@@ -4,14 +4,20 @@ import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../shared/cubit/cubit.dart';
+import '../../shared/cubit/states.dart';
 
 class RecordsScreen extends StatelessWidget {
   const RecordsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var cubit = UniversityCubit.get(context);
+    return BlocConsumer<UniversityCubit, UniversityStates>(
+        listener: (context, state) { }, builder: (context, state) {  return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -80,69 +86,100 @@ class RecordsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20.0),
+            SizedBox(height: ScreenSize.height * .015),
             Padding(
               padding: EdgeInsetsDirectional.only(
                 end: ScreenSize.width * 0.04,
-                bottom: ScreenSize.height * 0.02,
+                // bottom: ScreenSize.height * 0.02,
               ),
-              child: sectorsListView(),
-            ),
-            Container(height: 1.0, color: brandColor25),
-            SizedBox(height: ScreenSize.height * 0.1),
-            Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 200,
-                      height: 200,
-                      child: SvgPicture.asset(
-                        "assets/images/nodata.svg",
-                        fit: BoxFit.contain,
+              child: sectorsListView(
+                onTap: (String sectorName) {
+                  UniversityCubit.get(
+                    context,
+                  ).filterComplaintsBySector(sectorName);
+                },
+              ),
+            ),//
+            if (cubit.archiveComplaintsAndSuggestions.isEmpty)
+              Padding(
+                padding: EdgeInsetsDirectional.only(
+                  top: ScreenSize.height * 0.1,
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 200,
+                        height: 200,
+                        child: SvgPicture.asset(
+                          "assets/images/nodata.svg",
+                          fit: BoxFit.contain,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    TextCairo(
-                      text:
-                          'سجلك خالٍ من الشكاوى! إذا كنت بحاجة إلى المساعدة أو',
-                      color: Colors.black,
-                      fontsize: 16,
-                      fontweight: FontWeight.w500,
-                    ),
-                    SizedBox(height: 8),
-                    TextCairo(
-                      text: 'لديك أي ملاحظات، لا تتردد في إرسال شكوى الآن',
-                      color: Colors.black54,
-                      fontsize: 14,
-                      fontweight: FontWeight.w400,
-                    ),
-                    SizedBox(height: 30),
-                    Button(
-                      onpressed: () {
-                        navigateTo(to: SuggestionsForm(), context: context);
-                      },
-                      text: 'تقديم اقتراح',
-                    ),
-                    SizedBox(height: 16),
-                    Button(
-                      onpressed: () {
-                        navigateTo(to: ComplaintsForm(), context: context);
-                      },
-                      text: 'تقديم شكوى',
-                      color: Colors.white,
-                      textcolor: primary_blue,
-                    ),
-                    SizedBox(height: ScreenSize.height * 0.1),
-                  ],
+                      SizedBox(height: 20),
+                      TextCairo(
+                        text:
+                        '!سجلك خالٍ من الشكاوى',
+                        color: Colors.black,
+                        fontsize: 16,
+                        fontweight: FontWeight.w500,
+                      ),
+                      SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
+                        child: TextCairo(
+                            text: ' إذا كنت بحاجة إلى المساعدة أو لديك أي ملاحظات، لا تتردد في إرسال شكوى الآن',
+                            color: accent_orange,
+                            fontsize: 14,
+                            fontweight: FontWeight.w400,
+                            textalign: TextAlign.center
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Button(
+                        onpressed: () {
+                          navigateTo(to: SuggestionsForm(), context: context);
+                        },
+                        text: 'تقديم اقتراح',
+                      ),
+                      SizedBox(height: 16),
+                      Button(
+                        onpressed: () {
+                          navigateTo(to: ComplaintsForm(), context: context);
+                        },
+                        text: 'تقديم شكوى',
+                        color: Colors.white,
+                        textcolor: primary_blue,
+                      ),
+                      SizedBox(height: ScreenSize.height * 0.1),
+                    ],
+                  ),
                 ),
               ),
-            ),
+            if (cubit.archiveComplaintsAndSuggestions.isNotEmpty)
+              ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder:
+                    (context, index) => buildPostItem(
+                  context,
+                  cubit.archiveComplaintsAndSuggestions[index],
+                ),
+                separatorBuilder:
+                    (context, index) => Padding(
+                  padding: EdgeInsetsDirectional.symmetric(
+                    vertical: ScreenSize.height * 0.02,
+                  ),
+                  child: Container(height: 1, color: brandColor25),
+                ),
+                itemCount: cubit.archiveComplaintsAndSuggestions.length,
+              ),
           ],
         ),
       ),
+    ); },
+
     );
   }
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:damnhour_university/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import '../../icons/custom_icons.dart';
 import '../../shared/components/components.dart';
@@ -14,6 +15,7 @@ class ComplaintsListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = UniversityCubit.get(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -84,7 +86,13 @@ class ComplaintsListScreen extends StatelessWidget {
                 end: ScreenSize.width * 0.04,
                 bottom: ScreenSize.height * 0.02,
               ),
-              child: sectorsListView(),
+              child: sectorsListView(
+                onTap: (String sectorName) {
+                  UniversityCubit.get(
+                    context,
+                  ).filterComplaintsBySector(sectorName);
+                },
+              ),
             ),
             Padding(
               //جزئيه ال الشكاوي + Buttom

@@ -181,7 +181,7 @@ class AdminControl extends StatelessWidget {
                       end: ScreenSize.width * 0.04,
                       bottom: ScreenSize.height * 0.02,
                     ),
-                    child: sectorsListView(),
+                    child: sectorsListView(onTap: (String ) {  }),  //=>
                   ),
                   Container(height: 1.0, color: brandColor25),
                   ListView.separated(
