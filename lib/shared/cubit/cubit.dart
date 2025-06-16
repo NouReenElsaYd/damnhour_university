@@ -5,6 +5,7 @@ import 'package:damnhour_university/admin/modules/AdminProfile/AdminProfile.dart
 import 'package:damnhour_university/models/home_model.dart';
 import 'package:damnhour_university/models/getprofile_info.dart';
 import 'package:damnhour_university/models/submit_S_C.dart';
+import 'package:damnhour_university/models/user_model.dart';
 import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:damnhour_university/shared/network/dio.dart';
 import 'package:damnhour_university/shared/network/end_points.dart';
@@ -15,9 +16,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../modules/complaints/complaints.dart';
+import '../../modules/complaints/complaints_list.dart';
 import '../../modules/home/home.dart';
 import '../../modules/profile/profile.dart';
 import '../../modules/records/records.dart';
+import '../../modules/register/cubit/register_states.dart';
 import '../components/components.dart';
 import '../constants/constants.dart';
 import '../styles/colors.dart';
@@ -42,6 +45,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
 
   bool isEnabled = false;
   void changeSwitch(bool value) {
+    ////////////=>>>>>>>>>>>>>>>>>>
     isEnabled = value;
     emit(ChangeSwitchEnabledState());
   }
@@ -107,6 +111,16 @@ class UniversityCubit extends Cubit<UniversityStates> {
       }
     }
   }
+
+  String? updateSelectedFaculty;
+  void updateFaculty(String? value) {
+    updateSelectedFaculty = value;
+    //  profilemodel?.faculty = value;
+    emit(UniversityChangeFacultyState());
+  }
+
+  //Update profile image
+  //File? profileImage;
 
   Submit_S_C_Model? submitmodel;
   void submitComplaint({
@@ -293,12 +307,155 @@ class UniversityCubit extends Cubit<UniversityStates> {
     Dio_Helper.getfromDB(url: getprofile, token: 'Bearer ${token}')
         .then((value) {
           profilemodel = GetProfileModel.fromjson(value.data);
+          if (profilemodel?.profile_image != null &&
+              profilemodel!.profile_image!.isNotEmpty) {
+            String imageUrl = profilemodel!.profile_image!;
+            if (!imageUrl.startsWith('http')) {
+              imageUrl =
+                  'https://damanhourappproject-production.up.railway.app$imageUrl';
+            }
+            profileImageProvider = NetworkImage(imageUrl);
+          } else {
+            profileImageProvider = const AssetImage(
+              'assets/images/user image1.png',
+            );
+          }
+          initProfileControllers(profilemodel); //=>
           emit(getprofileinfoSuccessState(profilemodel?.message));
           print(profilemodel?.message);
           forprofileadmin();
         })
         .catchError((error) {
           emit(getprofileinfoErrorState(error));
+          print(error.toString());
+        });
+  }
+
+  //////////////////////////////////////////UPDATE PROFILE INFO/////////////////////////////////////////
+  void updateProfileImage() async {
+    final XFile? image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+    File? selectedImage;
+    if (image != null) selectedImage = File(image.path);
+
+    updateProfileInfo(
+      username: nameController.text,
+      email: emailController.text,
+      phone: phoneController.text,
+      faculty: updateSelectedFaculty,
+      adjective: statusController.text,
+      profileImage: selectedImage,
+    );
+  }
+
+  // ImageProvider getProfileImage(String? imagePath)
+  // {
+  //   if (imagePath != null && imagePath.isNotEmpty) {
+  //     if (imagePath.startsWith('http')) {
+  //       return NetworkImage(imagePath);
+  //     } else {
+  //       return NetworkImage('https://damanhourappproject-production.up.railway.app$imagePath');
+  //     }
+  //   } else {
+  //     return const AssetImage('assets/images/user image1.png');
+  //   }
+  // }
+
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  //final universityController = TextEditingController();
+  final statusController = TextEditingController();
+
+  void initProfileControllers(GetProfileModel? model) {
+    nameController.text = model?.username ?? '';
+    emailController.text = model?.email ?? '';
+    phoneController.text = model?.phone ?? '';
+    //universityController.text = model?.faculty ?? '';
+    statusController.text = model?.adjective ?? '';
+  }
+
+  void disposeProfileControllers() {
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    // universityController.dispose();
+    statusController.dispose();
+  }
+
+  ImageProvider profileImageProvider = const AssetImage(
+    'assets/images/user image1.png',
+  );
+  void updateProfileInfo({
+    String? username,
+    String? email,
+    String? phone,
+    String? faculty,
+    String? adjective,
+    File? profileImage,
+  }) async
+  {
+    emit(UpdateProfileInfoLoadingState());
+
+    final Map<String, dynamic> formMap = {
+      'username':
+          (username != null && username.isNotEmpty)
+              ? username
+              : profilemodel?.username ?? '',
+      'email':
+          (email != null && email.isNotEmpty)
+              ? email
+              : profilemodel?.email ?? '',
+      'phone':
+          (phone != null && phone.isNotEmpty)
+              ? phone
+              : profilemodel?.phone ?? '',
+      'faculty':
+          (faculty != null && faculty.isNotEmpty)
+              ? faculty
+              : profilemodel?.faculty ?? '',
+      'adjective':
+          (adjective != null && adjective.isNotEmpty)
+              ? adjective
+              : profilemodel?.adjective ?? '',
+    };
+
+    if (profileImage != null) {
+      formMap['profile_image'] = await MultipartFile.fromFile(
+        profileImage.path,
+        filename: profileImage.path.split('/').last,
+      );
+    }
+
+    FormData formData = FormData.fromMap(formMap);
+
+    Dio_Helper.updateDB(url: getprofile, token: 'Bearer $token', data: formData)
+        .then((value) {
+          profilemodel = GetProfileModel.fromjson(value.data);
+          if (profilemodel?.profile_image != null &&
+              profilemodel!.profile_image!.isNotEmpty) {
+            String imageUrl = profilemodel!.profile_image!;
+            print('value.data');
+            print(value.data);
+
+            if (!imageUrl.startsWith('http')) {
+              imageUrl =
+                  'https://damanhourappproject-production.up.railway.app$imageUrl';
+            }
+            profileImageProvider = NetworkImage(imageUrl);
+          } else {
+            profileImageProvider = const AssetImage(
+              'assets/images/user image1.png',
+            );
+          }
+          print('profileImageProvider : ${profileImageProvider}');
+
+          emit(UpdateProfileInfoSuccessState(profilemodel?.message));
+          print(profilemodel?.message);
+        })
+        .catchError((error) {
+          emit(UpdateProfileInfoErrorState(error.toString()));
           print(error.toString());
         });
   }
@@ -324,7 +481,8 @@ class UniversityCubit extends Cubit<UniversityStates> {
     String? response,
     String? status,
     required String? type_S_C,
-  }) async {
+  }) async
+  {
     emit(updateS_CLoadingState());
     await Dio_Helper.updateDB(
           data: {'status': status, 'response': response},
@@ -405,10 +563,85 @@ class UniversityCubit extends Cubit<UniversityStates> {
   //   return brandColor200;
   // }
 
-  List<ItemModel> allPosts = [];
-  List<ItemModel> filteredPosts = [];
+  ////////////////////////get all Complaints ////////////////////////
+  List<ItemModel> allComplaints = [];
+  List<ItemModel> filteredComplaints = [];
+
+  Future<void> getAllComplaintsAndSuggestions() async {
+    emit(GetComplaintsAndSuggestionsLoadingState());
+
+    List<ItemModel> complaintsList = [];
+    List<ItemModel> suggestionsList = [];
+
+    try {
+      //  الشكاوي
+      final complaintsResponse = await Dio_Helper.getfromDB(
+        url: COMPLAINTS,
+        token: 'Bearer $token',
+      );
+      complaintsList =
+          (complaintsResponse.data as List)
+              .map((e) => ItemModel.fromJson(e))
+              .toList();
+      //  المقترحات
+      final suggestionsResponse = await Dio_Helper.getfromDB(
+        url: SUGGESTIONS,
+        token: 'Bearer $token',
+      );
+      suggestionsList =
+          (suggestionsResponse.data as List)
+              .map((e) => ItemModel.fromJson(e))
+              .toList();
+
+      allComplaints = [...complaintsList, ...suggestionsList];
+
+      filterComplaintsBySector('الكل');
+
+      emit(GetComplaintsAndSuggestionsSuccessState());
+    } catch (error) {
+      emit(GetComplaintsAndSuggestionsErrorState(error.toString()));
+      print('Error loading complaints or suggestions: $error');
+    }
+  }
+
+  void filterComplaintsBySector(String sectorName) {
+    print('Filtering complaints for $sectorName');
+
+    if (sectorName == 'الكل') {
+      filteredComplaints = allComplaints;
+    } else {
+      filteredComplaints =
+          allComplaints
+              .where((complaint) => complaint.sector == sectorName)
+              .toList();
+    }
+    filteredComplaintsByStatus();
+    emit(FilterComplaintsBySectorChangedState());
+  }
+
+  List<ItemModel> activeComplaintsAndSuggestions = []; //شكاوي
+  List<ItemModel> archiveComplaintsAndSuggestions = []; // سجل
+
+  // filter for complaints by status
+  void filteredComplaintsByStatus() {
+    activeComplaintsAndSuggestions = [];
+    archiveComplaintsAndSuggestions = [];
+
+    for (var complaint in filteredComplaints) {
+      if (complaint.status == 'معلق' || complaint.status == 'قيد التنفيذ') {
+        activeComplaintsAndSuggestions.add(complaint);
+      } else if (complaint.status == 'مرفوض' || complaint.status == 'تم الحل') {
+        archiveComplaintsAndSuggestions.add(complaint);
+      }
+    }
+    emit(FilterComplaintsByStatusSuccessState());
+  }
+
+  //get all posts
+  List<ItemModel> allPosts = []; //كل ال posts
+  List<ItemModel> filteredPosts = []; // حسب كل sector
   FeedBackModel? feedBackModel;
-  void getComplaintsAndSuggestions() {
+  Future<void> getComplaintsAndSuggestions() async{
     emit(GetAllComplaintsAndSuggestionsLoadingState());
 
     Dio_Helper.getfromDB(url: FEEDBACK, token: 'Bearer $token')
@@ -422,22 +655,40 @@ class UniversityCubit extends Cubit<UniversityStates> {
         .catchError((error) {
           emit(GetAllComplaintsAndSuggestionsErrorState(error.toString()));
           print('error is : ');
+          print(filteredPostsbystatus);
           print(error.toString());
         });
   }
+
+  List<ItemModel> repliedPosts=[];
+  void filteredPostsByStatus() {
+    repliedPosts = [];
+    for (var complaint in filteredPosts) {
+      if (complaint.status == 'تم الحل')
+        repliedPosts.add(complaint);
+    }
+    emit(FilterPostsByStatusSuccessState());
+  }
+
 
   void filterPostsBySector(String sectorName) {
     if (sectorName == 'الكل') {
       filteredPosts = allPosts;
       filteredPostsbystatus = filteredPosts;
+      // filteredComplaints=allComplaints;
     } else {
       filteredPosts =
           allPosts.where((post) => post.sector == sectorName).toList();
+      // filteredComplaints =
+      //     allComplaints.where((post) => post.sector == sectorName).toList();
       filteredPostsbystatus =
           allPosts.where((post) => post.sector == sectorName).toList();
     }
+    filteredPostsByStatus();
     emit(FilterBySectorChangedState());
   }
+
+
 
   //ليست متفلتره قطاعات و الحاله
   List<ItemModel> filteredPostsbystatus = [];

@@ -51,13 +51,13 @@ class HelpCenter extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             TextCairo(
-                              text: 'محمد طلعت بسيوني',
+                              text: cubit.nameController.text,
                               fontweight: FontWeight.w400,
                               fontsize: 14.0,
                               color: Colors.white,
                             ),
                             TextCairo(
-                              text: 'كلية الحاسبات والمعلومات',
+                              text: cubit.profilemodel!.faculty??'',
                               fontweight: FontWeight.w600,
                               fontsize: 14.0,
                               color: Colors.white,
@@ -69,12 +69,18 @@ class HelpCenter extends StatelessWidget {
                       Stack(
                         alignment: AlignmentDirectional.bottomEnd,
                         children: [
-                          CircleAvatar(
-                            radius: ScreenSize.width * 0.1,
-                            backgroundImage: const NetworkImage(
-                              'https://tse3.mm.bing.net/th?id=OIP.dEi0CuHfiqjbbTYxrVA-DQHaJQ&w=501&h=626&rs=1&pid=ImgDetMain',
+                          Container(
+                            width: ScreenSize.width * 0.2,
+                            height: ScreenSize.width * 0.2,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image:  cubit.profileImageProvider,
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
+
                           InkWell(
                             child: Container(
                               height: ScreenSize.width * 0.06,
@@ -89,10 +95,12 @@ class HelpCenter extends StatelessWidget {
                                 size: ScreenSize.width * 0.04,
                               ),
                             ),
-                            onTap: () {},
+                            onTap: (){
+                              cubit.updateProfileImage();
+                            },
                           ),
                         ],
-                      ),
+                      )
                     ],
                   ),
                 ),

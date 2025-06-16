@@ -17,12 +17,12 @@ class ComplaintsScreen extends StatelessWidget {
     return BlocConsumer<UniversityCubit, UniversityStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        var cubit = UniversityCubit.get(context);
         return Scaffold(
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
                   padding: EdgeInsetsDirectional.only(
@@ -77,77 +77,167 @@ class ComplaintsScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: ScreenSize.height * .02),
-                      TextCairo(
-                        text: 'أبرز الشكاوي والاقتراحات',
-                        color: Colors.black,
-                        fontsize: 18.0,
-                        fontweight: FontWeight.w500,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (cubit.filteredComplaints.isNotEmpty)
+                            InkWell(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: primary_blue,
+                                  borderRadius: BorderRadius.circular(
+                                    ScreenSize.width * 0.05,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.only(
+                                        start: ScreenSize.width * 0.1,
+                                        top: ScreenSize.height * 0.015,
+                                        bottom: ScreenSize.height * 0.015,
+                                      ),
+                                      child: TextCairo(
+                                        text: 'اضافة',
+                                        fontsize: 14.0,
+                                      ),
+                                    ),
+                                    SizedBox(width: ScreenSize.width * 0.05),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.only(
+                                        end: ScreenSize.width * 0.025,
+                                      ),
+                                      child: Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              onTap: () {
+                                navigateTo(
+                                  to: ComplaintsForm(),
+                                  context: context,
+                                );
+                              },
+                            ),
+                          Expanded(
+                            child: TextCairo(
+                              text: 'أبرز الشكاوي والاقتراحات',
+                              color: Colors.black,
+                              fontsize: 18.0,
+                              fontweight: FontWeight.w500,
+                              textalign: TextAlign.end,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: ScreenSize.height * .015),
                 Padding(
                   padding: EdgeInsetsDirectional.only(
                     end: ScreenSize.width * 0.04,
-                    bottom: ScreenSize.height * 0.02,
+                    // bottom: ScreenSize.height * 0.02,
                   ),
-                  child: sectorsListView(),
+                  child: sectorsListView(
+                    onTap: (String sectorName) {
+                      UniversityCubit.get(
+                        context,
+                      ).filterComplaintsBySector(sectorName);
+                    },
+                  ),
                 ),
-                Container(height: 1.0, color: brandColor25),
-                SizedBox(height: ScreenSize.height * 0.1),
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 200,
-                          height: 200,
-                          child: SvgPicture.asset(
-                            "assets/images/complain.svg",
-                            fit: BoxFit.contain,
+                if (cubit.activeComplaintsAndSuggestions.isEmpty)
+                  Padding(
+                    padding: EdgeInsetsDirectional.only(
+                      top: ScreenSize.height * 0.1,
+                    ),
+                    child: Center(
+                      child: Column(
+                       // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 200,
+                            height: 200,
+                            child: SvgPicture.asset(
+                              "assets/images/complain.svg",
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        TextCairo(
-                          text: 'لا يوجد شكاوي حتى الآن! هل لديك أي ملاحظات أو',
-                          color: Colors.black,
-                          fontsize: 16,
-                          fontweight: FontWeight.w500,
-                        ),
-                        SizedBox(height: 8),
-                        TextCairo(
-                          text: 'اقتراحات؟ اضغط على الزر ادناه وشاركنا رأيك ',
-                          color: Colors.black54,
-                          fontsize: 14,
-                          fontweight: FontWeight.w400,
-                        ),
-                        SizedBox(height: 30),
-                        Button(
-                          onpressed: () {
-                            UniversityCubit.get(context).resetSelectedSector();
+                          SizedBox(height: 20),
+                          TextCairo(
+                            text:
+                                '!لا توجد شكاوى حتى الآن',
+                            color: Colors.black,
+                            fontsize: 16,
+                            fontweight: FontWeight.w500,
+                          ),
+                          SizedBox(height: 8),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
+                            child: TextCairo(
+                              text: 'هل لديك أي ملاحظات أو اقتراحات؟ اضغط على الزر أدناه وشاركنا رأيك',
+                              color: accent_orange,
+                              fontsize: 14,
+                              fontweight: FontWeight.w400,
+                              textalign: TextAlign.center
+                            ),
+                          ),
+                          SizedBox(height: 30),
+                          Button(
+                            onpressed: () {
+                              UniversityCubit.get(
+                                context,
+                              ).resetSelectedSector();
 
-                            navigateTo(to: SuggestionsForm(), context: context);
-                          },
-                          text: 'تقديم اقتراح',
-                        ),
-                        SizedBox(height: 16),
-                        Button(
-                          onpressed: () {
-                            UniversityCubit.get(context).resetSelectedSector();
-                            navigateTo(to: ComplaintsForm(), context: context);
-                          },
-                          text: 'تقديم شكوى',
-                          color: Colors.white,
-                          textcolor: primary_blue,
-                        ),
-                        SizedBox(height: ScreenSize.height * 0.1),
-                      ],
+                              navigateTo(
+                                to: SuggestionsForm(),
+                                context: context,
+                              );
+                            },
+                            text: 'تقديم اقتراح',
+                          ),
+                          SizedBox(height: 16),
+                          Button(
+                            onpressed: () {
+                              UniversityCubit.get(
+                                context,
+                              ).resetSelectedSector();
+                              navigateTo(
+                                to: ComplaintsForm(),
+                                context: context,
+                              );
+                            },
+                            text: 'تقديم شكوى',
+                            color: Colors.white,
+                            textcolor: primary_blue,
+                          ),
+                          SizedBox(height: ScreenSize.height * 0.1),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                if (cubit.activeComplaintsAndSuggestions.isNotEmpty)
+                  ListView.separated(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder:
+                        (context, index) => buildPostItem(
+                          context,
+                          cubit.activeComplaintsAndSuggestions[index],
+                        ),
+                    separatorBuilder:
+                        (context, index) => Padding(
+                          padding: EdgeInsetsDirectional.symmetric(
+                            vertical: ScreenSize.height * 0.02,
+                          ),
+                          child: Container(height: 1, color: brandColor25),
+                        ),
+                    itemCount: cubit.activeComplaintsAndSuggestions.length,
+                  ),
               ],
             ),
           ),

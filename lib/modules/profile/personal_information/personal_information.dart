@@ -1,50 +1,33 @@
-import 'package:damnhour_university/layout/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-
+import '../../../layout/layout.dart';
 import '../../../shared/components/components.dart';
 import '../../../shared/constants/constants.dart';
 import '../../../shared/cubit/cubit.dart';
 import '../../../shared/cubit/states.dart';
 import '../../../shared/styles/colors.dart';
 
-// ignore: must_be_immutable
 class PersonalInformation extends StatelessWidget {
-  PersonalInformation({super.key});
-  TextEditingController nameController = TextEditingController(
-    text: 'محمد طلعت بسيوني',
-  );
-  TextEditingController emailController = TextEditingController(
-    text: 'mohamedbasiouny@gmail.com',
-  );
-  TextEditingController universityController = TextEditingController(
-    text: 'كلية الحاسبات والمعلومات',
-  );
-  TextEditingController phoneController = TextEditingController(
-    text: '01111111111',
-  );
-  TextEditingController statusController = TextEditingController(text: 'طالب');
+  const PersonalInformation({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var cubit = UniversityCubit.get(context);
-
-    nameController.text = cubit.profilemodel?.username ?? 'محمد طلعت بسيوني';
-    emailController.text =
-        cubit.profilemodel?.email ?? 'mohamedbasiouny@gmail.com';
-    universityController.text = cubit.profilemodel?.faculty ?? 'شئون التعليم';
-    phoneController.text = cubit.profilemodel?.phone ?? '01111111111';
-    statusController.text = cubit.profilemodel?.adjective ?? '01111111111';
     return BlocConsumer<UniversityCubit, UniversityStates>(
-      listener: (BuildContext context, Object? state) {},
-      builder: (BuildContext context, state) {
-        var cubit = UniversityCubit.get(context);
+      listener: (context, state) {
+        if (state is UpdateProfileInfoSuccessState) {
+          showtoast(
+            message: state.message,
+            color: Colors.green,
+          );
+        }
+      },
+      builder: (context, state) {
+        final cubit = UniversityCubit.get(context);
         return Scaffold(
           backgroundColor: primary_blue,
           body: Column(
             children: [
-              // جزء الصورة والاسم
               Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: ScreenSize.width * 0.05,
@@ -70,15 +53,15 @@ class PersonalInformation extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           TextCairo(
-                            text: 'محمد طلعت بسيوني',
+                            text: cubit.nameController.text,
                             fontweight: FontWeight.w400,
-                            fontsize: 14.0, // Fixed font size
+                            fontsize: 14.0,
                             color: Colors.white,
                           ),
                           TextCairo(
-                            text: 'كلية الحاسبات والمعلومات',
+                            text: cubit.profilemodel!.faculty??'',
                             fontweight: FontWeight.w600,
-                            fontsize: 14.0, // Fixed font size
+                            fontsize: 14.0,
                             color: Colors.white,
                           ),
                         ],
@@ -88,12 +71,18 @@ class PersonalInformation extends StatelessWidget {
                     Stack(
                       alignment: AlignmentDirectional.bottomEnd,
                       children: [
-                        CircleAvatar(
-                          radius: ScreenSize.width * 0.1,
-                          backgroundImage: const NetworkImage(
-                            'https://s3-alpha-sig.figma.com/img/f6e0/670a/b2cb85130e4a021a8db54043dfdd2a59?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ZQMTCmbrD3N7ICohN6u8I~m7mf93LAkyXW4n5F7Bm8ZP5NsZmX4k4xB5Lfhl6EnvumRVmub7rUv-yyfTyHrDDP-KM92Vt4XZUw5WM7vIlRWjGkaG1GglabEVTFY8~yZ-ky5j03iZzRseaztBsJHJIj-AYEgnTXgk-1uXUuGsJYFKqGv~CsBXm-hW6skkrkWd5rD056aefHg3UN96ptJ64hchHsBs5Y~~JDHoG5oMVIDXMdEa3uXgx65DFb~m7b-Pt2WdcRi1MTSkDqFXbViOiI-S3tKkB72maCRW1ceMPbeR5bmHo1yR51KRccQmC1Xce2pUC~WHv8uzzm7W6RVY7g__',
+                        Container(
+                          width: ScreenSize.width * 0.2,
+                          height: ScreenSize.width * 0.2,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image:  cubit.profileImageProvider,
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
+
                         InkWell(
                           child: Container(
                             height: ScreenSize.width * 0.06,
@@ -108,6 +97,9 @@ class PersonalInformation extends StatelessWidget {
                               size: ScreenSize.width * 0.04,
                             ),
                           ),
+                          onTap: (){
+                            cubit.updateProfileImage();
+                          },
                         ),
                       ],
                     ),
@@ -135,11 +127,18 @@ class PersonalInformation extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 FlutterSwitch(
-                                  value: UniversityCubit.get(context).isEnabled,
+                                  value: cubit.isEnabled,
                                   onToggle: (value) {
-                                    UniversityCubit.get(
-                                      context,
-                                    ).changeSwitch(value);
+                                    cubit.changeSwitch(value);
+                                    if (!value) {
+                                      cubit.updateProfileInfo(
+                                        username: cubit.nameController.text,
+                                        email: cubit.emailController.text,
+                                        faculty: cubit.updateSelectedFaculty,
+                                        phone: cubit.phoneController.text,
+                                        adjective: cubit.statusController.text,
+                                      );
+                                    }
                                   },
                                   activeColor: Colors.blueAccent,
                                   height: ScreenSize.width * 0.06,
@@ -149,7 +148,7 @@ class PersonalInformation extends StatelessWidget {
                                 TextCairo(
                                   text: 'Edit',
                                   color: Colors.black,
-                                  fontsize: 18.0, // Fixed font size
+                                  fontsize: 18.0,
                                   fontweight: FontWeight.w600,
                                 ),
                               ],
@@ -158,7 +157,7 @@ class PersonalInformation extends StatelessWidget {
                               child: TextCairo(
                                 text: 'معلومات المستخدم الشخصية',
                                 fontweight: FontWeight.w600,
-                                fontsize: 16.0, // Fixed font size
+                                fontsize: 16.0,
                                 color: Colors.black,
                                 textalign: TextAlign.end,
                               ),
@@ -168,31 +167,52 @@ class PersonalInformation extends StatelessWidget {
                         SizedBox(height: ScreenSize.height * 0.02),
                         CustomTextFeild(
                           toptext: 'الاسم الكامل',
-                          controller: nameController,
+                          controller: cubit.nameController,
                           inputType: TextInputType.name,
                           enabled: cubit.isEnabled,
                         ),
                         CustomTextFeild(
                           toptext: 'البريد الإلكتروني',
-                          controller: emailController,
+                          controller: cubit.emailController,
                           inputType: TextInputType.emailAddress,
                           enabled: cubit.isEnabled,
                         ),
-                        CustomTextFeild(
-                          toptext: 'الكلية أو الإدارة',
-                          controller: universityController,
-                          inputType: TextInputType.text,
+                        dropdownlist(
+                         // bordercolor: cubit.facultyBorderColor,
+                         // dropIcon: Icons.business_outlined,
+                          hinttext: cubit.profilemodel?.faculty ??'',
                           enabled: cubit.isEnabled,
+                          dropdownitems: [
+                            'كلية الهندسة',
+                            'كلية الحاسبات والمعلومات',
+                            'كلية الفنون التطبيقية',
+                            'كلية العلوم',
+                            'كلية الصيدلة',
+                            'كلية الطب البيطرى',
+                            'كلية التربية',
+                            'كلية الزراعة',
+                            'كلية التجارة',
+                            'كلية الحقوق',
+                            'كلية الآداب',
+                            'كلية التربية الطفولة المبكرة',
+                            'كلية التربية النوعية',
+                            'كلية التمريض',
+                          ],
+                         selectedvalue: cubit.updateSelectedFaculty,
+                          onchanged: (newvalue) {
+                            cubit.updateFaculty(newvalue!);
+                          },
+                          title: 'الكلية أو الإدارة',
                         ),
                         CustomTextFeild(
                           toptext: 'رقم الهاتف ',
-                          controller: phoneController,
+                          controller: cubit.phoneController,
                           inputType: TextInputType.phone,
                           enabled: cubit.isEnabled,
                         ),
                         CustomTextFeild(
                           toptext: 'الصفة',
-                          controller: statusController,
+                          controller: cubit.statusController,
                           inputType: TextInputType.text,
                           enabled: cubit.isEnabled,
                         ),
