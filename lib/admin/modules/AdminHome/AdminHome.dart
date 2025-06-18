@@ -107,7 +107,7 @@ class AdminHome extends StatelessWidget {
                             print(
                               UniversityCubit.get(
                                 context,
-                              ).filteredPostsbystatus.length,
+                              ).filteredPosts.length,
                             );
                             UniversityCubit.get(context).updateSearchId(value);
                           },
@@ -172,7 +172,7 @@ class AdminHome extends StatelessWidget {
                       Container(height: 1.0, color: brandColor25),
                       if (UniversityCubit.get(
                         context,
-                      ).filteredPostsbystatus.isEmpty)
+                      ).filteredPosts.isEmpty)  //filteredPostsbystatus
                         Padding(
                           padding: EdgeInsetsDirectional.only(
                             top: ScreenSize.height * 0.02,
@@ -186,7 +186,7 @@ class AdminHome extends StatelessWidget {
                         ),
                       if (UniversityCubit.get(
                         context,
-                      ).filteredPostsbystatus.isNotEmpty)
+                      ).filteredPosts.isNotEmpty)
                         ListView.separated(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -195,7 +195,7 @@ class AdminHome extends StatelessWidget {
                                 context,
                                 UniversityCubit.get(
                                   context,
-                                ).filteredPostsbystatus[index],
+                                ).filteredPosts[index],
                                 UniversityCubit.get(context),
                               ),
                           separatorBuilder:
@@ -211,7 +211,7 @@ class AdminHome extends StatelessWidget {
                           itemCount:
                               UniversityCubit.get(
                                 context,
-                              ).filteredPostsbystatus.length,
+                              ).filteredPosts.length,
                         ),
                     ],
                   );
