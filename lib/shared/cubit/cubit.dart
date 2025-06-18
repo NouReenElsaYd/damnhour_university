@@ -620,7 +620,8 @@ class UniversityCubit extends Cubit<UniversityStates> {
               .map((e) => ItemModel.fromJson(e))
               .toList();
 
-      allComplaints = [...complaintsList, ...suggestionsList];
+      allComplaints = [...complaintsList, ...suggestionsList]
+        ..sort((a, b) => b.createdAtDate!.compareTo(a.createdAtDate!));
 
       filterComplaintsBySector('الكل');
 
@@ -664,7 +665,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
     emit(FilterComplaintsByStatusSuccessState());
   }
 
-  //get all posts
+  /////////////////////////////get all posts///////////////////////////////
   List<ItemModel> allPosts = []; //كل ال posts
   List<ItemModel> filteredPosts = []; // حسب كل sector
   FeedBackModel? feedBackModel;
@@ -674,9 +675,11 @@ class UniversityCubit extends Cubit<UniversityStates> {
     Dio_Helper.getfromDB(url: FEEDBACK, token: 'Bearer $token')
         .then((value) {
           feedBackModel = FeedBackModel.fromJson(value.data);
-          allPosts = feedBackModel?.data ?? [];
+          allPosts =
+              (feedBackModel?.data ?? [])
+                ..sort((a, b) => b.createdAtDate!.compareTo(a.createdAtDate!));
           filteredPosts = allPosts;
-          filteredPostsbystatus = filteredPosts; // في البداية الكل
+          filteredPostsByStatus();
           emit(GetAllComplaintsAndSuggestionsSuccessState());
         })
         .catchError((error) {
@@ -693,24 +696,46 @@ class UniversityCubit extends Cubit<UniversityStates> {
     for (var complaint in filteredPosts) {
       if (complaint.status == 'تم الحل') repliedPosts.add(complaint);
     }
+    filteredPostsbystatus = repliedPosts;
+
     emit(FilterPostsByStatusSuccessState());
   }
 
   void filterPostsBySector(String sectorName) {
     if (sectorName == 'الكل') {
       filteredPosts = allPosts;
-      filteredPostsbystatus = filteredPosts;
-      // filteredComplaints=allComplaints;
     } else {
       filteredPosts =
           allPosts.where((post) => post.sector == sectorName).toList();
-      // filteredComplaints =
-      //     allComplaints.where((post) => post.sector == sectorName).toList();
-      filteredPostsbystatus =
-          allPosts.where((post) => post.sector == sectorName).toList();
     }
+
+    filteredPosts.sort((a, b) => b.createdAtDate!.compareTo(a.createdAtDate!));
+
     filteredPostsByStatus();
+
     emit(FilterBySectorChangedState());
+  }
+
+  List<ItemModel> searchedPosts = []; // بوستات ناتج البحث
+
+  void filterPostsBySearch(String text) {
+    if (text.isEmpty) {
+      searchedPosts = [];
+    } else {
+      final lowerText = text.toLowerCase();
+
+      searchedPosts =
+          allPosts.where((post) {
+            final matchesText =
+                post.title?.toLowerCase().contains(lowerText) == true ||
+                post.description?.toLowerCase().contains(lowerText) == true;
+            final isResolved = post.status == 'تم الحل';
+
+            return matchesText && isResolved;
+          }).toList();
+    }
+
+    emit(FilterPostsBySearchState());
   }
 
   //ليست متفلتره قطاعات و الحاله
