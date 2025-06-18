@@ -158,12 +158,12 @@ class AdminReply extends StatelessWidget {
                             border: Border.all(color: brandColor25),
                           ),
                           child: TextFormField(
-                            // validator: (value) {
-                            //   if (value!.isEmpty) {
-                            //     return 'نص الرد مطلوب';
-                            //   }
-                            //   return null;
-                            // },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'نص الرد مطلوب';
+                              }
+                              return null;
+                            },
                             textAlign: TextAlign.end,
                             controller: replyController,
                             maxLines: 4,
