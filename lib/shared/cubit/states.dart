@@ -118,4 +118,6 @@ class FilterComplaintsByStatusSuccessState extends UniversityStates {}
 
 class FilterPostsByStatusSuccessState extends UniversityStates {}
 
+class FilterPostsBySearchState extends UniversityStates {}
+
 class changelikedislikeState extends UniversityStates {}

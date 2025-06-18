@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+
 class FeedBackModel {
   String? sector;
   String? sc_type;
@@ -31,6 +34,8 @@ class ItemModel {
   int? dislike_count;
   bool islike = false;
   bool isdislike = false;
+  DateTime? createdAtDate;
+
   ItemModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     user = json['user'] != null ? ItemUserModel.fromJson(json['user']) : null;
@@ -42,6 +47,14 @@ class ItemModel {
     sc_type = json['sc_type'];
     response = json['response'];
     created_at = json['created_at'];
+    // ✅ تحويل التاريخ بصيغة dd/MM/yyyy إلى DateTime
+    if (created_at != null) {
+      try {
+        createdAtDate = DateFormat('dd/MM/yyyy').parse(created_at!);
+      } catch (e) {
+        print('Invalid date format: $created_at');
+      }
+    }
     like_count = json['like_count'];
     dislike_count = json['dislike_count'];
   }
@@ -50,9 +63,22 @@ class ItemModel {
 class ItemUserModel {
   String? username;
   String? faculty;
+  String? profile_image;
+ // late ImageProvider profileImageProvider;
 
   ItemUserModel.fromJson(Map<String, dynamic> json) {
     username = json['username'];
     faculty = json['faculty'];
+  //   if (profile_image != null && profile_image!.isNotEmpty) {
+  //     if (profile_image!.startsWith('http')) {
+  //       profileImageProvider = NetworkImage(profile_image!);
+  //     } else {
+  //       profileImageProvider = NetworkImage(
+  //         'https://damanhourappproject-production.up.railway.app$profile_image',
+  //       );
+  //     }
+  //   } else {
+  //     profileImageProvider = const AssetImage('assets/images/user image1.png');
+  //   }
   }
 }

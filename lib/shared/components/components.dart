@@ -498,7 +498,7 @@ Widget buildPostItem(context, ItemModel model) {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                     image:
-                        cubit.profileImageProvider, //model.user.profile_image
+                        cubit.profileImageProvider , //model.user.profile_image
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -544,98 +544,98 @@ Widget buildPostItem(context, ItemModel model) {
           color: Colors.black,
         ),
         SizedBox(height: 10.0),
-        Container(
-          padding: EdgeInsetsDirectional.symmetric(
-            horizontal: ScreenSize.width * 0.05,
-          ),
-          width: double.infinity,
-          height: ScreenSize.height * 0.06,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: neutralColor25),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(width: ScreenSize.width * 0.02),
-                    TextCairo(
-                      text: '${model.dislike_count}',
-                      color: Colors.black,
-                    ),
-                    Container(
-                      width: ScreenSize.width * 0.15,
-                      height: ScreenSize.height * 0.045,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          cubit.changedislike(model);
-                          cubit.updateLikeDislike(
-                            id: model.id,
-                            isLike: false,
-                            type_S_C: model.sc_type,
-                            newCount: model.dislike_count ?? 0 + 1,
-                          );
-                        },
-                        icon: Icon(
-                          Icons.thumb_down_alt_outlined,
-                          color:
-                              model.isdislike == true
-                                  ? Colors.red
-                                  : Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: ScreenSize.width * 0.02),
-                    TextCairo(text: '${model.like_count}', color: Colors.black),
-                    Container(
-                      width: ScreenSize.width * 0.15,
-                      height: ScreenSize.height * 0.045,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.white,
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          cubit.changelike(model);
-                          cubit.updateLikeDislike(
-                            id: model.id,
-                            isLike: true,
-                            type_S_C: model.sc_type,
-                            newCount: model.like_count ?? 0 + 1,
-                          );
-                        },
-                        icon: Icon(
-                          Icons.thumb_up_alt_outlined,
-                          color:
-                              model.islike == true
-                                  ? Colors.green
-                                  : Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.only(
-                  end: ScreenSize.width * 0.05,
-                ),
-                child: TextCairo(
-                  text: 'هل هذه الشكوى حقيقية ؟',
-                  fontsize: 13.0,
-                  fontweight: FontWeight.w400,
-                  color: primary_blue,
-                ),
-              ),
-            ],
-          ),
-        ),
+        // Container(
+        //   padding: EdgeInsetsDirectional.symmetric(
+        //     horizontal: ScreenSize.width * 0.05,
+        //   ),
+        //   width: double.infinity,
+        //   height: ScreenSize.height * 0.06,
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(8.0),
+        //     border: Border.all(color: neutralColor25),
+        //   ),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.end,
+        //     children: [
+        //       Expanded(
+        //         child: Row(
+        //           mainAxisAlignment: MainAxisAlignment.start,
+        //           children: [
+        //             SizedBox(width: ScreenSize.width * 0.02),
+        //             TextCairo(
+        //               text: '${model.dislike_count}',
+        //               color: Colors.black,
+        //             ),
+        //             Container(
+        //               width: ScreenSize.width * 0.15,
+        //               height: ScreenSize.height * 0.045,
+        //               decoration: BoxDecoration(
+        //                 borderRadius: BorderRadius.circular(8.0),
+        //               ),
+        //               child: IconButton(
+        //                 onPressed: () {
+        //                   cubit.changedislike(model);
+        //                   cubit.updateLikeDislike(
+        //                     id: model.id,
+        //                     isLike: false,
+        //                     type_S_C: model.sc_type,
+        //                     newCount: model.dislike_count ?? 0 + 1,
+        //                   );
+        //                 },
+        //                 icon: Icon(
+        //                   Icons.thumb_down_alt_outlined,
+        //                   color:
+        //                       model.isdislike == true
+        //                           ? Colors.red
+        //                           : Colors.black,
+        //                 ),
+        //               ),
+        //             ),
+        //             SizedBox(width: ScreenSize.width * 0.02),
+        //             TextCairo(text: '${model.like_count}', color: Colors.black),
+        //             Container(
+        //               width: ScreenSize.width * 0.15,
+        //               height: ScreenSize.height * 0.045,
+        //               decoration: BoxDecoration(
+        //                 borderRadius: BorderRadius.circular(8.0),
+        //                 color: Colors.white,
+        //               ),
+        //               child: IconButton(
+        //                 onPressed: () {
+        //                   cubit.changelike(model);
+        //                   cubit.updateLikeDislike(
+        //                     id: model.id,
+        //                     isLike: true,
+        //                     type_S_C: model.sc_type,
+        //                     newCount: model.like_count ?? 0 + 1,
+        //                   );
+        //                 },
+        //                 icon: Icon(
+        //                   Icons.thumb_up_alt_outlined,
+        //                   color:
+        //                       model.islike == true
+        //                           ? Colors.green
+        //                           : Colors.black,
+        //                 ),
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       Padding(
+        //         padding: EdgeInsetsDirectional.only(
+        //           end: ScreenSize.width * 0.05,
+        //         ),
+        //         child: TextCairo(
+        //           text: 'هل هذه الشكوى حقيقية ؟',
+        //           fontsize: 13.0,
+        //           fontweight: FontWeight.w400,
+        //           color: primary_blue,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     ),
   );
