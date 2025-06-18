@@ -696,7 +696,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
     for (var complaint in filteredPosts) {
       if (complaint.status == 'تم الحل') repliedPosts.add(complaint);
     }
-    filteredPostsbystatus = repliedPosts;
+    //filteredPostsbystatus = repliedPosts;  //=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     emit(FilterPostsByStatusSuccessState());
   }
@@ -752,10 +752,13 @@ class UniversityCubit extends Cubit<UniversityStates> {
           filteredPosts.where((post) => post.status == status).toList();
     } else if (status == null || searchId != null) {
       filteredPostsbystatus =
-          allPosts.where((post) => post.id.toString() == searchId).toList();
+          allPosts
+              .where((post) => post.id.toString().contains(searchId!))
+              .toList();
     }
     emit(FilterBySectorChangedState());
   }
+
 
   ///////////////////for profile admin///////////////
   List<ItemModel> repliedS_C = [];
