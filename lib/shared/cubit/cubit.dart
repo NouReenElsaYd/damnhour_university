@@ -696,7 +696,7 @@ class UniversityCubit extends Cubit<UniversityStates> {
     for (var complaint in filteredPosts) {
       if (complaint.status == 'تم الحل') repliedPosts.add(complaint);
     }
-    //filteredPostsbystatus = repliedPosts;  //=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    filteredPostsbystatus = repliedPosts;  //=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     emit(FilterPostsByStatusSuccessState());
   }
