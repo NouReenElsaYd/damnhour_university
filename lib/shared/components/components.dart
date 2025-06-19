@@ -491,18 +491,22 @@ Widget buildPostItem(context, ItemModel model) {
               onTap: () {
                 UniversityCubit.get(context).changeBottomNav(0);
               },
-              child: Container(
-                width: ScreenSize.width * 0.14,
-                height: ScreenSize.width * 0.14,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image:
-                        cubit.profileImageProvider , //model.user.profile_image
-                    fit: BoxFit.fill,
-                  ),
-                ),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(model.user!.profile_image!),
+                radius: 25.0,
               ),
+              // Container(
+              //   width: ScreenSize.width * 0.14,
+              //   height: ScreenSize.width * 0.14,
+              //   decoration: BoxDecoration(
+              //     shape: BoxShape.circle,
+              //     image: DecorationImage(
+              //       image:
+              //           model.user!.profile_image! , //model.user.profile_image
+              //       fit: BoxFit.fill,
+              //     ),
+              //   ),
+              // ),
             ),
           ],
         ),

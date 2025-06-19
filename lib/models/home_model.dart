@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class FeedBackModel {
@@ -64,21 +63,24 @@ class ItemUserModel {
   String? username;
   String? faculty;
   String? profile_image;
- // late ImageProvider profileImageProvider;
+  // late ImageProvider profileImageProvider;
 
   ItemUserModel.fromJson(Map<String, dynamic> json) {
     username = json['username'];
     faculty = json['faculty'];
-  //   if (profile_image != null && profile_image!.isNotEmpty) {
-  //     if (profile_image!.startsWith('http')) {
-  //       profileImageProvider = NetworkImage(profile_image!);
-  //     } else {
-  //       profileImageProvider = NetworkImage(
-  //         'https://damanhourappproject-production.up.railway.app$profile_image',
-  //       );
-  //     }
-  //   } else {
-  //     profileImageProvider = const AssetImage('assets/images/user image1.png');
-  //   }
+    profile_image =
+        json['profile_image'] ??
+        "https://th.bing.com/th/id/OIP.peFzV1_5MyCO7JjmohnBUQHaHa?w=500&h=500&rs=1&pid=ImgDetMain";
+    //   if (profile_image != null && profile_image!.isNotEmpty) {
+    //     if (profile_image!.startsWith('http')) {
+    //       profileImageProvider = NetworkImage(profile_image!);
+    //     } else {
+    //       profileImageProvider = NetworkImage(
+    //         'https://damanhourappproject-production.up.railway.app$profile_image',
+    //       );
+    //     }
+    //   } else {
+    //     profileImageProvider = const AssetImage('assets/images/user image1.png');
+    //   }
   }
 }

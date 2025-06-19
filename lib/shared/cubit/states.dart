@@ -55,6 +55,24 @@ class GetComplaintsAndSuggestionsErrorState extends UniversityStates {
   GetComplaintsAndSuggestionsErrorState(this.error);
 }
 
+class GetComplaintsLoadingState extends UniversityStates {}
+
+class GetComplaintsSuccessState extends UniversityStates {}
+
+class GetComplaintsErrorState extends UniversityStates {
+  var error;
+  GetComplaintsErrorState(this.error);
+}
+
+class GetSuggestionsLoadingState extends UniversityStates {}
+
+class GetSuggestionsSuccessState extends UniversityStates {}
+
+class GetSuggestionsErrorState extends UniversityStates {
+  var error;
+  GetSuggestionsErrorState(this.error);
+}
+
 class FilterComplaintsBySectorChangedState extends UniversityStates {}
 
 class FilterBySectorChangedState extends UniversityStates {}

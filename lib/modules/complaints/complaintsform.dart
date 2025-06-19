@@ -27,8 +27,7 @@ class ComplaintsForm extends StatelessWidget {
           titleController.clear();
           cubit.resetbordercolor();
           print("register success");
-          cubit.getAllComplaintsAndSuggestions();
-
+          cubit.getUserComplaintsAndSuggestions();
         } else if (state is ComplaintsSubmitErrorState) {
           showtoast(message: state.error, color: Colors.red);
         }

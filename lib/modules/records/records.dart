@@ -1,5 +1,6 @@
 import 'package:damnhour_university/modules/complaints/complaintsform.dart';
 import 'package:damnhour_university/modules/complaints/suggestionsform.dart';
+import 'package:damnhour_university/modules/records/replied.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
@@ -172,16 +173,27 @@ class RecordsScreen extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder:
-                        (context, index) => buildPostItem(
-                          context,
-                          cubit.archiveComplaintsAndSuggestions[index],
+                        (context, index) => InkWell(
+                          onTap: () {
+                            navigateTo(
+                              to: Replied(
+                                model:
+                                    cubit
+                                        .archiveComplaintsAndSuggestions[index],
+                              ),
+                              context: context,
+                            );
+                          },
+                          child: buildPostItem(
+                            context,
+                            cubit.archiveComplaintsAndSuggestions[index],
+                          ),
                         ),
                     separatorBuilder:
                         (context, index) => Padding(
                           padding: EdgeInsetsDirectional.symmetric(
                             vertical: ScreenSize.height * 0.02,
-                              horizontal: ScreenSize.width*0.05
-
+                            horizontal: ScreenSize.width * 0.05,
                           ),
                           child: Container(height: 1, color: brandColor25),
                         ),

@@ -304,9 +304,7 @@ class AdminControl extends StatelessWidget {
                 child: InkWell(
                   onTap: () {},
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      'https://th.bing.com/th/id/OIP.peFzV1_5MyCO7JjmohnBUQHaHa?w=500&h=500&rs=1&pid=ImgDetMain',
-                    ),
+                    backgroundImage: NetworkImage(model.user!.profile_image!),
                     radius: 25.0,
                   ),
                 ),
@@ -359,14 +357,8 @@ class AdminControl extends StatelessWidget {
               UniversityCubit.get(context).resetselectedstatus();
               navigateTo(
                 to: AdminReply(
-                  type_S_C: model.sc_type,
-                  attachments: model.attachments,
+                  model: model,
                   date: model.created_at,
-                  description: model.description,
-                  faculty: model.user?.faculty,
-                  id: model.id,
-                  name: model.user?.username,
-                  status: model.status,
                   statuscolor:
                       model.status == "معلق"
                           ? Colors.amberAccent

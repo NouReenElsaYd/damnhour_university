@@ -39,7 +39,8 @@ void main() async {
                   UniversityCubit()
                     ..getComplaintsAndSuggestions()
                     ..getprofileinfo()
-                    ..getAllComplaintsAndSuggestions()..filterPostsBySector('الكل')
+                    ..getUserComplaintsAndSuggestions()
+                    ..filterPostsBySector('الكل'),
         ),
 
         BlocProvider<LoginCubit>(

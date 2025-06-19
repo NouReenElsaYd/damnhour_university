@@ -1,7 +1,8 @@
 // ignore_for_file: must_be_immutable
+
 import 'package:damnhour_university/admin/modules/AdminControl/pdfviewer.dart';
 import 'package:damnhour_university/admin/modules/AdminHome/AdminHome.dart';
-import 'package:damnhour_university/admin/modules/AdminLayout/AdminLayout.dart';
+import 'package:damnhour_university/layout/layout.dart';
 import 'package:damnhour_university/models/home_model.dart';
 import 'package:damnhour_university/shared/components/components.dart';
 import 'package:damnhour_university/shared/constants/constants.dart';
@@ -10,39 +11,25 @@ import 'package:damnhour_university/shared/cubit/states.dart';
 import 'package:damnhour_university/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
-class AdminReply extends StatelessWidget {
+class Replied extends StatelessWidget {
   ItemModel model;
 
   String? date;
 
   Color? statuscolor;
 
-  AdminReply({super.key, required this.model, this.date, this.statuscolor});
-  TextEditingController replyController = TextEditingController();
+  Replied({super.key, required this.model, this.date, this.statuscolor});
   @override
   Widget build(BuildContext context) {
+    TextEditingController response = TextEditingController(
+      text: '${model.response}',
+    );
     var cubit = UniversityCubit.get(context);
     var _formkey = GlobalKey<FormState>();
     return BlocConsumer<UniversityCubit, UniversityStates>(
-      listener: (context, state) {
-        if (state is updateS_CSuccessState) {
-          showtoast(message: 'تم التحديث بنجاح', color: Colors.green);
-          navigatet_close(context: context, to: AdminLayout());
-          cubit.resetselectedstatus();
-        } else if (state is updateS_CErrorState) {
-          showtoast(
-            message: cubit.updates_c_model?.message ?? 'حدث خطأ ما',
-            color: Colors.red,
-          );
-        } else if (state is deleteS_CSuccessState) {
-          showtoast(message: 'تم الحذف بنجاح', color: Colors.green);
-          navigatet_close(context: context, to: AdminLayout());
-        } else if (state is deleteS_CErrorState) {
-          showtoast(message: '${state.error}', color: Colors.red);
-        }
-      },
+      listener: (context, state) {},
       builder:
           (context, state) => Scaffold(
             backgroundColor: Colors.white,
@@ -68,7 +55,7 @@ class AdminReply extends StatelessWidget {
                               onPressed:
                                   () => navigatet_close(
                                     context: context,
-                                    to: AdminLayout(),
+                                    to: LayoutScreen(),
                                   ),
                             ),
                             Expanded(
@@ -79,18 +66,6 @@ class AdminReply extends StatelessWidget {
                                   fontsize: 18,
                                   fontweight: FontWeight.w700,
                                 ),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                cubit.deleteS_C(
-                                  id: model.id.toString(),
-                                  type_S_C: model.sc_type,
-                                );
-                              },
-                              icon: Icon(
-                                Icons.delete_outline_outlined,
-                                color: Colors.red,
                               ),
                             ),
                           ],
@@ -111,24 +86,9 @@ class AdminReply extends StatelessWidget {
                           )
                           : complaintcard(cubit),
                       SizedBox(height: 16),
+
                       // Dropdown for status
-                      dropdownlist(
-                        title: 'حالة الشكوى',
-                        selectedvalue: cubit.selectedstatus,
-                        hinttext: '',
-                        dropdownitems: [
-                          'مرفوض',
-                          'معلق',
-                          'قيد التنفيذ',
-                          'تم الحل',
-                        ],
-                        onchanged: (value) {
-                          cubit.changeselectedstatus(value);
-                        },
-                        dropIcon: Icons.info_outlined,
-                        bordercolor: cubit.statusBorderColor,
-                      ),
-                      SizedBox(height: 16),
+                      SizedBox(height: .1 * ScreenSize.height),
                       TextCairo(
                         text: 'نص الرد',
                         color: Colors.black,
@@ -152,7 +112,7 @@ class AdminReply extends StatelessWidget {
                               return null;
                             },
                             textAlign: TextAlign.end,
-                            controller: replyController,
+                            controller: response,
                             maxLines: 4,
                             textDirection: TextDirection.ltr,
                             decoration: InputDecoration(
@@ -171,37 +131,6 @@ class AdminReply extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 24),
-                      // Send and Cancel buttons
-                      state is! updateS_CLoadingState
-                          ? Button(
-                            text: 'إرسال',
-                            onpressed: () {
-                              cubit.validateStatus();
-                              if (_formkey.currentState!.validate() &&
-                                  cubit.isStatusValid) {
-                                cubit.updateS_C(
-                                  id: model.id.toString(),
-                                  type_S_C: model.sc_type,
-                                  response: replyController.text,
-                                  status: cubit.selectedstatus,
-                                );
-                              }
-                            },
-                            color: primary_blue,
-                            textcolor: Colors.white,
-                          )
-                          : Center(child: CircularProgressIndicator()),
-                      SizedBox(height: 12),
-                      Button(
-                        text: 'الغاء',
-                        onpressed:
-                            () => navigatet_close(
-                              context: context,
-                              to: AdminLayout(),
-                            ),
-                        color: Colors.white,
-                        textcolor: primary_blue,
-                      ),
                     ],
                   ),
                 ),

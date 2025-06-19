@@ -141,7 +141,7 @@ class HomeScreen extends StatelessWidget {
                     homeTextField(
                       'متابعة الطلبات',
                       context,
-                          () => UniversityCubit.get(context).changeBottomNav(1),
+                      () => UniversityCubit.get(context).changeBottomNav(1),
                     ),
                     SizedBox(height: 20.0),
                     TextCairo(
@@ -163,14 +163,18 @@ class HomeScreen extends StatelessWidget {
                     return ListView.separated(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemBuilder: (context, index) =>
-                          buildPostItemForHome(context, cubit.searchedPosts[index]),
-                      separatorBuilder: (context, index) => Padding(
-                        padding: EdgeInsetsDirectional.symmetric(
-                          vertical: ScreenSize.height * 0.02,
-                        ),
-                        child: Container(height: 1, color: brandColor25),
-                      ),
+                      itemBuilder:
+                          (context, index) => buildPostItemForHome(
+                            context,
+                            cubit.searchedPosts[index],
+                          ),
+                      separatorBuilder:
+                          (context, index) => Padding(
+                            padding: EdgeInsetsDirectional.symmetric(
+                              vertical: ScreenSize.height * 0.02,
+                            ),
+                            child: Container(height: 1, color: brandColor25),
+                          ),
                       itemCount: cubit.searchedPosts.length,
                     );
                   }
@@ -180,7 +184,8 @@ class HomeScreen extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) => buildShimmerPostItem(),
-                      separatorBuilder: (context, index) => SizedBox(height: 20),
+                      separatorBuilder:
+                          (context, index) => SizedBox(height: 20),
                       itemCount: 5,
                     );
                   }
@@ -216,14 +221,21 @@ class HomeScreen extends StatelessWidget {
                         ListView.separated(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemBuilder: (context, index) =>
-                              buildPostItemForHome(context, cubit.repliedPosts[index]),
-                          separatorBuilder: (context, index) => Padding(
-                            padding: EdgeInsetsDirectional.symmetric(
-                              vertical: ScreenSize.height * 0.02,
-                            ),
-                            child: Container(height: 1, color: brandColor25),
-                          ),
+                          itemBuilder:
+                              (context, index) => buildPostItemForHome(
+                                context,
+                                cubit.repliedPosts[index],
+                              ),
+                          separatorBuilder:
+                              (context, index) => Padding(
+                                padding: EdgeInsetsDirectional.symmetric(
+                                  vertical: ScreenSize.height * 0.02,
+                                ),
+                                child: Container(
+                                  height: 1,
+                                  color: brandColor25,
+                                ),
+                              ),
                           itemCount: cubit.repliedPosts.length,
                         ),
                     ],
@@ -238,39 +250,38 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget homeTextField(
-      String text,
-      BuildContext context,
-      VoidCallback function,
-      ) =>
-      InkWell(
-        child: Container(
-          height: ScreenSize.height * 0.06,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: primary_blue),
-          ),
-          child: Row(
-            children: [
-              Icon(CustomIcons.keyboard_arrow_left, color: primary_blue),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.only(end: 20.0),
-                    child: TextCairo(
-                      text: text,
-                      color: Colors.black,
-                      fontweight: FontWeight.w500,
-                      fontsize: 16.0,
-                    ),
-                  ),
+    String text,
+    BuildContext context,
+    VoidCallback function,
+  ) => InkWell(
+    child: Container(
+      height: ScreenSize.height * 0.06,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: primary_blue),
+      ),
+      child: Row(
+        children: [
+          Icon(CustomIcons.keyboard_arrow_left, color: primary_blue),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 20.0),
+                child: TextCairo(
+                  text: text,
+                  color: Colors.black,
+                  fontweight: FontWeight.w500,
+                  fontsize: 16.0,
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-        onTap: function,
-      );
+        ],
+      ),
+    ),
+    onTap: function,
+  );
 
   Widget buildShimmerPostItem() {
     return Padding(
@@ -400,7 +411,7 @@ class HomeScreen extends StatelessWidget {
                           fontsize: 14.0,
                           fontweight: FontWeight.w400,
                         ),
-                        SizedBox(width: ScreenSize.width*0.04),
+                        SizedBox(width: ScreenSize.width * 0.04),
                         TextCairo(
                           text: getTwoPartName(model.user?.username),
                           color: primary_blue,
@@ -423,17 +434,21 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   UniversityCubit.get(context).changeBottomNav(0);
                 },
-                child: Container(
-                  width: ScreenSize.width * 0.14,
-                  height: ScreenSize.width * 0.14,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: cubit.profileImageProvider,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(model.user!.profile_image!),
+                  radius: 25.0,
                 ),
+                //  Container(
+                //   width: ScreenSize.width * 0.14,
+                //   height: ScreenSize.width * 0.14,
+                //   decoration: BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     image: DecorationImage(
+                //       image: cubit.profileImageProvider,
+                //       fit: BoxFit.fill,
+                //     ),
+                //   ),
+                // ),
               ),
             ],
           ),
@@ -441,23 +456,24 @@ class HomeScreen extends StatelessWidget {
           if (model.attachments != null)
             Padding(
               padding: const EdgeInsetsDirectional.symmetric(vertical: 10.0),
-              child: cubit.getFileType(model.attachments) == 'Image'
-                  ? Container(
-                height: 150,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                    image: NetworkImage(model.attachments ?? ''),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              )
-                  : Container(
-                height: 150,
-                width: double.infinity,
-                child: SvgPicture.asset('assets/images/pdf.svg'),
-              ),
+              child:
+                  cubit.getFileType(model.attachments) == 'Image'
+                      ? Container(
+                        height: 150,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: DecorationImage(
+                            image: NetworkImage(model.attachments ?? ''),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      )
+                      : Container(
+                        height: 150,
+                        width: double.infinity,
+                        child: SvgPicture.asset('assets/images/pdf.svg'),
+                      ),
             ),
 
           SizedBox(height: .01 * ScreenSize.height),
@@ -521,9 +537,10 @@ class HomeScreen extends StatelessWidget {
                           },
                           icon: Icon(
                             Icons.thumb_down_alt_outlined,
-                            color: model.isdislike == true
-                                ? Colors.red
-                                : Colors.black,
+                            color:
+                                model.isdislike == true
+                                    ? Colors.red
+                                    : Colors.black,
                           ),
                         ),
                       ),
@@ -551,9 +568,10 @@ class HomeScreen extends StatelessWidget {
                           },
                           icon: Icon(
                             Icons.thumb_up_alt_outlined,
-                            color: model.islike == true
-                                ? Colors.green
-                                : Colors.black,
+                            color:
+                                model.islike == true
+                                    ? Colors.green
+                                    : Colors.black,
                           ),
                         ),
                       ),
@@ -579,7 +597,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
 
 String getTwoPartName(String? fullName) {
   final parts = fullName!.trim().split(' ');

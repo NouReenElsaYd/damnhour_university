@@ -41,7 +41,10 @@ class UniversityCubit extends Cubit<UniversityStates> {
       getprofileinfo();
     } else if (currentIndex == 3) {
       getComplaintsAndSuggestions();
+    } else if (currentIndex == 2) {
+      getUserComplaintsAndSuggestions();
     }
+
     emit(UniversityChangeBottomNavState());
   }
 
@@ -594,41 +597,59 @@ class UniversityCubit extends Cubit<UniversityStates> {
   List<ItemModel> allComplaints = [];
   List<ItemModel> filteredComplaints = [];
 
-  Future<void> getAllComplaintsAndSuggestions() async {
+  Future<void> getUserComplaintsAndSuggestions() async {
+    List<ItemModel> complaintsList = await getUserComplaints();
+    List<ItemModel> suggestionsList = await getUserSuggestions();
+    getUserComplaints();
+    getUserSuggestions();
+    allComplaints = [...complaintsList, ...suggestionsList]
+      ..sort((a, b) => b.createdAtDate!.compareTo(a.createdAtDate!));
     emit(GetComplaintsAndSuggestionsLoadingState());
 
-    List<ItemModel> complaintsList = [];
-    List<ItemModel> suggestionsList = [];
+    filterComplaintsBySector('الكل');
+  }
+
+  Future<List<ItemModel>> getUserComplaints() async {
+    emit(GetComplaintsLoadingState());
 
     try {
-      //  الشكاوي
       final complaintsResponse = await Dio_Helper.getfromDB(
         url: COMPLAINTS,
         token: 'Bearer $token',
       );
-      complaintsList =
+      final complaintsList =
           (complaintsResponse.data as List)
               .map((e) => ItemModel.fromJson(e))
               .toList();
-      //  المقترحات
+
+      emit(GetComplaintsSuccessState());
+      return complaintsList;
+    } catch (error) {
+      emit(GetComplaintsErrorState(error.toString()));
+      print('Error loading complaints: $error');
+      return [];
+    }
+  }
+
+  Future<List<ItemModel>> getUserSuggestions() async {
+    emit(GetSuggestionsLoadingState());
+
+    try {
       final suggestionsResponse = await Dio_Helper.getfromDB(
         url: SUGGESTIONS,
         token: 'Bearer $token',
       );
-      suggestionsList =
+      final suggestionsList =
           (suggestionsResponse.data as List)
               .map((e) => ItemModel.fromJson(e))
               .toList();
 
-      allComplaints = [...complaintsList, ...suggestionsList]
-        ..sort((a, b) => b.createdAtDate!.compareTo(a.createdAtDate!));
-
-      filterComplaintsBySector('الكل');
-
-      emit(GetComplaintsAndSuggestionsSuccessState());
+      emit(GetSuggestionsSuccessState());
+      return suggestionsList;
     } catch (error) {
-      emit(GetComplaintsAndSuggestionsErrorState(error.toString()));
-      print('Error loading complaints or suggestions: $error');
+      emit(GetSuggestionsErrorState(error.toString()));
+      print('Error loading suggestions: $error');
+      return [];
     }
   }
 
@@ -693,10 +714,13 @@ class UniversityCubit extends Cubit<UniversityStates> {
   List<ItemModel> repliedPosts = [];
   void filteredPostsByStatus() {
     repliedPosts = [];
+
     for (var complaint in filteredPosts) {
       if (complaint.status == 'تم الحل') repliedPosts.add(complaint);
     }
-    filteredPostsbystatus = repliedPosts;  //=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    filteredPostsbystatus = filteredPosts;
+    // filteredPostsbystatus =
+    //     repliedPosts; //=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     emit(FilterPostsByStatusSuccessState());
   }
@@ -758,7 +782,6 @@ class UniversityCubit extends Cubit<UniversityStates> {
     }
     emit(FilterBySectorChangedState());
   }
-
 
   ///////////////////for profile admin///////////////
   List<ItemModel> repliedS_C = [];

@@ -105,9 +105,7 @@ class AdminHome extends StatelessWidget {
                         child: TextField(
                           onChanged: (value) {
                             print(
-                              UniversityCubit.get(
-                                context,
-                              ).filteredPosts.length,
+                              UniversityCubit.get(context).filteredPosts.length,
                             );
                             UniversityCubit.get(context).updateSearchId(value);
                           },
@@ -172,7 +170,7 @@ class AdminHome extends StatelessWidget {
                       Container(height: 1.0, color: brandColor25),
                       if (UniversityCubit.get(
                         context,
-                      ).filteredPosts.isEmpty)  //filteredPostsbystatus
+                      ).filteredPosts.isEmpty) //filteredPostsbystatus
                         Padding(
                           padding: EdgeInsetsDirectional.only(
                             top: ScreenSize.height * 0.02,
@@ -184,9 +182,7 @@ class AdminHome extends StatelessWidget {
                             ),
                           ),
                         ),
-                      if (UniversityCubit.get(
-                        context,
-                      ).filteredPosts.isNotEmpty)
+                      if (UniversityCubit.get(context).filteredPosts.isNotEmpty)
                         ListView.separated(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -209,9 +205,7 @@ class AdminHome extends StatelessWidget {
                                 ),
                               ),
                           itemCount:
-                              UniversityCubit.get(
-                                context,
-                              ).filteredPosts.length,
+                              UniversityCubit.get(context).filteredPosts.length,
                         ),
                     ],
                   );
@@ -323,9 +317,7 @@ class AdminHome extends StatelessWidget {
                   // navigateTo(to: AdminProfile(), context: context);
                 },
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    'https://th.bing.com/th/id/OIP.peFzV1_5MyCO7JjmohnBUQHaHa?w=500&h=500&rs=1&pid=ImgDetMain',
-                  ),
+                  backgroundImage: NetworkImage(model.user!.profile_image!),
                   radius: 25.0,
                 ),
               ),
