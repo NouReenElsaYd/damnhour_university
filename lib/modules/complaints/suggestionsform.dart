@@ -182,6 +182,17 @@ class SuggestionsForm extends StatelessWidget {
                                   if (value!.isEmpty) {
                                     return 'تفاصيل الاقتراح مطلوبه';
                                   }
+                                  if (!(cubit.getFileType(
+                                            cubit.pickedfile?.path,
+                                          ) ==
+                                          'pdf' ||
+                                      cubit.getFileType(
+                                            cubit.pickedfile?.path,
+                                          ) ==
+                                          'Image' ||
+                                      cubit.pickedfile?.path == null)) {
+                                    return 'pdfيجب ان يكون الملف صوره او ';
+                                  }
                                   return null;
                                 },
                                 controller: descriptionController,

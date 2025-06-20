@@ -116,6 +116,8 @@ class ComplaintsScreen extends StatelessWidget {
                                 ),
                               ),
                               onTap: () {
+                                cubit.resetpickedfile();
+                                cubit.resetSelectedSector();
                                 navigateTo(
                                   to: ComplaintsForm(),
                                   context: context,
@@ -235,7 +237,7 @@ class ComplaintsScreen extends StatelessWidget {
                         (context, index) => Padding(
                           padding: EdgeInsetsDirectional.symmetric(
                             vertical: ScreenSize.height * 0.02,
-                            horizontal: ScreenSize.width*0.05
+                            horizontal: ScreenSize.width * 0.05,
                           ),
                           child: Container(height: 1, color: brandColor25),
                         ),

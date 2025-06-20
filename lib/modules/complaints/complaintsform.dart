@@ -182,6 +182,17 @@ class ComplaintsForm extends StatelessWidget {
                                   if (value!.isEmpty) {
                                     return 'تفاصيل الشكوى مطلوبه';
                                   }
+                                  if (!(cubit.getFileType(
+                                            cubit.pickedfile?.path,
+                                          ) ==
+                                          'pdf' ||
+                                      cubit.getFileType(
+                                            cubit.pickedfile?.path,
+                                          ) ==
+                                          'Image' ||
+                                      cubit.pickedfile?.path == null)) {
+                                    return 'pdfيجب ان يكون الملف صوره او ';
+                                  }
                                   return null;
                                 },
                                 controller: descriptionController,
