@@ -1,7 +1,6 @@
 # damnhour_university
 
-A new Flutter project.
-
+Complaints and Suggestions Application for Damanhour University
 ## Getting Started
 
 This project is a starting point for a Flutter application.
